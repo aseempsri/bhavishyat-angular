@@ -35,11 +35,11 @@ export class HeaderComponent {
     if (href.startsWith('#')) {
       event.preventDefault();
       const elementId = href.substring(1);
-      
+
       // Check if we're currently on the home page
       const currentUrl = this.router.url;
       const isOnHomePage = currentUrl === '/' || currentUrl === '' || !currentUrl.includes('/shinrin-yoku');
-      
+
       if (isOnHomePage) {
         // If on home page, just scroll to the element
         this.scrollToElement(elementId);
