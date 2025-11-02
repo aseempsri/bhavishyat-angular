@@ -9,5 +9,5 @@ import { ButtonComponent } from '../../ui/button/button.component';
   styleUrl: './about.component.css'
 })
 export class AboutComponent {
-  zodiacWheel = '/assets/zodiac-wheel.png';
+  zodiacWheel = 'assets/zodiac-wheel.png';
 }

@@ -9,6 +9,6 @@ import { ButtonComponent } from '../../ui/button/button.component';
   styleUrl: './hero.component.css'
 })
 export class HeroComponent {
-  galaxyBg = '/assets/galaxy-bg.jpg';
-  zodiacCircle = '/assets/zodiac-circle.png';
+  galaxyBg = 'assets/galaxy-bg.jpg';
+  zodiacCircle = 'assets/zodiac-circle.png';
 }
