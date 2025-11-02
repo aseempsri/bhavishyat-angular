@@ -73,6 +73,11 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem; /* Account for fixed header height */
+  }
+
   body {
     @apply bg-background text-foreground;
   }
