@@ -28,4 +28,23 @@ export class HeaderComponent {
   closeMenu(): void {
     this.isMenuOpen = false;
   }
+
+  handleHashClick(event: Event, href: string): void {
+    if (href.startsWith('#')) {
+      event.preventDefault();
+      const elementId = href.substring(1);
+      const element = document.getElementById(elementId);
+      if (element) {
+        const headerHeight = 80; // Fixed header height
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - headerHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        this.closeMenu(); // Close mobile menu if open
+      }
+    }
+  }
 }

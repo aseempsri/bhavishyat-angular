@@ -25,6 +25,7 @@
           } @else {
             <a
               [href]="item.href"
+              (click)="handleHashClick($event, item.href)"
               class="text-foreground/80 hover:text-primary transition-colors font-medium"
             >
               {{ item.label }}
@@ -78,8 +79,8 @@
             } @else {
               <a
                 [href]="item.href"
+                (click)="handleHashClick($event, item.href)"
                 class="text-foreground/80 hover:text-primary transition-colors font-medium py-2"
-                (click)="closeMenu()"
               >
                 {{ item.label }}
               </a>
