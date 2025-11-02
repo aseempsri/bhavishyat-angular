@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { filter, take } from 'rxjs';
 import { ButtonComponent } from '../../ui/button/button.component';
 
 @Component({
@@ -34,22 +35,48 @@ export class HeaderComponent {
   handleHashClick(event: Event, href: string): void {
     if (href.startsWith('#')) {
       event.preventDefault();
+      event.stopPropagation();
+      
       const elementId = href.substring(1);
-
+      if (!elementId) {
+        this.closeMenu();
+        return;
+      }
+      
       // Check if we're currently on the home page
       const currentUrl = this.router.url;
-      const isOnHomePage = currentUrl === '/' || currentUrl === '' || !currentUrl.includes('/shinrin-yoku');
-
+      const isOnHomePage = currentUrl === '/' || currentUrl === '' || (!currentUrl.includes('/shinrin-yoku') && !currentUrl.includes('shinrin-yoku'));
+      
       if (isOnHomePage) {
         // If on home page, just scroll to the element
-        this.scrollToElement(elementId);
+        setTimeout(() => {
+          this.scrollToElement(elementId);
+        }, 50);
       } else {
         // If on another page, navigate to home first, then scroll
-        this.router.navigate(['/'], { fragment: elementId }).then(() => {
-          // Wait for navigation and DOM update, then scroll
+        // Listen for navigation end event to ensure route change is complete
+        this.router.events
+          .pipe(
+            filter(event => event instanceof NavigationEnd),
+            take(1)
+          )
+          .subscribe(() => {
+            // Wait for DOM to update after navigation
+            setTimeout(() => {
+              this.scrollToElement(elementId);
+            }, 500);
+          });
+        
+        // Navigate to home page
+        this.router.navigate(['/'], { 
+          fragment: elementId,
+          queryParamsHandling: 'preserve'
+        }).catch((error) => {
+          console.error('Navigation error:', error);
+          // Fallback: try direct scroll after a delay
           setTimeout(() => {
             this.scrollToElement(elementId);
-          }, 300); // Increased timeout to ensure DOM is ready after route change
+          }, 1000);
         });
       }
       this.closeMenu(); // Close mobile menu if open
@@ -57,16 +84,29 @@ export class HeaderComponent {
   }
 
   private scrollToElement(elementId: string): void {
-    const element = document.getElementById(elementId);
-    if (element) {
-      const headerHeight = 80; // Fixed header height
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - headerHeight;
+    if (!elementId) return;
+    
+    // Try multiple times in case DOM isn't ready
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    const tryScroll = () => {
+      const element = document.getElementById(elementId);
+      if (element) {
+        const headerHeight = 80; // Fixed header height
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - headerHeight;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      } else if (attempts < maxAttempts) {
+        attempts++;
+        setTimeout(tryScroll, 100);
+      }
+    };
+    
+    tryScroll();
   }
 }
