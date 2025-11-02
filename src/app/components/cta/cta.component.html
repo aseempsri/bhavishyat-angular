@@ -1,0 +1,133 @@
+<section id="contact" class="py-24 px-4 relative overflow-hidden">
+  <!-- Diagonal Peach Background - Bottom Left -->
+  <div
+    class="absolute left-0 bottom-0 w-[800px] h-[800px] bg-gradient-to-br from-primary to-accent -skew-y-12 transform origin-bottom-left -translate-x-1/3 translate-y-1/3 opacity-90">
+  </div>
+
+  <div class="container mx-auto relative z-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left Content -->
+      <div class="animate-fade-in-up text-primary-foreground lg:text-foreground">
+        <div class="inline-block px-4 py-2 bg-background/10 lg:bg-primary/10 rounded-full mb-6">
+          <span class="font-semibold">Get In Touch</span>
+        </div>
+
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold mb-6">
+          Begin Your Cosmic Journey Today
+        </h2>
+
+        <p class="text-lg opacity-90 lg:opacity-80 mb-8 leading-relaxed">
+          Connect with our expert astrologers and unlock the secrets of your destiny.
+          Subscribe for exclusive insights and cosmic guidance.
+        </p>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full bg-background/20 lg:bg-primary/20 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                </path>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold">Call Us</p>
+              <p class="opacity-80">+1 (555) 123-4567</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full bg-background/20 lg:bg-primary/20 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold">Email Us</p>
+              <p class="opacity-80">contact&#64;bhavishyat.com</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full bg-background/20 lg:bg-primary/20 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold">Visit Us</p>
+              <p class="opacity-80">123 Cosmic Avenue, Starville</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Content - Subscribe Form -->
+      <div>
+        <div class="newsletter-form-container bg-[#1A1E28] rounded-xl p-8 border border-[#252936] shadow-xl">
+          <h3 class="text-4xl md:text-5xl font-playfair font-bold text-[#F8F8F8] mb-4">
+            Subscribe to Our Newsletter
+          </h3>
+          <p class="text-[#F8F8F8] opacity-80 mb-8 leading-relaxed text-base font-sans font-normal">
+            Get weekly astrological insights, lunar updates, and exclusive offers delivered to your inbox.
+          </p>
+
+          <form (ngSubmit)="handleSubmit($event)" class="space-y-5">
+            <div>
+              <app-input type="text" [(ngModel)]="name" placeholder="Your Name"
+                className="bg-[#1A1E28] border border-[#3A3F4D] text-[#F8F8F8] placeholder:text-[#A0A0A0] focus:border-[#3A3F4D] rounded-lg focus:outline-none focus:ring-0 h-12" />
+            </div>
+            <div class="relative mb-5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#A0A0A0] pointer-events-none z-10">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <app-input type="email" [(ngModel)]="email" placeholder="Your Email Address"
+                className="pl-12 bg-[#1A1E28] border border-[#3A3F4D] text-[#F8F8F8] placeholder:text-[#A0A0A0] focus:border-[#3A3F4D] rounded-lg focus:outline-none focus:ring-0 h-12"
+                [required]="true" />
+            </div>
+            <div class="mt-5">
+              <app-button type="submit"
+                className="w-full bg-gradient-to-r from-[#FFC163] to-[#FF9900] hover:opacity-90 text-[#1A1E28] font-bold py-4 px-6 text-base rounded-lg">
+                Subscribe Now
+              </app-button>
+            </div>
+          </form>
+
+          <p class="text-sm text-[#F8F8F8] opacity-80 mt-6 text-center font-sans font-normal">
+            Join over 5,000 seekers on their cosmic journey
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="container mx-auto mt-16 relative z-10">
+    <div class="border-t border-border/50 pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-foreground/60 text-sm text-center md:text-left">
+          © 2024 BHAVISHYAT. All rights reserved. Guiding souls through the cosmos.
+        </p>
+        <div class="flex gap-6">
+          <a href="#" class="text-foreground/60 hover:text-primary transition-colors text-sm">
+            Privacy Policy
+          </a>
+          <a href="#" class="text-foreground/60 hover:text-primary transition-colors text-sm">
+            Terms of Service
+          </a>
+          <a href="#" class="text-foreground/60 hover:text-primary transition-colors text-sm">
+            Cookie Policy
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,11 @@
+<input
+  [type]="type"
+  [placeholder]="placeholder"
+  [disabled]="disabled"
+  [required]="required"
+  [value]="value || ''"
+  (input)="onInput($event)"
+  (blur)="onBlur()"
+  [class]="inputClasses"
+  [attr.placeholder]="placeholder"
+/>

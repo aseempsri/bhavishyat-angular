@@ -1,0 +1,55 @@
+<section id="services" class="py-24 px-4 relative bg-gradient-to-b from-background via-navy-darker to-background">
+  <div class="container mx-auto">
+    <div class="text-center mb-16 animate-fade-in-up">
+      <div class="inline-block px-4 py-2 bg-primary/10 rounded-full mb-4">
+        <span class="text-primary font-semibold">Our Services</span>
+      </div>
+      
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold text-foreground mb-4">
+        Our Best Services
+      </h2>
+      
+      <p class="text-lg text-foreground/70 max-w-3xl mx-auto">
+        Focus on your self and discover. Vestibulum lorem nunc, Professional lorem ipsum dummy text, 
+        content adipiscing elit.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      @for (service of services; track service.badge; let index = $index) {
+        <app-card 
+          className="bg-card/80 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(234,147,85,0.2)] group relative overflow-hidden animate-fade-in-up"
+          [style.animation-delay]="index * 0.1 + 's'"
+        >
+          <!-- Badge -->
+          <div class="absolute top-4 right-4 w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-bold shadow-lg">
+            {{ service.badge }}
+          </div>
+
+          <app-card-header className="pt-8">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              @if (getIconSvg(service.icon)) {
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" [attr.viewBox]="getIconSvg(service.icon).viewBox" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                  @for (path of getIconSvg(service.icon).paths; track $index) {
+                    <path [attr.d]="path"></path>
+                  }
+                </svg>
+              }
+            </div>
+            <app-card-title className="text-foreground font-playfair text-xl">
+              {{ service.title }}
+            </app-card-title>
+          </app-card-header>
+          <app-card-content>
+            <app-card-description className="text-foreground/70">
+              {{ service.description }}
+            </app-card-description>
+          </app-card-content>
+
+          <!-- Hover Effect Line -->
+          <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+        </app-card>
+      }
+    </div>
+  </div>
+</section>

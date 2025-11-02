@@ -1,0 +1,65 @@
+<section id="about" class="py-24 px-4 relative overflow-hidden">
+  <!-- Diagonal Peach Background -->
+  <!-- <div
+    class="absolute right-0 top-0 bottom-0 w-[50%] bg-gradient-to-br from-primary to-accent -skew-x-12 transform origin-top-right hidden lg:block">
+  </div> -->
+
+  <div class="container mx-auto relative z-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left Content -->
+      <div class="animate-fade-in-up">
+        <div class="inline-block px-4 py-2 bg-primary/10 rounded-full mb-6">
+          <span class="text-primary font-semibold">About Us</span>
+        </div>
+
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold text-foreground mb-6">
+          We Know Everything About Astrology
+        </h2>
+
+        <p class="text-lg text-foreground/80 mb-6 leading-relaxed">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+          when an unknown printer took a galley of type.
+        </p>
+
+        <p class="text-foreground/70 mb-8 leading-relaxed">
+          With decades of combined expertise in Vedic astrology, planetary transits,
+          and cosmic interpretation, BHAVISHYAT provides authentic guidance rooted in
+          time-honored traditions while addressing modern life's complexities.
+        </p>
+
+        <app-button size="lg"
+          className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-8 py-6 text-lg shadow-[0_0_30px_rgba(234,147,85,0.4)] transition-all duration-300 group min-w-[180px] sm:min-w-[200px]">
+          <span class="inline-block">Read More</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="ml-2 inline-block group-hover:translate-x-1 transition-transform">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </app-button>
+      </div>
+
+      <!-- Right Content - Mandala -->
+      <div class="relative lg:pl-12">
+        <div class="relative">
+          <!-- Mandala Image -->
+          <div class="relative w-full max-w-[700px] mx-auto">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl"></div>
+            <img [src]="zodiacWheel" alt="Zodiac Wheel"
+              class="relative w-full h-auto animate-[spin_120s_linear_infinite]" />
+          </div>
+
+          <!-- Decorative Elements -->
+          <div class="absolute -top-10 -right-10 w-20 h-20 border-4 border-primary/30 rounded-full"></div>
+          <div class="absolute -bottom-10 -left-10 w-32 h-32 border-4 border-accent/30 rounded-full"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Peach Background -->
+  <!-- <div
+    class="lg:hidden absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none">
+  </div> -->
+</section>

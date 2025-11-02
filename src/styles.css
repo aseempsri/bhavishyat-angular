@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Navy Blue & Peach Color Scheme */
+    --background: 220 45% 8%;
+    --foreground: 30 100% 98%;
+
+    --card: 220 40% 12%;
+    --card-foreground: 30 100% 98%;
+
+    --popover: 220 40% 12%;
+    --popover-foreground: 30 100% 98%;
+
+    /* Peach/Orange Primary Colors */
+    --primary: 28 90% 65%;
+    --primary-foreground: 220 45% 12%;
+
+    --secondary: 220 35% 16%;
+    --secondary-foreground: 30 100% 98%;
+
+    --muted: 220 30% 20%;
+    --muted-foreground: 30 30% 75%;
+
+    --accent: 38 100% 70%;
+    --accent-foreground: 220 45% 12%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 30% 25%;
+    --input: 220 35% 18%;
+    --ring: 28 90% 65%;
+
+    --radius: 0.5rem;
+
+    /* Custom Peach/Orange Variants */
+    --peach-light: 28 100% 75%;
+    --peach-base: 28 90% 65%;
+    --peach-dark: 25 85% 55%;
+    --gold: 45 100% 60%;
+
+    /* Navy Variants */
+    --navy-darker: 220 50% 6%;
+    --navy-dark: 220 45% 8%;
+    --navy-base: 220 40% 12%;
+    --navy-light: 220 35% 20%;
+
+    /* Gradients */
+    --gradient-cosmic: linear-gradient(135deg, hsl(220 50% 6%) 0%, hsl(220 40% 10%) 50%, hsl(220 45% 8%) 100%);
+    --gradient-peach: linear-gradient(135deg, hsl(25 85% 55%) 0%, hsl(28 90% 65%) 50%, hsl(28 100% 75%) 100%);
+    --gradient-diagonal: linear-gradient(135deg, hsl(28 90% 65%) 0%, hsl(38 100% 70%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(220 45% 8% / 0.4) 0%, hsl(220 45% 8% / 0.95) 100%);
+
+    /* Shadows & Effects */
+    --shadow-peach: 0 4px 30px hsl(28 90% 65% / 0.25);
+    --shadow-glow: 0 0 50px hsl(28 90% 65% / 0.3);
+    --shadow-card: 0 10px 40px hsl(220 50% 4% / 0.5);
+    
+    /* Animation */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
