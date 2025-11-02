@@ -9,6 +9,8 @@ import { ButtonComponent } from '../../ui/button/button.component';
   styleUrl: './hero.component.css'
 })
 export class HeroComponent {
-  galaxyBg = 'assets/galaxy-bg.jpg';
-  zodiacCircle = 'assets/zodiac-circle.png';
+  // Use base-href prefix for GitHub Pages deployment
+  private baseHref = '/bhavishyat-angular/';
+  galaxyBg = this.baseHref + 'assets/galaxy-bg.jpg';
+  zodiacCircle = this.baseHref + 'assets/zodiac-circle.png';
 }

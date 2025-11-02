@@ -9,5 +9,7 @@ import { ButtonComponent } from '../../ui/button/button.component';
   styleUrl: './about.component.css'
 })
 export class AboutComponent {
-  zodiacWheel = 'assets/zodiac-wheel.png';
+  // Use base-href prefix for GitHub Pages deployment
+  private baseHref = '/bhavishyat-angular/';
+  zodiacWheel = this.baseHref + 'assets/zodiac-wheel.png';
 }
