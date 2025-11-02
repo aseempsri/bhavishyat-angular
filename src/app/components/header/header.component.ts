@@ -83,13 +83,49 @@ export class HeaderComponent {
     }
   }
 
+  handleLogoClick(): void {
+    // Navigate to home and scroll to top
+    const currentUrl = this.router.url;
+    const isOnHomePage = currentUrl === '/' || currentUrl === '';
+    
+    if (isOnHomePage) {
+      // If already on home page, just scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Navigate to home and scroll to top after navigation
+      this.router.navigate(['/']).then(() => {
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 100);
+      });
+    }
+    this.closeMenu();
+  }
+
+  handleRouteClick(event: Event, href: string): void {
+    // For route links, scroll to top after navigation
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        take(1)
+      )
+      .subscribe(() => {
+        // Scroll to top after navigation completes
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 100);
+      });
+    
+    this.closeMenu();
+  }
+
   private scrollToElement(elementId: string): void {
     if (!elementId) return;
-    
+
     // Try multiple times in case DOM isn't ready
     let attempts = 0;
     const maxAttempts = 10;
-    
+
     const tryScroll = () => {
       const element = document.getElementById(elementId);
       if (element) {
@@ -106,7 +142,7 @@ export class HeaderComponent {
         setTimeout(tryScroll, 100);
       }
     };
-    
+
     tryScroll();
   }
 }
