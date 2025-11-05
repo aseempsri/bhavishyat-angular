@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { ButtonComponent } from '../../ui/button/button.component';
 
 @Component({
@@ -9,6 +10,13 @@ import { ButtonComponent } from '../../ui/button/button.component';
   styleUrl: './about.component.css'
 })
 export class AboutComponent {
-  // Use absolute path with base href - works for both local dev and production
-  zodiacWheel = '/assets/zodiac-wheel.png';
+  private document = inject(DOCUMENT);
+  
+  // Get base href from document to work with both local dev and production
+  private getBaseHref(): string {
+    const baseTag = this.document.querySelector('base');
+    return baseTag?.getAttribute('href') || '/';
+  }
+
+  zodiacWheel = this.getBaseHref() + 'assets/zodiac-wheel.png';
 }
