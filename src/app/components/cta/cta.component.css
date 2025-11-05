@@ -59,15 +59,23 @@
 }
 
 /* Button styling - only for newsletter form button - prevent distortion */
-.newsletter-form-container ::ng-deep form app-button,
+.newsletter-form-container ::ng-deep form app-button {
+  display: block !important;
+  width: 100% !important;
+  border: none !important;
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 .newsletter-form-container ::ng-deep form app-button button {
   animation: none !important;
   transition: opacity 0.2s ease !important;
 }
 
-.newsletter-form-container ::ng-deep form app-button button {
-  border-radius: 0.5rem !important;
-  background: linear-gradient(to right, #FFC163, #FF9900) !important;
+/* Subscribe button with distinctive notched pill shape */
+.newsletter-form-container ::ng-deep form app-button.subscribe-button button {
+  background: linear-gradient(to right, #FFC163, #FFD966, #FF9900) !important;
   color: #1A1E28 !important;
   font-weight: 700 !important;
   padding: 1rem 1.5rem !important;
@@ -97,20 +105,31 @@
   --tw-ring-width: 0 !important;
   --tw-ring-offset-width: 0 !important;
   --tw-ring-color: transparent !important;
+  /* Create notched pill shape with flattened ends and subtle indentations */
+  clip-path: polygon(
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px),
+    0 8px
+  ) !important;
+  border-radius: 12px !important;
 }
 
-.newsletter-form-container ::ng-deep form app-button button:hover,
-.newsletter-form-container ::ng-deep form app-button button:focus,
-.newsletter-form-container ::ng-deep form app-button button:focus-visible,
-.newsletter-form-container ::ng-deep form app-button button:active,
-.newsletter-form-container ::ng-deep form app-button button:focus-within {
+.newsletter-form-container ::ng-deep form app-button.subscribe-button button:hover,
+.newsletter-form-container ::ng-deep form app-button.subscribe-button button:focus,
+.newsletter-form-container ::ng-deep form app-button.subscribe-button button:focus-visible,
+.newsletter-form-container ::ng-deep form app-button.subscribe-button button:active,
+.newsletter-form-container ::ng-deep form app-button.subscribe-button button:focus-within {
   opacity: 0.9 !important;
-  background: linear-gradient(to right, #FFC163, #FF9900) !important;
+  background: linear-gradient(to right, #FFC163, #FFD966, #FF9900) !important;
   outline: none !important;
   box-shadow: none !important;
   transform: none !important;
   scale: 1 !important;
-  border-radius: 0.5rem !important;
   width: 100% !important;
   max-width: 100% !important;
   border: none !important;
@@ -119,4 +138,15 @@
   --tw-ring-offset-width: 0 !important;
   --tw-ring-color: transparent !important;
   --tw-ring-offset-color: transparent !important;
+  clip-path: polygon(
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px),
+    0 8px
+  ) !important;
+  border-radius: 12px !important;
 }
