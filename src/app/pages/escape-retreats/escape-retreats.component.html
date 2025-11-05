@@ -1,0 +1,238 @@
+<app-header></app-header>
+
+<!-- Hero Section -->
+<section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-20 pb-12">
+    <!-- Background Gradient -->
+    <div class="absolute inset-0 bg-gradient-to-b from-background via-navy-darker to-background"></div>
+    
+    <!-- Decorative Elements -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-primary to-accent opacity-10 transform rotate-45 translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-block px-4 py-2 bg-primary/10 rounded-full mb-6">
+                <span class="text-primary font-semibold">Mindful Escapes</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-playfair font-bold text-foreground mb-6">
+                Escape Retreats
+            </h1>
+            
+            <p class="text-lg md:text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed mb-4">
+                Discover curated homestays and mindful escapes inspired by nature, culture, and slow travel. 
+                Each retreat offers a unique opportunity to reconnect with yourself and the world around you.
+            </p>
+            
+            <p class="text-sm text-foreground/60 max-w-2xl mx-auto">
+                Click "Book Now" to view full retreat details and complete your booking through our partner platform.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Retreats Grid -->
+<section class="retreats-wrapper py-16 bg-gradient-to-b from-navy-darker via-background to-background">
+    <div class="container mx-auto px-4">
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-16">
+            @for (escape of escapes; track escape.name) {
+            <div
+                class="retreat-card group border border-border rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-2">
+                
+                <!-- Image Section -->
+                <div class="relative aspect-video w-full bg-muted overflow-hidden">
+                    @if (escape.images.length) {
+                    <img [src]="escape.images[0]" [alt]="escape.name" 
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent"></div>
+                    } @else {
+                    <div class="w-full h-full flex items-center justify-center">
+                        <span class="text-sm text-foreground/60">Image unavailable</span>
+                    </div>
+                    }
+                    
+                    <!-- Rating Badge -->
+                    @if (escape.rating) {
+                    <div class="absolute top-4 right-4 bg-background/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
+                        <span class="text-primary text-lg">⭐</span>
+                        <span class="text-sm font-semibold text-foreground">{{ escape.rating }}</span>
+                    </div>
+                    }
+                </div>
+                
+                <!-- Content Section -->
+                <div class="p-6 flex flex-col gap-4">
+                    <!-- Title and Location -->
+                    <div>
+                        <h2 class="text-2xl font-playfair font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                            {{ escape.name }}
+                        </h2>
+                        <p class="text-sm text-foreground/70 font-medium flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            {{ escape.location }}
+                        </p>
+                    </div>
+                    
+                    <!-- Capacity Info -->
+                    <div class="flex items-center gap-4 text-sm text-foreground/60">
+                        <span class="flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            {{ escape.adults }} Adults
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            {{ escape.rooms }} Rooms
+                        </span>
+                    </div>
+                    
+                    <!-- Price Section -->
+                    <div class="pt-2 border-t border-border">
+                        <div class="flex items-baseline gap-2 mb-4">
+                            @if (escape.priceOriginal && escape.priceOriginal !== escape.pricePerNight) {
+                            <span class="line-through text-sm text-foreground/40">₹{{ escape.priceOriginal }}</span>
+                            }
+                            <span class="text-3xl font-bold text-primary">₹{{ escape.pricePerNight }}</span>
+                            <span class="text-sm text-foreground/60">/night</span>
+                        </div>
+                        
+                        <!-- Booking Buttons -->
+                        <div class="flex flex-col gap-2">
+                            <a [href]="escape.bookingUrl" target="_blank" rel="noopener noreferrer"
+                                class="w-full inline-flex items-center justify-center text-sm font-semibold px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90 hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 group">
+                                <span>Book Now</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 group-hover:translate-x-1 transition-transform">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                            <a [href]="escape.bookingUrl" target="_blank" rel="noopener noreferrer"
+                                class="w-full inline-flex items-center justify-center text-sm font-medium px-6 py-2.5 rounded-lg border-2 border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-300">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Images Thumbnails -->
+                    @if (escape.images.length > 1) {
+                    <div class="pt-2 border-t border-border">
+                        <p class="text-xs text-foreground/50 mb-2">More Photos</p>
+                        <div class="thumbs flex gap-2 overflow-x-auto pb-1">
+                            @for (img of escape.images.slice(1); track img) {
+                            <img [src]="img" [alt]="escape.name + ' photo'"
+                                class="w-20 h-20 object-cover rounded-lg border border-border hover:border-primary/50 transition-colors flex-shrink-0 cursor-pointer" />
+                            }
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Experiences Section -->
+<section class="py-16 bg-gradient-to-b from-background to-navy-darker">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <div class="inline-block px-4 py-2 bg-primary/10 rounded-full mb-4">
+                    <span class="text-primary font-semibold">What to Expect</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-foreground mb-4">
+                    Unique Experiences
+                </h2>
+                <p class="text-lg text-foreground/70 max-w-2xl mx-auto">
+                    Each retreat offers carefully curated experiences designed to help you reconnect with nature and yourself.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="experience-item p-6 rounded-xl border border-border bg-card/60 backdrop-blur-sm hover:bg-card/80 hover:border-primary/30 transition-all duration-300 group">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-playfair font-bold text-foreground mb-2">Forest Bathing (Shinrin Yoku)</h3>
+                            <p class="text-sm text-foreground/70 leading-relaxed">Slow, mindful immersion in the forest atmosphere to restore balance and presence. Experience the healing power of nature through guided walks and sensory awareness practices.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="experience-item p-6 rounded-xl border border-border bg-card/60 backdrop-blur-sm hover:bg-card/80 hover:border-primary/30 transition-all duration-300 group">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-playfair font-bold text-foreground mb-2">Yoga & Meditation</h3>
+                            <p class="text-sm text-foreground/70 leading-relaxed">Guided practice in serene natural settings for mental clarity and inner stillness. Start your day with sunrise sessions or find peace in evening meditations.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="experience-item p-6 rounded-xl border border-border bg-card/60 backdrop-blur-sm hover:bg-card/80 hover:border-primary/30 transition-all duration-300 group">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-playfair font-bold text-foreground mb-2">Tent Camping</h3>
+                            <p class="text-sm text-foreground/70 leading-relaxed">Star-lit nights, bonfire storytelling and reconnection with raw nature. Experience the simplicity of outdoor living under the open sky.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="experience-item p-6 rounded-xl border border-border bg-card/60 backdrop-blur-sm hover:bg-card/80 hover:border-primary/30 transition-all duration-300 group">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="2" x2="12" y2="6"></line>
+                                <line x1="12" y1="18" x2="12" y2="22"></line>
+                                <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                                <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                                <line x1="2" y1="12" x2="6" y2="12"></line>
+                                <line x1="18" y1="12" x2="22" y2="12"></line>
+                                <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                                <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-playfair font-bold text-foreground mb-2">Spiritual Circuits</h3>
+                            <p class="text-sm text-foreground/70 leading-relaxed">Sacred routes exploring local culture, rituals and places of quiet transformation. Connect with ancient traditions and spiritual practices.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-xs text-foreground/50">
+                    Source: Public information adapted from 
+                    <a href="https://ezyescape.com/" target="_blank" rel="noopener" class="underline hover:text-primary transition-colors">EzyEscape</a>. 
+                    Booking links open in a new tab.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

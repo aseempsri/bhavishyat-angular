@@ -9,8 +9,7 @@ import { ButtonComponent } from '../../ui/button/button.component';
   styleUrl: './hero.component.css'
 })
 export class HeroComponent {
-  // Use base-href prefix for GitHub Pages deployment
-  private baseHref = '/bhavishyat-angular/';
-  galaxyBg = this.baseHref + 'assets/galaxy-bg.jpg';
-  zodiacCircle = this.baseHref + 'assets/zodiac-circle.png';
+  // Use absolute path with base href - works for both local dev and production
+  galaxyBg = '/assets/galaxy-bg.jpg';
+  zodiacCircle = '/assets/zodiac-circle.png';
 }

@@ -18,6 +18,7 @@ export class HeaderComponent {
   navItems = [
     { label: 'About Us', href: '#about', isRoute: false },
     { label: 'Shinrin Yoku', href: '/shinrin-yoku', isRoute: true },
+    { label: 'Escape Retreats', href: '/escape-retreats', isRoute: true },
     { label: 'Services', href: '#services', isRoute: false },
     { label: 'Pages', href: '#', isRoute: false },
     { label: 'Blogs', href: '#', isRoute: false },
@@ -36,17 +37,17 @@ export class HeaderComponent {
     if (href.startsWith('#')) {
       event.preventDefault();
       event.stopPropagation();
-      
+
       const elementId = href.substring(1);
       if (!elementId) {
         this.closeMenu();
         return;
       }
-      
-      // Check if we're currently on the home page
-      const currentUrl = this.router.url;
-      const isOnHomePage = currentUrl === '/' || currentUrl === '' || (!currentUrl.includes('/shinrin-yoku') && !currentUrl.includes('shinrin-yoku'));
-      
+
+      // Check if we're currently on the home page (route path without fragment)
+      const currentUrl = this.router.url.split('#')[0]; // Remove fragment if present
+      const isOnHomePage = currentUrl === '/' || currentUrl === '';
+
       if (isOnHomePage) {
         // If on home page, just scroll to the element
         setTimeout(() => {
@@ -66,9 +67,9 @@ export class HeaderComponent {
               this.scrollToElement(elementId);
             }, 500);
           });
-        
+
         // Navigate to home page
-        this.router.navigate(['/'], { 
+        this.router.navigate(['/'], {
           fragment: elementId,
           queryParamsHandling: 'preserve'
         }).catch((error) => {
@@ -87,7 +88,7 @@ export class HeaderComponent {
     // Navigate to home and scroll to top
     const currentUrl = this.router.url;
     const isOnHomePage = currentUrl === '/' || currentUrl === '';
-    
+
     if (isOnHomePage) {
       // If already on home page, just scroll to top
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -115,7 +116,7 @@ export class HeaderComponent {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 100);
       });
-    
+
     this.closeMenu();
   }
 
