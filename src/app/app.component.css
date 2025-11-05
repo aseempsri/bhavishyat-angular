@@ -1,0 +1,12 @@
+.cursor-trail {
+  position: fixed;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 201, 99, 1) 0%, rgba(255, 153, 0, 0.9) 40%, rgba(255, 201, 99, 0.4) 100%);
+  box-shadow: 0 0 15px rgba(255, 201, 99, 0.8), 0 0 30px rgba(255, 153, 0, 0.6), 0 0 45px rgba(255, 153, 0, 0.3);
+  pointer-events: none;
+  z-index: 9999;
+  transform-origin: center;
+  will-change: transform, opacity;
+}

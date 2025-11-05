@@ -1,35 +1,37 @@
-<header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
+<header [class.scrolled]="isScrolled" class="header-container fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border/50 transition-all duration-300">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between h-20">
       <!-- Logo -->
-      <a (click)="handleLogoClick()" class="flex items-center gap-3 cursor-pointer" style="text-decoration: none;">
-        <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+      <a (click)="handleLogoClick()" class="logo-link flex items-center gap-3 cursor-pointer group" style="text-decoration: none;">
+        <div class="logo-icon w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-all duration-300 group-hover:scale-105">
           <span class="text-2xl font-bold text-primary-foreground">B</span>
         </div>
-        <span class="text-2xl md:text-3xl font-cinzel font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+        <span class="logo-text text-2xl md:text-3xl font-cinzel font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent bg-[length:200%_auto] group-hover:animate-shimmer">
           BHAVISHYAT
         </span>
       </a>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden lg:flex items-center gap-8">
+      <nav class="hidden lg:flex items-center gap-1">
         @for (item of navItems; track $index) {
           @if (item.isRoute) {
             <a
               [routerLink]="item.href"
-              routerLinkActive="text-primary"
+              routerLinkActive="nav-active"
               (click)="handleRouteClick($event, item.href)"
-              class="text-foreground/80 hover:text-primary transition-colors font-medium"
+              class="nav-link relative px-4 py-2 text-foreground/70 hover:text-primary transition-colors font-medium text-sm group"
             >
               {{ item.label }}
+              <span class="nav-indicator absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
             </a>
           } @else {
             <a
               [href]="item.href"
               (click)="handleHashClick($event, item.href)"
-              class="text-foreground/80 hover:text-primary transition-colors font-medium"
+              class="nav-link relative px-4 py-2 text-foreground/70 hover:text-primary transition-colors font-medium text-sm group"
             >
               {{ item.label }}
+              <span class="nav-indicator absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
             </a>
           }
         }
@@ -37,7 +39,7 @@
 
       <!-- CTA Button -->
       <div class="hidden lg:block">
-        <app-button className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-6">
+        <app-button className="header-cta bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-6 py-2.5 rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-105">
           Book Reading
         </app-button>
       </div>
@@ -45,35 +47,29 @@
       <!-- Mobile Menu Button -->
       <button
         (click)="toggleMenu()"
-        class="lg:hidden text-foreground p-2"
+        class="mobile-menu-btn lg:hidden text-foreground p-2 rounded-lg hover:bg-primary/10 transition-colors"
         type="button"
+        aria-label="Toggle menu"
       >
-        @if (isMenuOpen) {
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6L6 18"></path>
-            <path d="M6 6l12 12"></path>
-          </svg>
-        } @else {
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" x2="20" y1="12" y2="12"></line>
-            <line x1="4" x2="20" y1="6" y2="6"></line>
-            <line x1="4" x2="20" y1="18" y2="18"></line>
-          </svg>
-        }
+        <div class="w-6 h-6 relative">
+          <span [class.rotate-45]="isMenuOpen" [class.top-2]="isMenuOpen" [class.top-0]="!isMenuOpen" class="absolute left-0 w-full h-0.5 bg-current transition-all duration-300"></span>
+          <span [class.opacity-0]="isMenuOpen" class="absolute top-2.5 left-0 w-full h-0.5 bg-current transition-all duration-300"></span>
+          <span [class.-rotate-45]="isMenuOpen" [class.bottom-2]="isMenuOpen" [class.bottom-0]="!isMenuOpen" class="absolute left-0 w-full h-0.5 bg-current transition-all duration-300"></span>
+        </div>
       </button>
     </div>
 
     <!-- Mobile Menu -->
-    @if (isMenuOpen) {
-      <div class="lg:hidden py-4 border-t border-border">
-        <nav class="flex flex-col gap-4">
+    <div class="mobile-menu lg:hidden overflow-hidden transition-all duration-300" [class.max-h-0]="!isMenuOpen" [class.max-h-screen]="isMenuOpen" [class.opacity-0]="!isMenuOpen" [class.opacity-100]="isMenuOpen">
+      <div class="py-4 border-t border-border/50">
+        <nav class="flex flex-col gap-1">
           @for (item of navItems; track $index) {
             @if (item.isRoute) {
               <a
                 [routerLink]="item.href"
-                routerLinkActive="text-primary"
+                routerLinkActive="mobile-nav-active"
                 (click)="handleRouteClick($event, item.href)"
-                class="text-foreground/80 hover:text-primary transition-colors font-medium py-2"
+                class="mobile-nav-link px-4 py-3 text-foreground/70 hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200 font-medium"
               >
                 {{ item.label }}
               </a>
@@ -81,17 +77,19 @@
               <a
                 [href]="item.href"
                 (click)="handleHashClick($event, item.href)"
-                class="text-foreground/80 hover:text-primary transition-colors font-medium py-2"
+                class="mobile-nav-link px-4 py-3 text-foreground/70 hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200 font-medium"
               >
                 {{ item.label }}
               </a>
             }
           }
-          <app-button className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold mt-2">
-            Book Reading
-          </app-button>
+          <div class="px-4 pt-2">
+            <app-button className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold py-2.5 rounded-lg shadow-lg shadow-primary/20">
+              Book Reading
+            </app-button>
+          </div>
         </nav>
       </div>
-    }
+    </div>
   </div>
 </header>

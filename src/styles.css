@@ -71,6 +71,7 @@ All colors MUST be HSL.
 @layer base {
   * {
     @apply border-border;
+    cursor: none !important; /* Hide default cursor - only show comet trail */
   }
 
   html {

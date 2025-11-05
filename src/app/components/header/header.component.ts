@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { filter, take } from 'rxjs';
 import { ButtonComponent } from '../../ui/button/button.component';
@@ -10,10 +10,12 @@ import { ButtonComponent } from '../../ui/button/button.component';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private document = inject(DOCUMENT);
   isMenuOpen = false;
+  isScrolled = false;
 
   navItems = [
     { label: 'About Us', href: '#about', isRoute: false },
@@ -128,7 +130,7 @@ export class HeaderComponent {
     const maxAttempts = 10;
 
     const tryScroll = () => {
-      const element = document.getElementById(elementId);
+      const element = this.document.getElementById(elementId);
       if (element) {
         const headerHeight = 80; // Fixed header height
         const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
@@ -145,5 +147,20 @@ export class HeaderComponent {
     };
 
     tryScroll();
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    const scrollPosition = window.scrollY || this.document.documentElement.scrollTop || this.document.body.scrollTop || 0;
+    this.isScrolled = scrollPosition > 10;
+  }
+
+  ngOnInit(): void {
+    // Check initial scroll position
+    this.onWindowScroll();
+  }
+
+  ngOnDestroy(): void {
+    // Cleanup if needed
   }
 }
