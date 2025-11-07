@@ -4,6 +4,7 @@
   [disabled]="disabled"
   [required]="required"
   [value]="value || ''"
+  [attr.autocomplete]="autocomplete || null"
   (input)="onInput($event)"
   (blur)="onBlur()"
   [class]="inputClasses"

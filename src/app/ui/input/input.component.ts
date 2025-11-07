@@ -22,6 +22,7 @@ export class InputComponent implements ControlValueAccessor {
   @Input() placeholder: string = '';
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
+  @Input() autocomplete: string = '';
 
   value: string = '';
   onChange: (value: string) => void = () => {};

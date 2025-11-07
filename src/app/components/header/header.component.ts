@@ -1,12 +1,14 @@
 import { Component, inject, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { filter, take } from 'rxjs';
 import { ButtonComponent } from '../../ui/button/button.component';
+import { InputComponent } from '../../ui/input/input.component';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterModule, ButtonComponent],
+  imports: [CommonModule, RouterModule, FormsModule, ButtonComponent, InputComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -16,6 +18,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private document = inject(DOCUMENT);
   isMenuOpen = false;
   isScrolled = false;
+  showLoginModal = false;
+  activeTab: 'signin' | 'signup' = 'signin';
+  name: string = '';
+  password: string = '';
+  loginError: string = '';
+  isLoggedIn: boolean = false;
+  loggedInName: string = '';
 
   navItems = [
     { label: 'About Us', href: '#about', isRoute: false },
@@ -158,9 +167,79 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Check initial scroll position
     this.onWindowScroll();
+    
+    // Restore login state from localStorage
+    const savedLoginState = localStorage.getItem('isLoggedIn');
+    const savedName = localStorage.getItem('loggedInName');
+    if (savedLoginState === 'true' && savedName) {
+      this.isLoggedIn = true;
+      this.loggedInName = savedName;
+    }
   }
 
   ngOnDestroy(): void {
     // Cleanup if needed
+  }
+
+  openLoginModal(): void {
+    if (this.isLoggedIn) {
+      return; // Don't open modal if already logged in
+    }
+    this.showLoginModal = true;
+    this.activeTab = 'signin';
+    this.name = '';
+    this.password = '';
+    this.loginError = '';
+    this.closeMenu();
+  }
+
+  closeLoginModal(): void {
+    this.showLoginModal = false;
+    this.name = '';
+    this.password = '';
+    this.loginError = '';
+  }
+
+  handleSignIn(event: Event): void {
+    event.preventDefault();
+    this.loginError = '';
+
+    if (this.name && this.password === 'admin') {
+      this.isLoggedIn = true;
+      this.loggedInName = this.name;
+      // Save to localStorage
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('loggedInName', this.name);
+      this.closeLoginModal();
+      this.router.navigate(['/kundali']);
+    } else {
+      this.loginError = 'Invalid name or password';
+    }
+  }
+
+  logout(): void {
+    this.isLoggedIn = false;
+    this.loggedInName = '';
+    // Clear localStorage
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('loggedInName');
+    if (this.router.url === '/kundali') {
+      this.router.navigate(['/']);
+    }
+  }
+
+  handleKundaliLinkClick(event: Event): void {
+    // Scroll to top after navigation to kundali page
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        take(1)
+      )
+      .subscribe(() => {
+        // Scroll to top after navigation completes
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 100);
+      });
   }
 }

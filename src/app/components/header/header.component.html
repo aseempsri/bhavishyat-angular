@@ -1,4 +1,4 @@
-<header [class.scrolled]="isScrolled" class="header-container fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-border/50 transition-all duration-300">
+<header [class.scrolled]="isScrolled" class="header-container fixed top-0 left-0 right-0 z-[60] bg-background/95 backdrop-blur-xl border-b border-border/50 transition-all duration-300">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between h-20">
       <!-- Logo -->
@@ -12,14 +12,15 @@
       </a>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden lg:flex items-center gap-1">
+      <nav class="hidden lg:flex items-center gap-1" style="pointer-events: auto;">
         @for (item of navItems; track $index) {
           @if (item.isRoute) {
             <a
               [routerLink]="item.href"
               routerLinkActive="nav-active"
               (click)="handleRouteClick($event, item.href)"
-              class="nav-link relative px-4 py-2 text-foreground/70 hover:text-primary transition-colors font-medium text-sm group"
+              class="nav-link relative px-4 py-2 text-foreground/70 hover:text-primary transition-colors font-medium text-sm group cursor-pointer"
+              style="pointer-events: auto;"
             >
               {{ item.label }}
               <span class="nav-indicator absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
@@ -28,7 +29,8 @@
             <a
               [href]="item.href"
               (click)="handleHashClick($event, item.href)"
-              class="nav-link relative px-4 py-2 text-foreground/70 hover:text-primary transition-colors font-medium text-sm group"
+              class="nav-link relative px-4 py-2 text-foreground/70 hover:text-primary transition-colors font-medium text-sm group cursor-pointer"
+              style="pointer-events: auto;"
             >
               {{ item.label }}
               <span class="nav-indicator absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
@@ -38,10 +40,21 @@
       </nav>
 
       <!-- CTA Button -->
-      <div class="hidden lg:block">
-        <app-button className="header-cta bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-6 py-2.5 rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-105">
-          Book Reading
-        </app-button>
+      <div class="hidden lg:block" style="pointer-events: auto;">
+        @if (isLoggedIn) {
+          <div class="flex items-center gap-3">
+            <a [routerLink]="['/kundali']" (click)="handleKundaliLinkClick($event)" class="text-foreground font-semibold hover:text-primary transition-colors cursor-pointer underline-offset-4 hover:underline">
+              Hi, {{ loggedInName }}
+            </a>
+            <button (click)="logout()" type="button" class="header-cta bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-6 py-2.5 rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-105 cursor-pointer" style="pointer-events: auto;">
+              Logout
+            </button>
+          </div>
+        } @else {
+          <app-button (click)="openLoginModal()" className="header-cta bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-6 py-2.5 rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 hover:scale-105">
+            Login
+          </app-button>
+        }
       </div>
 
       <!-- Mobile Menu Button -->
@@ -84,12 +97,105 @@
             }
           }
           <div class="px-4 pt-2">
-            <app-button className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold py-2.5 rounded-lg shadow-lg shadow-primary/20">
-              Book Reading
-            </app-button>
+            @if (isLoggedIn) {
+              <div class="space-y-2">
+                <a [routerLink]="['/kundali']" (click)="handleKundaliLinkClick($event)" class="block text-foreground font-semibold text-center mb-2 hover:text-primary transition-colors cursor-pointer underline-offset-4 hover:underline">
+                  Hi, {{ loggedInName }}
+                </a>
+                <button (click)="logout()" class="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold py-2.5 rounded-lg shadow-lg shadow-primary/20 cursor-pointer">
+                  Logout
+                </button>
+              </div>
+            } @else {
+              <app-button (click)="openLoginModal()" className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold py-2.5 rounded-lg shadow-lg shadow-primary/20">
+                Login
+              </app-button>
+            }
           </div>
         </nav>
       </div>
     </div>
   </div>
+
+  <!-- Login Modal -->
+  @if (showLoginModal) {
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm" (click)="closeLoginModal()">
+      <div class="login-modal bg-[#1A1E28] rounded-xl p-8 border border-[#252936] shadow-2xl max-w-md w-full mx-4" (click)="$event.stopPropagation()">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-3xl font-playfair font-bold text-[#F8F8F8]">Welcome</h2>
+          <button (click)="closeLoginModal()" class="text-[#A0A0A0] hover:text-[#F8F8F8] transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Sign In / Sign Up Tabs -->
+        <div class="flex gap-4 mb-6 border-b border-[#3A3F4D]">
+          <button 
+            (click)="activeTab = 'signin'" 
+            [class.text-[#F8F8F8]]="activeTab === 'signin'"
+            [class.text-[#A0A0A0]]="activeTab !== 'signin'"
+            [class.border-b-2]="activeTab === 'signin'"
+            [class.border-[#FFC163]]="activeTab === 'signin'"
+            class="pb-3 px-2 font-semibold transition-colors">
+            Sign In
+          </button>
+          <button 
+            (click)="activeTab = 'signup'" 
+            [class.text-[#F8F8F8]]="activeTab === 'signup'"
+            [class.text-[#A0A0A0]]="activeTab !== 'signup'"
+            [class.border-b-2]="activeTab === 'signup'"
+            [class.border-[#FFC163]]="activeTab === 'signup'"
+            class="pb-3 px-2 font-semibold transition-colors">
+            Sign Up
+          </button>
+        </div>
+
+        <!-- Sign In Form -->
+        @if (activeTab === 'signin') {
+          <form (ngSubmit)="handleSignIn($event)" autocomplete="off" class="space-y-5">
+            <div>
+              <label class="block text-[#F8F8F8] mb-2 font-medium">Name</label>
+              <app-input 
+                type="text" 
+                [(ngModel)]="name" 
+                name="login-name-field"
+                autocomplete="off"
+                placeholder="Enter your name"
+                className="bg-[#1A1E28] border border-[#3A3F4D] text-[#F8F8F8] placeholder:text-[#A0A0A0] focus:border-[#FFC163] rounded-lg focus:outline-none focus:ring-0 h-12" />
+            </div>
+            <div>
+              <label class="block text-[#F8F8F8] mb-2 font-medium">Password</label>
+              <app-input 
+                type="password" 
+                [(ngModel)]="password" 
+                name="login-password-field"
+                autocomplete="new-password"
+                placeholder="Enter password (admin)"
+                className="bg-[#1A1E28] border border-[#3A3F4D] text-[#F8F8F8] placeholder:text-[#A0A0A0] focus:border-[#FFC163] rounded-lg focus:outline-none focus:ring-0 h-12" />
+            </div>
+            <div class="mt-6">
+              <app-button 
+                type="submit"
+                className="w-full bg-gradient-to-r from-[#FFC163] to-[#FF9900] hover:opacity-90 text-[#1A1E28] font-bold py-4 px-6 text-base rounded-lg">
+                Sign In
+              </app-button>
+            </div>
+            @if (loginError) {
+              <p class="text-red-400 text-sm text-center">{{ loginError }}</p>
+            }
+          </form>
+        }
+
+        <!-- Sign Up Form -->
+        @if (activeTab === 'signup') {
+          <div class="text-center py-8">
+            <p class="text-[#A0A0A0]">Sign up functionality coming soon...</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
 </header>

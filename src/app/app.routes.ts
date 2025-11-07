@@ -14,6 +14,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/escape-retreats/escape-retreats.component').then(m => m.EscapeRetreatsComponent)
   },
   {
+    path: 'kundali',
+    loadComponent: () => import('./pages/kundali/kundali.component').then(m => m.KundaliComponent)
+  },
+  {
     path: '**',
     loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent)
   }

@@ -147,3 +147,39 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Login Modal Styles */
+.login-modal {
+  position: relative;
+  margin: auto;
+}
+
+::ng-deep .login-modal app-input input {
+  background-color: #1A1E28 !important;
+  border: 1px solid #3A3F4D !important;
+  color: #F8F8F8 !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 1rem !important;
+  font-family: 'Inter', sans-serif !important;
+  height: 3rem !important;
+}
+
+::ng-deep .login-modal app-input input::placeholder {
+  color: #A0A0A0 !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .login-modal app-input input:focus {
+  border-color: #FFC163 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .login-modal app-button button {
+  width: 100% !important;
+  border: none !important;
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
