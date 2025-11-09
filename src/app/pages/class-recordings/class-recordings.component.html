@@ -1,0 +1,130 @@
+<main class="min-h-screen bg-background relative">
+  <!-- Cosmic Background with Stars -->
+  <div class="cosmic-background fixed inset-0 z-0">
+    <div class="twinkling"></div>
+    <!-- Additional cosmic elements -->
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-20 left-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse"
+        style="animation-delay: 1s;"></div>
+      <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse"
+        style="animation-delay: 2s;"></div>
+    </div>
+  </div>
+
+  <app-header></app-header>
+
+  <div class="container mx-auto px-4 pt-24 pb-16 relative z-10">
+    <!-- Page Header -->
+    <div class="text-center mb-16 relative">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="cosmic-glow w-96 h-96 rounded-full blur-3xl opacity-20"></div>
+      </div>
+      <h1 class="text-5xl md:text-6xl font-playfair font-bold text-foreground mb-4 relative z-10">
+        Master the Cosmic Patterns
+      </h1>
+      <p class="text-xl md:text-2xl text-foreground/70 mb-6 relative z-10">
+        Learn the science behind reading the universe's patterns through our comprehensive astrology classes
+      </p>
+      <div class="flex items-center justify-center gap-2 relative z-10">
+        <div class="h-px w-20 bg-gradient-to-r from-transparent via-primary to-primary"></div>
+        <span class="text-3xl">✨</span>
+        <div class="h-px w-20 bg-gradient-to-l from-transparent via-primary to-primary"></div>
+      </div>
+    </div>
+
+    <!-- Class Recordings Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+      @for (classItem of classes; track classItem.id) {
+      <div class="group relative cursor-pointer" (click)="openClass(classItem.link)">
+        <!-- Card -->
+        <div
+          class="bg-gradient-to-br {{ classItem.gradient }} rounded-2xl p-6 border-2 {{ classItem.borderColor }} shadow-xl backdrop-blur-sm relative overflow-hidden transition-all duration-300 hover:scale-105 {{ classItem.hoverGlow }} h-full flex flex-col">
+          <!-- Animated Background Glow -->
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-accent/20 rounded-full blur-2xl"></div>
+          </div>
+
+          <!-- Thumbnail Section -->
+          <div class="relative mb-4 h-32 rounded-xl overflow-hidden">
+            <div class="absolute inset-0 {{ classItem.gradient }} opacity-90"></div>
+            <!-- Thumbnail SVG Background -->
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="thumbnail-svg" [innerHTML]="getSafeHtml(classItem.thumbnailSvg)"></div>
+            </div>
+            <!-- Thumbnail Pattern Overlay -->
+            <div class="absolute inset-0 thumbnail-pattern"></div>
+            <!-- Play Icon Overlay -->
+            <div
+              class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div
+                class="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
+                <svg class="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z">
+                  </path>
+                </svg>
+              </div>
+            </div>
+            <!-- Class Number Badge -->
+            <div
+              class="absolute top-3 left-3 w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
+              <span class="text-white font-bold text-lg">{{ classItem.id }}</span>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="relative z-10 flex flex-col h-full">
+            <!-- Title -->
+            <div class="mb-3">
+              <h3 class="text-2xl font-playfair font-bold text-foreground mb-1">{{ classItem.title }}</h3>
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                  <path fill-rule="evenodd"
+                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-xs text-foreground/60">Click to watch</span>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p class="text-foreground/80 leading-relaxed mb-4 flex-grow text-2xl">
+              {{ classItem.description }}
+            </p>
+
+            <!-- Watch Button -->
+            <div class="flex items-center justify-between pt-4 border-t border-primary/20">
+              <span class="text-primary font-semibold text-sm group-hover:text-accent transition-colors">
+                Watch Recording
+              </span>
+              <div class="flex items-center gap-2 text-primary group-hover:text-accent transition-colors">
+                <span class="text-xs font-medium">Open</span>
+                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none"
+                  stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6">
+                  </path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Back to Kundali Link -->
+    <div class="text-center">
+      <a routerLink="/kundali"
+        class="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors font-semibold group">
+        <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        <span>Back to Kundali</span>
+      </a>
+    </div>
+  </div>
+</main>

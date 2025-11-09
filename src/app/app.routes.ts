@@ -18,6 +18,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/kundali/kundali.component').then(m => m.KundaliComponent)
   },
   {
+    path: 'class-recordings',
+    loadComponent: () => import('./pages/class-recordings/class-recordings.component').then(m => m.ClassRecordingsComponent)
+  },
+  {
     path: '**',
     loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent)
   }
