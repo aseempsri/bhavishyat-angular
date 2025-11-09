@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { RouterModule, NavigationEnd, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { filter } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
@@ -10,8 +11,32 @@ import { HeaderComponent } from '../../components/header/header.component';
   templateUrl: './class-recordings.component.html',
   styleUrl: './class-recordings.component.css'
 })
-export class ClassRecordingsComponent {
-  constructor(private sanitizer: DomSanitizer) {}
+export class ClassRecordingsComponent implements OnInit {
+  private sanitizer = inject(DomSanitizer);
+  private router = inject(Router);
+  private document = inject(DOCUMENT);
+
+  constructor() {
+    // Scroll to top on navigation
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe(() => {
+        this.scrollToTop();
+      });
+  }
+
+  ngOnInit(): void {
+    // Scroll to top when component initializes
+    this.scrollToTop();
+  }
+
+  private scrollToTop(): void {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  }
 
   getSafeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);

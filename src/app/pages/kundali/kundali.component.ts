@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
@@ -9,7 +10,30 @@ import { HeaderComponent } from '../../components/header/header.component';
   templateUrl: './kundali.component.html',
   styleUrl: './kundali.component.css'
 })
-export class KundaliComponent {
+export class KundaliComponent implements OnInit {
+  private router = inject(Router);
+
+  constructor() {
+    // Scroll to top on navigation
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe(() => {
+        this.scrollToTop();
+      });
+  }
+
+  ngOnInit(): void {
+    // Scroll to top when component initializes
+    this.scrollToTop();
+  }
+
+  private scrollToTop(): void {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  }
   Math = Math; // Make Math available in template
   birthDetails = {
     date: '1st Jan 1992',
