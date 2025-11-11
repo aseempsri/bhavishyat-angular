@@ -46,7 +46,7 @@ export class EscapeRetreatsComponent {
             rating: 4.8,
             images: [
                 'https://ezyescape.com/admin/upload/GULMOHAR%20DRONE.jpg',
-                'https://ezyescape.com/admin/upload/gulmohar.jpg'
+                'https://ezyescape.com/admin/upload/GULMOHAR%20DRONE.jpg'
             ],
             bookingUrl: 'https://ezyescape.com/escape.php'
         },
