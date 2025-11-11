@@ -1,0 +1,426 @@
+<app-header></app-header>
+
+<!-- Hero Section -->
+<section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-20 pb-16">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat remedies-hero-bg" 
+         style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+    </div>
+    
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background/95"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-navy-darker/70 via-transparent to-primary/30"></div>
+    
+    <!-- Decorative Elements -->
+    <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-primary to-accent opacity-10 transform rotate-45 translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="inline-block px-4 py-2 bg-primary/10 rounded-full mb-6">
+                <span class="text-primary font-semibold">Gift Economy & Spiritual Giving</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-playfair font-bold text-foreground mb-6">
+                Remedies & Seva
+            </h1>
+            
+            <p class="text-lg md:text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed mb-6">
+                Transform your spiritual remedies into meaningful action. Support community projects through 
+                Lagan-based remedies and thematic seva programs that create lasting positive impact.
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4 text-sm text-foreground/70">
+                <div class="flex items-center gap-2">
+                    <span class="text-primary">✓</span>
+                    <span>Lagan-Based Remedies</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-primary">✓</span>
+                    <span>Track Your Impact</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-primary">✓</span>
+                    <span>Transparent Giving</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Lagan-Based Remedies Portal Section -->
+<section class="py-20 bg-gradient-to-b from-background to-navy-darker/50">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <div class="inline-block px-4 py-2 bg-primary/10 rounded-full mb-4">
+                    <span class="text-primary font-semibold">Astrological Remedies</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-foreground mb-4">
+                    Lagan-Based Remedies Portal
+                </h2>
+                <p class="text-lg text-foreground/70 max-w-2xl mx-auto">
+                    Discover personalized remedies based on your birth chart (Lagan) and planetary positions. 
+                    Each remedy is connected to meaningful seva programs that create positive karma.
+                </p>
+            </div>
+
+            <!-- Lagan Selection Cards -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                @for (remedy of laganRemedies; track remedy.id) {
+                <div 
+                    (click)="selectLagan(remedy.id)"
+                    class="lagan-card p-6 rounded-xl border-2 border-border bg-card/60 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
+                    [ngClass]="{'border-primary': selectedLagan === remedy.id, 'bg-primary/5': selectedLagan === remedy.id}"
+                >
+                    <div class="text-4xl mb-4">{{ remedy.id === 'mangal' ? '🔥' : remedy.id === 'shani' ? '🪐' : remedy.id === 'rahu' ? '🌙' : '✨' }}</div>
+                    <h3 class="text-xl font-playfair font-bold text-foreground mb-2">{{ remedy.name }}</h3>
+                    <p class="text-sm text-foreground/70 mb-4">{{ remedy.description }}</p>
+                    <div class="flex items-center gap-2 text-primary text-sm font-medium">
+                        <span>Select</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <!-- Selected Lagan Details -->
+            @if (selectedLagan && selectedLaganData) {
+            <div class="bg-card/80 backdrop-blur-sm rounded-2xl p-8 border border-border mb-12">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-playfair font-bold text-foreground mb-3">{{ selectedLaganData.name }}</h3>
+                    <p class="text-foreground/80 mb-4">{{ selectedLaganData.description }}</p>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-foreground mb-3">Benefits:</h4>
+                        <ul class="space-y-2">
+                            @for (benefit of selectedLaganData.benefits; track $index) {
+                            <li class="flex items-start gap-2 text-foreground/70">
+                                <span class="text-primary mt-1">✓</span>
+                                <span>{{ benefit }}</span>
+                            </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-semibold text-foreground mb-3">Suggested Seva Programs:</h4>
+                        <div class="flex flex-wrap gap-3">
+                            @for (programId of selectedLaganData.suggestedPrograms; track programId) {
+                                @for (program of remedyPrograms; track program.id) {
+                                    @if (program.id === programId) {
+                                    <button (click)="selectProgram(programId)" [class.bg-primary]="selectedProgram === programId" [class.text-primary-foreground]="selectedProgram === programId" class="px-4 py-2 rounded-lg border border-border hover:border-primary transition-all">
+                                        {{ program.icon }} {{ program.title }}
+                                    </button>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Thematic Remedy Programs Section -->
+<section class="py-20 bg-gradient-to-b from-navy-darker/50 to-background">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <div class="inline-block px-4 py-2 bg-primary/10 rounded-full mb-4">
+                    <span class="text-primary font-semibold">Thematic Programs</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-foreground mb-4">
+                    Thematic Remedy Programs
+                </h2>
+                <p class="text-lg text-foreground/70 max-w-2xl mx-auto">
+                    Choose from our carefully curated seva programs. Each program creates tangible impact 
+                    while serving as a powerful spiritual remedy.
+                </p>
+            </div>
+
+            <!-- Program Cards -->
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                @for (program of remedyPrograms; track program.id) {
+                <div 
+                    [class.border-primary]="selectedProgram === program.id"
+                    [class.ring-2]="selectedProgram === program.id"
+                    class="program-card group relative rounded-2xl overflow-hidden border-2 border-border bg-card/80 backdrop-blur-sm hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300">
+                    
+                    <!-- Image -->
+                    <div class="relative h-64 overflow-hidden bg-muted">
+                        <img 
+                            [src]="program.image" 
+                            [alt]="program.title"
+                            (error)="handleImageError($event)"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent"></div>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-8xl opacity-50">{{ program.icon }}</div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="text-2xl font-playfair font-bold text-foreground mb-1">{{ program.title }}</h3>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6">
+                        <p class="text-foreground/80 mb-6">{{ program.description }}</p>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">Key Features:</h4>
+                            <ul class="space-y-2">
+                                @for (feature of program.features; track $index) {
+                                <li class="flex items-start gap-2 text-sm text-foreground/70">
+                                    <span class="text-primary mt-1">•</span>
+                                    <span>{{ feature }}</span>
+                                </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="mb-6 p-4 bg-primary/10 rounded-lg">
+                            <p class="text-sm text-foreground/80">
+                                <span class="font-semibold text-primary">Impact:</span> {{ program.impact }}
+                            </p>
+                        </div>
+
+                        <button (click)="selectProgram(program.id)" [class.bg-primary]="selectedProgram === program.id" [class.text-primary-foreground]="selectedProgram === program.id" class="w-full px-6 py-3 rounded-lg border-2 border-primary font-semibold hover:bg-primary hover:text-primary-foreground transition-all">
+                            <span>{{ selectedProgram === program.id ? 'Selected ✓' : 'Select This Program' }}</span>
+                        </button>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Donation Form Section -->
+@if (selectedProgram) {
+<section class="py-20 bg-gradient-to-b from-background to-navy-darker/30">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-foreground mb-4">
+                    Complete Your Seva
+                </h2>
+                <p class="text-lg text-foreground/70">
+                    @if (selectedProgramData) {
+                    Support: <span class="font-semibold text-primary">{{ selectedProgramData.title }}</span>
+                    }
+                </p>
+            </div>
+
+            <div class="bg-card/80 backdrop-blur-sm rounded-2xl p-8 border border-border shadow-xl">
+                <!-- Donation Amount Selection -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-foreground mb-4">Select Donation Amount</h3>
+                    @if (selectedProgramData) {
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
+                        @for (amount of selectedProgramData.donationAmounts; track amount) {
+                        <button (click)="selectDonationAmount(amount)" [class.bg-primary]="donationAmount === amount" [class.text-primary-foreground]="donationAmount === amount" [class.border-primary]="donationAmount === amount" class="px-4 py-3 rounded-lg border-2 border-border font-semibold hover:border-primary transition-all">
+                            ₹{{ amount }}
+                        </button>
+                        }
+                    </div>
+                    
+                    <div class="mt-4">
+                        <button 
+                            (click)="toggleCustomAmount()"
+                            class="w-full px-4 py-3 rounded-lg border-2 border-dashed border-border hover:border-primary transition-all text-foreground/70 hover:text-foreground"
+                            [ngClass]="{'bg-primary/10': showCustomAmount}"
+                        >
+                            <span>{{ showCustomAmount ? 'Hide Custom Amount' : 'Enter Custom Amount' }}</span>
+                        </button>
+                        
+                        @if (showCustomAmount) {
+                            <div class="mt-4">
+                                <input
+                                    type="number"
+                                    [(ngModel)]="customAmount"
+                                    placeholder="Enter amount in ₹"
+                                    min="100"
+                                    class="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:outline-none">
+                            </div>
+                        }
+                    </div>
+                    }
+                </div>
+
+                <!-- Donor Information -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-foreground mb-4">Your Information</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-foreground/70 mb-2">Full Name *</label>
+                            <input
+                                type="text"
+                                [(ngModel)]="donorName"
+                                placeholder="Enter your name"
+                                required
+                                class="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-foreground/70 mb-2">Email *</label>
+                            <input
+                                type="email"
+                                [(ngModel)]="donorEmail"
+                                placeholder="your.email@example.com"
+                                required
+                                class="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-foreground/70 mb-2">Phone Number</label>
+                            <input
+                                type="tel"
+                                [(ngModel)]="donorPhone"
+                                placeholder="+91 1234567890"
+                                class="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-foreground/70 mb-2">Selected Lagan</label>
+                            <input
+                                type="text"
+                                [value]="getSelectedLaganRemedy()?.name || 'Not selected'"
+                                disabled
+                                class="w-full px-4 py-3 rounded-lg border-2 border-border bg-muted text-foreground/60">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-foreground/70 mb-2">Message (Optional)</label>
+                        <textarea
+                            [(ngModel)]="donorMessage"
+                            placeholder="Any special instructions or prayers..."
+                            rows="4"
+                            class="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:outline-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="mb-8 p-6 bg-primary/10 rounded-lg border border-primary/20">
+                    <h3 class="text-lg font-semibold text-foreground mb-4">Donation Summary</h3>
+                    <div class="space-y-2 text-foreground/80">
+                        <div class="flex justify-between">
+                            <span>Program:</span>
+                            <span class="font-semibold">{{ selectedProgramData ? selectedProgramData.title : 'Not selected' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Amount:</span>
+                            <span class="font-semibold text-primary text-xl">
+                                ₹{{ showCustomAmount && customAmount > 0 ? customAmount : donationAmount }}
+                            </span>
+                        </div>
+                        @if (selectedLagan && selectedLaganData) {
+                        <div class="flex justify-between">
+                            <span>Lagan Remedy:</span>
+                            <span class="font-semibold">{{ selectedLaganData.name }}</span>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button (click)="submitDonation()" class="w-full px-8 py-4 rounded-lg bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-lg hover:shadow-lg hover:shadow-primary/30 transition-all duration-300">
+                    Proceed to Payment
+                </button>
+
+                <p class="text-xs text-foreground/50 text-center mt-4">
+                    Your donation is secure and will be used transparently for the selected program.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+}
+
+<!-- Impact Stories Section -->
+<section class="py-20 bg-gradient-to-b from-navy-darker/30 to-background">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-foreground mb-4">
+                    Impact Stories
+                </h2>
+                <p class="text-lg text-foreground/70 max-w-2xl mx-auto">
+                    See how your seva creates meaningful change in communities
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-card/60 backdrop-blur-sm rounded-xl p-6 border border-border">
+                    <div class="text-4xl mb-4">💧</div>
+                    <h3 class="text-xl font-semibold text-foreground mb-2">Water Restoration</h3>
+                    <p class="text-foreground/70 mb-4">15+ Naulas restored, serving 500+ families with clean water access.</p>
+                    <div class="text-primary font-semibold">Ongoing Impact</div>
+                </div>
+                
+                <div class="bg-card/60 backdrop-blur-sm rounded-xl p-6 border border-border">
+                    <div class="text-4xl mb-4">🌳</div>
+                    <h3 class="text-xl font-semibold text-foreground mb-2">Tree Plantation</h3>
+                    <p class="text-foreground/70 mb-4">2,500+ trees planted with geo-tagging, creating green corridors.</p>
+                    <div class="text-primary font-semibold">Monthly Updates</div>
+                </div>
+                
+                <div class="bg-card/60 backdrop-blur-sm rounded-xl p-6 border border-border">
+                    <div class="text-4xl mb-4">🕉️</div>
+                    <h3 class="text-xl font-semibold text-foreground mb-2">Temple Restoration</h3>
+                    <p class="text-foreground/70 mb-4">8 ancient temples restored, preserving cultural heritage.</p>
+                    <div class="text-primary font-semibold">Heritage Preserved</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-20 bg-gradient-to-b from-background to-navy-darker/50">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-playfair font-bold text-foreground mb-4">
+                    How It Works
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-primary">1</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-foreground mb-2">Choose Your Lagan</h3>
+                    <p class="text-sm text-foreground/70">Select remedies based on your birth chart</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-primary">2</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-foreground mb-2">Select Program</h3>
+                    <p class="text-sm text-foreground/70">Choose a seva program that resonates</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-primary">3</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-foreground mb-2">Make Donation</h3>
+                    <p class="text-sm text-foreground/70">Contribute securely through our platform</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-primary">4</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-foreground mb-2">Track Impact</h3>
+                    <p class="text-sm text-foreground/70">Receive updates on your contribution's impact</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

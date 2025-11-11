@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Shinrin Yoku', href: '/shinrin-yoku', isRoute: true },
     { label: 'Escape Retreats', href: '/escape-retreats', isRoute: true },
     { label: 'Services', href: '#services', isRoute: false },
-    { label: 'Pages', href: '#', isRoute: false },
+    { label: 'Remedies & Seva', href: '/remedies-seva', isRoute: true },
     { label: 'Blogs', href: '#', isRoute: false },
     { label: 'Contact Us', href: '#contact', isRoute: false },
   ];

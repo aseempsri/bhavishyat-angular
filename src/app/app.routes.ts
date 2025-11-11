@@ -22,6 +22,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/class-recordings/class-recordings.component').then(m => m.ClassRecordingsComponent)
   },
   {
+    path: 'remedies-seva',
+    loadComponent: () => import('./pages/remedies-seva/remedies-seva.component').then(m => m.RemediesSevaComponent)
+  },
+  {
     path: '**',
     loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent)
   }

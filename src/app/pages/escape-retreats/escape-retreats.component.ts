@@ -31,16 +31,30 @@ export class EscapeRetreatsComponent {
             pricePerNight: 2281,
             rating: 4.8,
             images: [
-                'https://ezyescape.com/admin/upload/GULMOHAR%20DRONE.jpg',
+                'https://ezyescape.com/admin/upload/PHOTO-2023-09-09-00-02-55%202.jpg',
                 'https://ezyescape.com/admin/upload/175b6073-3aab-459e-8663-50785a20ab65.webp'
             ],
             bookingUrl: 'https://ezyescape.com/escape.php'
         },
         {
             name: 'Gulmohar Homes',
-            location: 'Himachal Pradesh',
+            location: 'Mukteshwar',
             adults: 8,
             rooms: 2,
+            priceOriginal: 3000,
+            pricePerNight: 2500,
+            rating: 4.8,
+            images: [
+                'https://ezyescape.com/admin/upload/GULMOHAR%20DRONE.jpg',
+                'https://ezyescape.com/admin/upload/gulmohar.jpg'
+            ],
+            bookingUrl: 'https://ezyescape.com/escape.php'
+        },
+        {
+            name: 'Manav Hill Resort',
+            location: 'Himachal Pradesh',
+            adults: 27,
+            rooms: 9,
             priceOriginal: 3000,
             pricePerNight: 2500,
             rating: 4.8,
@@ -51,12 +65,12 @@ export class EscapeRetreatsComponent {
             bookingUrl: 'https://ezyescape.com/escape.php'
         },
         {
-            name: 'Manav Hill Resort',
+            name: 'Mer Homestay',
             location: 'Mukteshwar',
-            adults: 27,
-            rooms: 9,
+            adults: 8,
+            rooms: 2,
             priceOriginal: 3000,
-            pricePerNight: 2500,
+            pricePerNight: 3000,
             rating: 4.8,
             images: [
                 'https://ezyescape.com/admin/upload/anand%20out.jpg',
@@ -65,29 +79,16 @@ export class EscapeRetreatsComponent {
             bookingUrl: 'https://ezyescape.com/escape.php'
         },
         {
-            name: 'Mer Homestay',
-            location: 'Varanasi',
-            adults: 8,
-            rooms: 2,
-            priceOriginal: 3000,
-            pricePerNight: 3000,
-            rating: 4.8,
-            images: [
-                'https://ezyescape.com/admin/upload/1748510139_im.jpg',
-                'https://ezyescape.com/admin/upload/1748510139_im3.jpg'
-            ],
-            bookingUrl: 'https://ezyescape.com/escape.php'
-        },
-        {
             name: 'Ram Niwas',
-            location: '—',
+            location: 'Varanasi',
             adults: 18,
             rooms: 7,
             priceOriginal: 3000,
             pricePerNight: 1800,
             rating: 4.8,
             images: [
-                'https://ezyescape.com/admin/upload/PHOTO-2023-09-09-00-02-55%202.jpg'
+                'https://ezyescape.com/admin/upload/1748510139_im.jpg',
+                'https://ezyescape.com/admin/upload/1748510139_im3.jpg'
             ],
             bookingUrl: 'https://ezyescape.com/escape.php'
         }

@@ -1,0 +1,75 @@
+.remedies-hero-bg {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: subtle-fade-in 1.5s ease-in;
+}
+
+.lagan-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lagan-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px hsl(var(--primary) / 0.15);
+}
+
+.program-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.program-card:hover {
+    transform: translateY(-4px);
+}
+
+.program-card img {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.program-card:hover img {
+    transform: scale(1.1);
+}
+
+@keyframes subtle-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lagan-card,
+    .program-card,
+    .program-card img {
+        transition: none;
+        transform: none;
+    }
+    
+    .remedies-hero-bg {
+        animation: none;
+    }
+}
+
+/* Form Input Focus Styles */
+input:focus,
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+}
+
+/* Button Hover Effects */
+button {
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
