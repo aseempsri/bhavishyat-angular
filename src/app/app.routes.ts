@@ -26,6 +26,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/remedies-seva/remedies-seva.component').then(m => m.RemediesSevaComponent)
   },
   {
+    path: 'aarohanam',
+    loadComponent: () => import('./pages/aarohanam/aarohanam.component').then(m => m.AarohanamComponent)
+  },
+  {
     path: '**',
     loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent)
   }
