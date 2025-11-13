@@ -198,4 +198,13 @@
       </div>
     </div>
   }
+
+  <!-- Birth Details Modal -->
+  @if (showBirthDetailsModal) {
+    <app-birth-details-modal
+      [userName]="loggedInName"
+      (close)="onBirthDetailsClose()"
+      (submit)="onBirthDetailsSubmit($event)">
+    </app-birth-details-modal>
+  }
 </header>

@@ -1,10 +1,23 @@
 /* Input component styles */
 :host {
-  display: block;
-  width: 100%;
+  display: block !important;
+  width: 100% !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 input {
-  width: 100%;
+  width: 100% !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+input[type="date"],
+input[type="time"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
 }
 

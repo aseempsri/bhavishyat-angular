@@ -1,0 +1,95 @@
+<div
+  class="modal-overlay fixed inset-0 z-[200] flex items-start justify-center bg-black/70 backdrop-blur-xl p-4 pt-[10px]"
+  (click)="onBackdropClick($event)">
+  <div
+    class="modal-content bg-[#1A1E28] rounded-2xl p-8 border border-[#252936] shadow-2xl w-full max-w-[28.8rem] max-h-[90vh] overflow-y-auto flex flex-col"
+    (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center mb-6 flex-shrink-0">
+      <h2 class="text-3xl font-playfair font-bold text-[#F8F8F8]">
+        Hi <span class="glowing-name">{{ userName }}</span>
+      </h2>
+      <button (click)="onClose()"
+        class="text-[#A0A0A0] hover:text-[#F8F8F8] transition-colors p-2 hover:bg-[#252936] rounded-lg flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <p class="text-[#A0A0A0] mb-6 text-sm leading-relaxed flex-shrink-0">
+      Please enter your birth details to calculate your personalized kundali
+    </p>
+
+    <form (ngSubmit)="onSubmit()" class="space-y-5 flex-1 flex flex-col">
+      <div class="w-full date-of-birth-field">
+        <label class="block text-[#F8F8F8] mb-3 font-semibold text-base">Date of Birth</label>
+        <div class="relative">
+          <input type="date" [(ngModel)]="dateOfBirth" name="dateOfBirth" [required]="true" [max]="maxDate"
+            class="date-picker-input w-full h-12 pl-4 pr-12 bg-[#1A1E28] border border-[#3A3F4D] text-[#F8F8F8] rounded-lg focus:outline-none focus:border-[#FFC163] focus:ring-2 focus:ring-[#FFC163]/20 text-base" />
+          <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="#FFC163" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full">
+        <label class="block text-[#F8F8F8] mb-3 font-semibold text-base">Time of Birth</label>
+        <div class="relative">
+          <input type="time" [(ngModel)]="timeOfBirth" name="timeOfBirth" [required]="true"
+            class="time-picker-input w-full h-12 pl-4 pr-12 bg-[#1A1E28] border border-[#3A3F4D] text-[#F8F8F8] rounded-lg focus:outline-none focus:border-[#FFC163] focus:ring-2 focus:ring-[#FFC163]/20 text-base" />
+          <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="#FFC163" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative w-full">
+        <label class="block text-[#F8F8F8] mb-3 font-semibold text-base">Place of Birth</label>
+        <app-input type="text" [(ngModel)]="placeOfBirth" name="placeOfBirth" (input)="onPlaceInput($event)"
+          [required]="true" placeholder="Start typing city name..."
+          className="bg-[#1A1E28] border border-[#3A3F4D] text-[#F8F8F8] placeholder:text-[#A0A0A0] focus:border-[#FFC163] rounded-lg focus:outline-none focus:ring-0 h-12 text-base w-full pl-4" />
+
+        @if (showSuggestions && placeSuggestions.length > 0) {
+        <div
+          class="absolute z-10 w-full mt-1 bg-[#252936] border border-[#3A3F4D] rounded-lg shadow-xl max-h-60 overflow-y-auto">
+          @for (suggestion of placeSuggestions; track suggestion) {
+          <button type="button" (click)="selectPlace(suggestion)"
+            class="w-full text-left px-4 py-3 text-[#F8F8F8] hover:bg-[#3A3F4D] transition-colors border-b border-[#3A3F4D] last:border-b-0">
+            {{ suggestion }}
+          </button>
+          }
+        </div>
+        }
+      </div>
+
+      @if (error) {
+      <div class="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
+        <p class="text-red-400 text-sm">{{ error }}</p>
+      </div>
+      }
+
+      <div class="mt-6 flex gap-4 flex-shrink-0">
+        <app-button type="button" (click)="onClose()" variant="outline"
+          className="flex-1 border-[#3A3F4D] text-[#F8F8F8] hover:bg-[#3A3F4D] text-base font-semibold py-2.5">
+          Cancel
+        </app-button>
+        <app-button type="submit"
+          className="flex-1 bg-gradient-to-r from-[#FFC163] to-[#FF9900] hover:opacity-90 text-[#1A1E28] font-bold text-base py-2.5">
+          Calculate Kundali
+        </app-button>
+      </div>
+    </form>
+  </div>
+</div>

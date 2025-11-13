@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header.component';
+import { AstrologyService, KundaliData } from '../../services/astrology.service';
 
 @Component({
   selector: 'app-kundali',
@@ -12,6 +13,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 })
 export class KundaliComponent implements OnInit {
   private router = inject(Router);
+  private astrologyService = inject(AstrologyService);
 
   constructor() {
     // Scroll to top on navigation
@@ -27,6 +29,26 @@ export class KundaliComponent implements OnInit {
   ngOnInit(): void {
     // Scroll to top when component initializes
     this.scrollToTop();
+    // Load kundali data from localStorage
+    this.loadKundaliData();
+  }
+
+  private loadKundaliData(): void {
+    const savedKundaliData = localStorage.getItem('kundaliData');
+    if (savedKundaliData) {
+      try {
+        const kundaliData: KundaliData = JSON.parse(savedKundaliData);
+        this.birthDetails = kundaliData.birthDetails;
+        this.houses = kundaliData.houses;
+        this.planets = kundaliData.planets;
+        this.varshphalData = kundaliData.varshphal;
+        this.predictions2025 = kundaliData.predictions2025;
+        this.predictions2026 = kundaliData.predictions2026;
+        this.cosmicJourneySummary = kundaliData.cosmicJourneySummary;
+      } catch (error) {
+        console.error('Error loading kundali data:', error);
+      }
+    }
   }
 
   private scrollToTop(): void {
@@ -36,16 +58,24 @@ export class KundaliComponent implements OnInit {
   }
   Math = Math; // Make Math available in template
   birthDetails = {
-    date: '1st Jan 1992',
-    place: 'Gorakhpur, Uttar Pradesh',
-    time: '11:55 PM',
-    lagna: 'Scorpio',
-    rashi: 'Taurus',
-    nakshatra: 'Rohini',
-    nakshatraLord: 'Moon'
+    date: '',
+    place: '',
+    time: '',
+    lagna: '',
+    rashi: '',
+    nakshatra: '',
+    nakshatraLord: ''
   };
+  cosmicJourneySummary: string = '';
 
-  houses = [
+  houses: Array<{
+    number: number;
+    name: string;
+    sign: string;
+    angle: number;
+    signSymbol: string;
+    description: string;
+  }> = [
     { number: 1, name: 'Lagna', sign: 'Scorpio', angle: 0, signSymbol: '♏', description: 'Self, personality, physical appearance. Strong placement indicates leadership qualities and determination. Mars as lord gives courage and determination.' },
     { number: 2, name: 'Dhana', sign: 'Sagittarius', angle: 30, signSymbol: '♐', description: 'Wealth, family, speech. Indicates financial stability and family values. Jupiter as lord brings wisdom and prosperity.' },
     { number: 3, name: 'Sahaja', sign: 'Capricorn', angle: 60, signSymbol: '♑', description: 'Siblings, courage, communication. Shows relationship with siblings and communication skills. Saturn as lord brings discipline and patience.' },
@@ -60,7 +90,15 @@ export class KundaliComponent implements OnInit {
     { number: 12, name: 'Vyaya', sign: 'Libra', angle: 330, signSymbol: '♎', description: 'Expenses, losses, spirituality. Indicates expenditures and spiritual pursuits. Venus as lord brings artistic and spiritual inclinations.' }
   ];
 
-  planets = [
+  planets: Array<{
+    name: string;
+    symbol: string;
+    house: number;
+    sign: string;
+    degree: string;
+    color: string;
+    description: string;
+  }> = [
     { name: 'Sun', symbol: '☉', house: 10, sign: 'Leo', degree: '15°23\'', color: '#FFD700', description: 'Represents soul, ego, authority, father, government. Strong placement indicates leadership qualities.' },
     { name: 'Moon', symbol: '☽', house: 9, sign: 'Cancer', degree: '12°45\'', color: '#C0C0C0', description: 'Represents mind, emotions, mother, public. Influences mental state and emotional well-being.' },
     { name: 'Mars', symbol: '♂', house: 1, sign: 'Scorpio', degree: '8°12\'', color: '#FF4500', description: 'Represents energy, courage, aggression, younger siblings. Gives determination and fighting spirit.' },
@@ -72,7 +110,13 @@ export class KundaliComponent implements OnInit {
     { name: 'Ketu', symbol: '☋', house: 11, sign: 'Virgo', degree: '14°29\'', color: '#8B4513', description: 'Represents spirituality, detachment, past life karma. Brings spiritual awakening and intuition.' }
   ];
 
-  varshphalData = [
+  varshphalData: Array<{
+    icon: string;
+    title: string;
+    description: string;
+    planet: string;
+    period: string;
+  }> = [
     {
       icon: '⭐',
       title: 'Career & Profession',
@@ -117,7 +161,10 @@ export class KundaliComponent implements OnInit {
     }
   ];
 
-  predictions2025 = [
+  predictions2025: Array<{
+    title: string;
+    description: string;
+  }> = [
     {
       title: 'Career Transformation',
       description: 'The first half of 2025 brings a major shift in your professional life. Jupiter\'s favorable position in the 10th house indicates promotions, recognition, and new responsibilities. You may take on leadership roles or start a new venture. Mid-year (June-July) is particularly auspicious for career moves.'
@@ -144,7 +191,10 @@ export class KundaliComponent implements OnInit {
     }
   ];
 
-  predictions2026 = [
+  predictions2026: Array<{
+    title: string;
+    description: string;
+  }> = [
     {
       title: 'Professional Excellence',
       description: '2026 brings even greater professional success. Your hard work from previous years pays off. You may achieve a significant milestone or recognition in your field. International opportunities or collaborations may arise. The year favors entrepreneurship and innovation.'

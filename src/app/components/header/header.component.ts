@@ -5,10 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { filter, take } from 'rxjs';
 import { ButtonComponent } from '../../ui/button/button.component';
 import { InputComponent } from '../../ui/input/input.component';
+import { BirthDetailsModalComponent } from '../birth-details-modal/birth-details-modal.component';
+import { AstrologyService } from '../../services/astrology.service';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterModule, FormsModule, ButtonComponent, InputComponent],
+  imports: [CommonModule, RouterModule, FormsModule, ButtonComponent, InputComponent, BirthDetailsModalComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -16,6 +18,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private document = inject(DOCUMENT);
+  private astrologyService = inject(AstrologyService);
   isMenuOpen = false;
   isScrolled = false;
   showLoginModal = false;
@@ -25,6 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   loginError: string = '';
   isLoggedIn: boolean = false;
   loggedInName: string = '';
+  showBirthDetailsModal: boolean = false;
 
   navItems = [
     { label: 'About Us', href: '#about', isRoute: false },
@@ -211,10 +215,38 @@ export class HeaderComponent implements OnInit, OnDestroy {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('loggedInName', this.name);
       this.closeLoginModal();
-      this.router.navigate(['/kundali']);
+      // Show birth details modal instead of navigating directly
+      this.showBirthDetailsModal = true;
     } else {
       this.loginError = 'Invalid name or password';
     }
+  }
+
+  onBirthDetailsClose(): void {
+    this.showBirthDetailsModal = false;
+    // Logout and return to home screen
+    this.logout();
+    this.router.navigate(['/']);
+  }
+
+  onBirthDetailsSubmit(birthData: { dateOfBirth: string; timeOfBirth: string; placeOfBirth: string }): void {
+    // Save birth details to localStorage
+    localStorage.setItem('birthDetails', JSON.stringify({
+      name: this.loggedInName,
+      ...birthData
+    }));
+
+    // Calculate kundali and save
+    this.astrologyService.calculateKundali({
+      name: this.loggedInName,
+      dateOfBirth: birthData.dateOfBirth,
+      timeOfBirth: birthData.timeOfBirth,
+      placeOfBirth: birthData.placeOfBirth
+    }).subscribe(kundaliData => {
+      localStorage.setItem('kundaliData', JSON.stringify(kundaliData));
+      this.showBirthDetailsModal = false;
+      this.router.navigate(['/kundali']);
+    });
   }
 
   logout(): void {
@@ -223,6 +255,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Clear localStorage
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('loggedInName');
+    localStorage.removeItem('birthDetails');
+    localStorage.removeItem('kundaliData');
     if (this.router.url === '/kundali') {
       this.router.navigate(['/']);
     }
