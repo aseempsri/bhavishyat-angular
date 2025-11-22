@@ -22,6 +22,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/class-recordings/class-recordings.component').then(m => m.ClassRecordingsComponent)
   },
   {
+    path: 'house-signification',
+    loadComponent: () => import('./pages/house-signification/house-signification.component').then(m => m.HouseSignificationComponent)
+  },
+  {
     path: 'remedies-seva',
     loadComponent: () => import('./pages/remedies-seva/remedies-seva.component').then(m => m.RemediesSevaComponent)
   },

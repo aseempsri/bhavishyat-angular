@@ -1,0 +1,537 @@
+/* Animated Cosmic Background */
+.cosmic-background {
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255, 193, 99, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 153, 0, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.05) 0%, transparent 60%),
+    radial-gradient(circle at 30% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 50%);
+  overflow: hidden;
+  position: relative;
+}
+
+.cosmic-background::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 193, 99, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 70%, rgba(255, 153, 0, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 50% 50%, rgba(255, 193, 99, 0.05) 0%, transparent 60%);
+  animation: cosmic-drift 120s ease-in-out infinite;
+}
+
+.cosmic-background::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 153, 0, 0.06) 0%, transparent 50%),
+              radial-gradient(circle at 20% 80%, rgba(255, 193, 99, 0.04) 0%, transparent 50%);
+  animation: cosmic-drift-reverse 150s ease-in-out infinite;
+}
+
+@keyframes cosmic-drift {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translate(5%, 3%) rotate(1deg);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(3%, 5%) rotate(0deg);
+    opacity: 0.35;
+  }
+  75% {
+    transform: translate(-2%, 2%) rotate(-1deg);
+    opacity: 0.4;
+  }
+}
+
+@keyframes cosmic-drift-reverse {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.25;
+  }
+  25% {
+    transform: translate(-3%, -2%) rotate(-1deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(-2%, -4%) rotate(0deg);
+    opacity: 0.28;
+  }
+  75% {
+    transform: translate(2%, -1%) rotate(1deg);
+    opacity: 0.3;
+  }
+}
+
+.twinkling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  animation: twinkle 8s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0% {
+    box-shadow: 0 0 100px rgba(255, 193, 99, 0.05);
+  }
+  100% {
+    box-shadow: 0 0 200px rgba(255, 153, 0, 0.1);
+  }
+}
+
+.cosmic-glow {
+  background: radial-gradient(circle, rgba(255, 193, 99, 0.3) 0%, rgba(255, 153, 0, 0.1) 50%, transparent 100%);
+  animation: pulse-glow 12s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.3;
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+/* Vedic Kundali Chart Container */
+.kundali-chart-container {
+  position: relative;
+  min-height: 600px;
+  padding: 1rem;
+}
+
+.kundali-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.house-area {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.house-area:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+  transform-origin: center;
+}
+
+.house-area text {
+  pointer-events: none;
+  user-select: none;
+}
+
+.kundali-overlays {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.house-overlay-btn {
+  position: absolute;
+  border: 2px solid;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  pointer-events: all;
+  border-radius: 4px;
+  min-width: 50px;
+  min-height: 50px;
+  padding: 4px;
+}
+
+.house-overlay-btn:hover {
+  transform: scale(1.1);
+  z-index: 30;
+  border-width: 3px;
+}
+
+.house-overlay-btn.active {
+  transform: scale(1.15);
+  z-index: 30;
+  border-width: 3px;
+}
+
+.overlay-house-number {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.9);
+}
+
+.overlay-house-icon {
+  font-size: 20px;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
+}
+
+/* Position overlays based on traditional North Indian chart layout */
+.house-overlay-btn[data-house="1"] {
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.house-overlay-btn[data-house="2"] {
+  top: 5%;
+  left: 10%;
+}
+
+.house-overlay-btn[data-house="3"] {
+  top: 5%;
+  left: 10%;
+  margin-top: 15%;
+}
+
+.house-overlay-btn[data-house="4"] {
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+}
+
+.house-overlay-btn[data-house="5"] {
+  bottom: 15%;
+  left: 10%;
+}
+
+.house-overlay-btn[data-house="6"] {
+  bottom: 5%;
+  left: 10%;
+}
+
+.house-overlay-btn[data-house="7"] {
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.house-overlay-btn[data-house="8"] {
+  bottom: 5%;
+  right: 10%;
+}
+
+.house-overlay-btn[data-house="9"] {
+  bottom: 15%;
+  right: 10%;
+}
+
+.house-overlay-btn[data-house="10"] {
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+}
+
+.house-overlay-btn[data-house="11"] {
+  top: 15%;
+  right: 10%;
+}
+
+.house-overlay-btn[data-house="12"] {
+  top: 5%;
+  right: 10%;
+}
+
+/* Vedic House Styles */
+.kundali-house {
+  position: relative;
+  border: 2px solid;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.kundali-house::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+.kundali-house:hover {
+  transform: scale(1.05);
+  z-index: 30;
+  border-width: 3px;
+}
+
+.kundali-house.active {
+  transform: scale(1.08);
+  z-index: 30;
+  border-width: 3px;
+}
+
+/* Traditional North Indian Vedic Chart Layout */
+/* House 1 - Top Center (Diamond) */
+.house-1 {
+  grid-column: 2;
+  grid-row: 1;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+/* Top-Left Corner: Houses 2 and 3 */
+.house-2 {
+  grid-column: 1;
+  grid-row: 1;
+  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+}
+
+.house-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 33.33%;
+  height: 33.33%;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  z-index: 5;
+}
+
+/* House 4 - Left Center (Diamond) */
+.house-4 {
+  grid-column: 1;
+  grid-row: 2;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+/* Bottom-Left Corner: Houses 5 and 6 */
+.house-5 {
+  grid-column: 1;
+  grid-row: 3;
+  clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+}
+
+.house-6 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 33.33%;
+  height: 33.33%;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  z-index: 5;
+}
+
+/* House 7 - Bottom Center (Diamond) */
+.house-7 {
+  grid-column: 2;
+  grid-row: 3;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+/* Bottom-Right Corner: Houses 8 and 9 */
+.house-8 {
+  grid-column: 3;
+  grid-row: 3;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.house-9 {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 33.33%;
+  height: 33.33%;
+  clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+  z-index: 5;
+}
+
+/* House 10 - Right Center (Diamond) */
+.house-10 {
+  grid-column: 3;
+  grid-row: 2;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+/* Top-Right Corner: Houses 11 and 12 */
+.house-11 {
+  grid-column: 3;
+  grid-row: 1;
+  clip-path: polygon(50% 0%, 0% 0%, 0% 100%);
+}
+
+.house-12 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 33.33%;
+  height: 33.33%;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  z-index: 5;
+}
+
+/* House Content */
+.house-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0.5rem;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.house-number {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+.house-icon-large {
+  font-size: 32px;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+}
+
+/* House Detail Card */
+.house-detail-card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* House Card Grid */
+.house-card {
+  cursor: pointer;
+}
+
+.house-card:hover {
+  transform: translateY(-4px);
+}
+
+.house-card.active {
+  transform: translateY(-4px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cosmic-glow {
+    width: 200px;
+    height: 200px;
+  }
+
+  .kundali-chart-container {
+    min-height: 400px;
+    padding: 0.5rem;
+  }
+
+  .house-number {
+    font-size: 12px;
+  }
+
+  .house-icon-large {
+    font-size: 24px;
+  }
+
+  .center-content {
+    width: 80px;
+    height: 80px;
+  }
+
+  .center-content .text-4xl {
+    font-size: 1.5rem;
+  }
+
+  .center-content .text-xs {
+    font-size: 0.625rem;
+  }
+}
+
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Block Placement Animation */
+.origami-chart {
+  transform: scale(0.7);
+}
+
+/* Staggered animation for individual house blocks - simple placement */
+.origami-chart svg .house-area {
+  transform-origin: center center;
+  animation: blockPlace 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+}
+
+.origami-chart svg .house-area:nth-of-type(1) { animation-delay: 0.05s; }
+.origami-chart svg .house-area:nth-of-type(2) { animation-delay: 0.1s; }
+.origami-chart svg .house-area:nth-of-type(3) { animation-delay: 0.15s; }
+.origami-chart svg .house-area:nth-of-type(4) { animation-delay: 0.2s; }
+.origami-chart svg .house-area:nth-of-type(5) { animation-delay: 0.25s; }
+.origami-chart svg .house-area:nth-of-type(6) { animation-delay: 0.3s; }
+.origami-chart svg .house-area:nth-of-type(7) { animation-delay: 0.35s; }
+.origami-chart svg .house-area:nth-of-type(8) { animation-delay: 0.4s; }
+.origami-chart svg .house-area:nth-of-type(9) { animation-delay: 0.45s; }
+.origami-chart svg .house-area:nth-of-type(10) { animation-delay: 0.5s; }
+.origami-chart svg .house-area:nth-of-type(11) { animation-delay: 0.55s; }
+.origami-chart svg .house-area:nth-of-type(12) { animation-delay: 0.6s; }
+
+@keyframes blockPlace {
+  0% {
+    transform: scale(0) translateY(-20px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1) translateY(0px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+}
+
