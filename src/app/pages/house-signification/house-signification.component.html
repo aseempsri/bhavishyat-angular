@@ -41,19 +41,21 @@
           style="max-width: 100%; transform: scale(0.84); transform-origin: center;">
           <!-- North Indian Vedic Chart Design with Clickable Overlay -->
           <div class="relative w-full flex items-center justify-center overflow-hidden rounded-2xl chart-wrapper">
-            <img id="chart-image" src="/assets/vedic-chart2.png" alt="North Indian Vedic Chart"
+            @if (!imageError) {
+            <img id="chart-image" src="assets/vedic-chart2.png" alt="North Indian Vedic Chart"
               class="w-full h-auto object-contain"
               style="filter: drop-shadow(0 0 20px rgba(255, 193, 99, 0.3)); display: block;"
-              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-
+              (error)="onImageError($event)" (load)="onImageLoad($event)">
+            } @else {
             <!-- Fallback if image not found -->
             <div
-              class="hidden w-full h-full items-center justify-center bg-gradient-to-br from-orange-900/20 to-amber-900/20 rounded-lg border-2 border-primary/30 backdrop-blur-sm">
+              class="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-900/20 to-amber-900/20 rounded-lg border-2 border-primary/30 backdrop-blur-sm">
               <div class="text-center p-8">
                 <p class="text-foreground/70 mb-2">Image not found</p>
                 <p class="text-sm text-foreground/50">Please add vedic-chart.png to src/assets/</p>
               </div>
             </div>
+            }
 
             <!-- SVG Overlay for Clickable Houses -->
             <svg class="chart-overlay" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet"

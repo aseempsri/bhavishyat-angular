@@ -25,6 +25,7 @@ interface House {
 export class HouseSignificationComponent implements OnInit {
   selectedHouse: House | null = null;
   isExpanded = false;
+  imageError = false;
 
   houses: House[] = [];
   housePositions: Map<number, { x: number; y: number }> = new Map();
@@ -301,6 +302,14 @@ export class HouseSignificationComponent implements OnInit {
 
   getPosition(houseNumber: number): { x: number; y: number } {
     return this.housePositions.get(houseNumber) || { x: 50, y: 50 };
+  }
+
+  onImageError(event: Event): void {
+    this.imageError = true;
+  }
+
+  onImageLoad(event: Event): void {
+    this.imageError = false;
   }
 }
 
