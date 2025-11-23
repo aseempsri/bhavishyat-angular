@@ -115,14 +115,7 @@ svg circle:hover {
   filter: drop-shadow(0 0 8px currentColor);
 }
 
-/* Card Hover Effects */
-.bg-\[#1A1E28\] {
-  transition: all 0.3s ease;
-}
-
-.bg-\[#1A1E28\]:hover {
-  transform: translateY(-2px);
-}
+/* Card Hover Effects - Removed invalid CSS class definitions */
 
 /* Scroll Animations */
 @keyframes fadeInUp {
