@@ -34,137 +34,127 @@
     </div>
 
     <!-- Interactive House Wheel and Details Side by Side -->
-    <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-16 items-start">
+    <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-16 items-center">
       <!-- Vedic Kundali Chart -->
-      <div class="relative order-2 lg:order-1">
+      <div class="relative order-2 lg:order-1 flex items-center justify-center">
         <div class="kundali-chart-container relative mx-auto"
-          style="max-width: 100%; aspect-ratio: 1; transform: scale(0.7); transform-origin: center;">
-          <!-- North Indian Vedic Chart Design -->
-          <svg class="kundali-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-            <!-- Background -->
-            <rect width="600" height="600" fill="rgba(10, 10, 15, 0.95)" rx="8" ry="8" stroke="rgba(255, 193, 99, 0.8)"
-              stroke-width="3" />
+          style="max-width: 100%; transform: scale(0.84); transform-origin: center;">
+          <!-- North Indian Vedic Chart Design with Clickable Overlay -->
+          <div class="relative w-full flex items-center justify-center overflow-hidden rounded-2xl chart-wrapper">
+            <img id="chart-image" src="/assets/vedic-chart2.png" alt="North Indian Vedic Chart"
+              class="w-full h-auto object-contain"
+              style="filter: drop-shadow(0 0 20px rgba(255, 193, 99, 0.3)); display: block;"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
 
-            <!-- Central Square -->
-            <rect x="180" y="180" width="240" height="240" fill="none" stroke="rgba(255, 193, 99, 0.6)"
-              stroke-width="2" />
+            <!-- Fallback if image not found -->
+            <div
+              class="hidden w-full h-full items-center justify-center bg-gradient-to-br from-orange-900/20 to-amber-900/20 rounded-lg border-2 border-primary/30 backdrop-blur-sm">
+              <div class="text-center p-8">
+                <p class="text-foreground/70 mb-2">Image not found</p>
+                <p class="text-sm text-foreground/50">Please add vedic-chart.png to src/assets/</p>
+              </div>
+            </div>
 
-            <!-- House 1 - Top Center (Rhombus) -->
-            <g class="house-area" data-house="1" (click)="selectHouse(houses[0])">
-              <polygon points="300,0 420,180 300,300 180,180"
-                [attr.fill]="selectedHouse?.number === 1 ? houses[0].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 1 ? houses[0].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="300" y="150" text-anchor="middle" fill="white" font-size="24" font-weight="bold">{{
-                houses[0].number }}</text>
-            </g>
+            <!-- SVG Overlay for Clickable Houses -->
+            <svg class="chart-overlay" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" aria-hidden="false">
+              <!-- House 1 (center top) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[0].number"
+                (click)="selectHouse(houses[0]); $event.preventDefault()">
+                <polygon points="500,59 690,180 500,336 310,180" [class.active]="selectedHouse?.number === 1"
+                  [attr.fill]="selectedHouse?.number === 1 ? houses[0].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 1 ? houses[0].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <!-- House 4 - Left Center (Rhombus) -->
-            <g class="house-area" data-house="4" (click)="selectHouse(houses[3])">
-              <polygon points="0,300 180,180 300,300 180,420"
-                [attr.fill]="selectedHouse?.number === 4 ? houses[3].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 4 ? houses[3].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="100" y="310" text-anchor="middle" fill="white" font-size="24" font-weight="bold">{{
-                houses[3].number }}</text>
-            </g>
+              <!-- House 2 (top-left) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[1].number"
+                (click)="selectHouse(houses[1]); $event.preventDefault()">
+                <polygon points="38,40 500,40 232,180" [class.active]="selectedHouse?.number === 2"
+                  [attr.fill]="selectedHouse?.number === 2 ? houses[1].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 2 ? houses[1].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <!-- House 7 - Bottom Center (Rhombus) -->
-            <g class="house-area" data-house="7" (click)="selectHouse(houses[6])">
-              <polygon points="300,600 180,420 300,300 420,420"
-                [attr.fill]="selectedHouse?.number === 7 ? houses[6].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 7 ? houses[6].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="300" y="470" text-anchor="middle" fill="white" font-size="24" font-weight="bold">{{
-                houses[6].number }}</text>
-            </g>
+              <!-- House 3 (left top corner) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[2].number"
+                (click)="selectHouse(houses[2]); $event.preventDefault()">
+                <polygon points="20,54 170,180 60,320 20,320" [class.active]="selectedHouse?.number === 3"
+                  [attr.fill]="selectedHouse?.number === 3 ? houses[2].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 3 ? houses[2].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <!-- House 10 - Right Center (Rhombus) -->
-            <g class="house-area" data-house="10" (click)="selectHouse(houses[9])">
-              <polygon points="600,300 420,420 300,300 420,180"
-                [attr.fill]="selectedHouse?.number === 10 ? houses[9].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 10 ? houses[9].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="500" y="310" text-anchor="middle" fill="white" font-size="24" font-weight="bold">{{
-                houses[9].number }}</text>
-            </g>
+              <!-- House 4 (upper-left middle) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[3].number"
+                (click)="selectHouse(houses[3]); $event.preventDefault()">
+                <polygon points="220,215 440,390 270,530 54,355" [class.active]="selectedHouse?.number === 4"
+                  [attr.fill]="selectedHouse?.number === 4 ? houses[3].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 4 ? houses[3].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <!-- Corner Houses - Top Left (2, 3) -->
-            <g class="house-area" data-house="2" (click)="selectHouse(houses[1])">
-              <polygon points="0,0 180,180 0,150"
-                [attr.fill]="selectedHouse?.number === 2 ? houses[1].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 2 ? houses[1].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="60" y="110" text-anchor="middle" fill="white" font-size="20" font-weight="bold">{{
-                houses[1].number }}</text>
-            </g>
+              <!-- House 5 (lower-left) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[4].number"
+                (click)="selectHouse(houses[4]); $event.preventDefault()">
+                <polygon points="20,370 165,540 20,666" [class.active]="selectedHouse?.number === 5"
+                  [attr.fill]="selectedHouse?.number === 5 ? houses[4].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 5 ? houses[4].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <g class="house-area" data-house="3" (click)="selectHouse(houses[2])">
-              <polygon points="0,150 180,180 0,300"
-                [attr.fill]="selectedHouse?.number === 3 ? houses[2].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 3 ? houses[2].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="50" y="230" text-anchor="middle" fill="white" font-size="20" font-weight="bold">{{
-                houses[2].number }}</text>
-            </g>
+              <!-- House 6 (bottom left) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[5].number"
+                (click)="selectHouse(houses[5]); $event.preventDefault()">
+                <polygon points="150,620 320,560 500,700 40,700" [class.active]="selectedHouse?.number === 6"
+                  [attr.fill]="selectedHouse?.number === 6 ? houses[5].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 6 ? houses[5].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <!-- Corner Houses - Bottom Left (5, 6) -->
-            <g class="house-area" data-house="5" (click)="selectHouse(houses[4])">
-              <polygon points="0,300 180,420 0,450"
-                [attr.fill]="selectedHouse?.number === 5 ? houses[4].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 5 ? houses[4].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="50" y="390" text-anchor="middle" fill="white" font-size="20" font-weight="bold">{{
-                houses[4].number }}</text>
-            </g>
+              <!-- House 7 (bottom center) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[6].number"
+                (click)="selectHouse(houses[6]); $event.preventDefault()">
+                <polygon points="500,420 660,560 500,700 340,560" [class.active]="selectedHouse?.number === 7"
+                  [attr.fill]="selectedHouse?.number === 7 ? houses[6].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 7 ? houses[6].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <g class="house-area" data-house="6" (click)="selectHouse(houses[5])">
-              <polygon points="0,450 180,420 0,600"
-                [attr.fill]="selectedHouse?.number === 6 ? houses[5].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 6 ? houses[5].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="60" y="490" text-anchor="middle" fill="white" font-size="20" font-weight="bold">{{
-                houses[5].number }}</text>
-            </g>
+              <!-- House 8 (bottom right) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[7].number"
+                (click)="selectHouse(houses[7]); $event.preventDefault()">
+                <polygon points="660,560 980,560 940,700 500,700" [class.active]="selectedHouse?.number === 8"
+                  [attr.fill]="selectedHouse?.number === 8 ? houses[7].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 8 ? houses[7].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <!-- Corner Houses - Bottom Right (8, 9) -->
-            <g class="house-area" data-house="8" (click)="selectHouse(houses[7])">
-              <polygon points="600,450 420,420 600,600"
-                [attr.fill]="selectedHouse?.number === 8 ? houses[7].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 8 ? houses[7].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="540" y="490" text-anchor="middle" fill="white" font-size="20" font-weight="bold">{{
-                houses[7].number }}</text>
-            </g>
+              <!-- House 9 (lower-right) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[8].number"
+                (click)="selectHouse(houses[8]); $event.preventDefault()">
+                <polygon points="956,390 996,490 956,654 804,574" [class.active]="selectedHouse?.number === 9"
+                  [attr.fill]="selectedHouse?.number === 9 ? houses[8].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 9 ? houses[8].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <g class="house-area" data-house="9" (click)="selectHouse(houses[8])">
-              <polygon points="600,300 420,420 600,450"
-                [attr.fill]="selectedHouse?.number === 9 ? houses[8].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 9 ? houses[8].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="550" y="390" text-anchor="middle" fill="white" font-size="20" font-weight="bold">{{
-                houses[8].number }}</text>
-            </g>
+              <!-- House 10 (right middle) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[9].number"
+                (click)="selectHouse(houses[9]); $event.preventDefault()">
+                <polygon points="560,360 720,220 920,320 780,500" [class.active]="selectedHouse?.number === 10"
+                  [attr.fill]="selectedHouse?.number === 10 ? houses[9].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 10 ? houses[9].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <!-- Corner Houses - Top Right (11, 12) -->
-            <g class="house-area" data-house="11" (click)="selectHouse(houses[10])">
-              <polygon points="600,150 420,180 600,300"
-                [attr.fill]="selectedHouse?.number === 11 ? houses[10].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 11 ? houses[10].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="550" y="230" text-anchor="middle" fill="white" font-size="20" font-weight="bold">{{
-                houses[10].number }}</text>
-            </g>
+              <!-- House 11 (upper-right) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[10].number"
+                (click)="selectHouse(houses[10]); $event.preventDefault()">
+                <polygon points="820,140 980,40 1000,280 760,180" [class.active]="selectedHouse?.number === 11"
+                  [attr.fill]="selectedHouse?.number === 11 ? houses[10].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 11 ? houses[10].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
 
-            <g class="house-area" data-house="12" (click)="selectHouse(houses[11])">
-              <polygon points="600,0 420,180 600,150"
-                [attr.fill]="selectedHouse?.number === 12 ? houses[11].color + '40' : 'rgba(255, 193, 99, 0.1)'"
-                [attr.stroke]="selectedHouse?.number === 12 ? houses[11].color + '80' : 'rgba(255, 193, 99, 0.3)'"
-                stroke-width="2" />
-              <text x="540" y="110" text-anchor="middle" fill="white" font-size="20" font-weight="bold">{{
-                houses[11].number }}</text>
-            </g>
-          </svg>
+              <!-- House 12 (top-right corner) -->
+              <a class="house-region" href="#" [attr.data-house]="houses[11].number"
+                (click)="selectHouse(houses[11]); $event.preventDefault()">
+                <polygon points="600,40 970,40 780,150 780,180" [class.active]="selectedHouse?.number === 12"
+                  [attr.fill]="selectedHouse?.number === 12 ? houses[11].color + '40' : 'transparent'"
+                  [attr.stroke]="selectedHouse?.number === 12 ? houses[11].color : 'rgba(0,0,0,0)'"></polygon>
+              </a>
+            </svg>
+          </div>
         </div>
       </div>
 

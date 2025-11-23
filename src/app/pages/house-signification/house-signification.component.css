@@ -128,6 +128,71 @@
   padding: 1rem;
 }
 
+/* Chart Wrapper for Image and Overlay */
+.chart-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.chart-wrapper img {
+  position: relative;
+  z-index: 1;
+}
+
+/* SVG Overlay for Clickable Houses */
+.chart-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  /* Ensure SVG scales with image */
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Clickable House Regions */
+.house-region {
+  pointer-events: auto;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+}
+
+.house-region polygon {
+  fill: transparent;
+  stroke: rgba(0, 0, 0, 0);
+  stroke-width: 2;
+  transition: fill 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease;
+}
+
+.house-region:hover polygon:not(.active) {
+  /* Hover effect removed - polygon stays invisible */
+}
+
+.house-region:hover polygon.active {
+  /* Hover effect removed - polygon stays invisible */
+}
+
+.house-region polygon.active {
+  stroke-width: 3;
+  animation: pulse-active 2s ease-in-out infinite;
+}
+
+@keyframes pulse-active {
+  0%, 100% {
+    stroke-opacity: 1;
+    fill-opacity: 0.4;
+  }
+  50% {
+    stroke-opacity: 0.8;
+    fill-opacity: 0.5;
+  }
+}
+
 .kundali-svg {
   width: 100%;
   height: 100%;
@@ -187,6 +252,22 @@
   transform: scale(1.15);
   z-index: 30;
   border-width: 3px;
+}
+
+.house-overlay-btn.active {
+  opacity: 0.4 !important;
+  border-width: 2px;
+  z-index: 20;
+  animation: pulse-overlay 2s ease-in-out infinite;
+}
+
+@keyframes pulse-overlay {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 .overlay-house-number {
@@ -443,6 +524,10 @@
 /* House Card Grid */
 .house-card {
   cursor: pointer;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .house-card:hover {

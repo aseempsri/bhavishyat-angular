@@ -29,19 +29,46 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   loggedInName: string = '';
   showBirthDetailsModal: boolean = false;
+  openDropdown: string | null = null;
+  intendedRedirect: string | null = null;
 
   navItems = [
-    { label: 'About Us', href: '#about', isRoute: false },
+    { 
+      label: 'About Us', 
+      href: '#about', 
+      isRoute: false,
+      hasDropdown: true,
+      dropdownItems: [
+        { label: 'About Us', href: '#about', isRoute: false },
+        { label: 'Services', href: '#services', isRoute: false },
+        { label: 'Contact Us', href: '#contact', isRoute: false }
+      ]
+    },
     { label: 'Shinrin Yoku', href: '/shinrin-yoku', isRoute: true },
     { label: 'Escape Retreats', href: '/escape-retreats', isRoute: true },
-    { label: 'Services', href: '#services', isRoute: false },
     { label: 'Remedies & Seva', href: '/remedies-seva', isRoute: true },
     { label: 'Aarohanam', href: '/aarohanam', isRoute: true },
-    { label: 'Contact Us', href: '#contact', isRoute: false },
+    { label: 'Learn with Us', href: '/class-recordings', isRoute: true, requiresLogin: true },
   ];
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  toggleDropdown(item: any, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    if (item.hasDropdown) {
+      if (this.openDropdown === item.label) {
+        this.openDropdown = null;
+      } else {
+        this.openDropdown = item.label;
+      }
+    }
+  }
+
+  closeDropdown(): void {
+    this.openDropdown = null;
   }
 
   closeMenu(): void {
@@ -56,6 +83,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       const elementId = href.substring(1);
       if (!elementId) {
         this.closeMenu();
+        this.closeDropdown();
         return;
       }
 
@@ -96,6 +124,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         });
       }
       this.closeMenu(); // Close mobile menu if open
+      this.closeDropdown(); // Close dropdown if open
     }
   }
 
@@ -118,7 +147,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.closeMenu();
   }
 
-  handleRouteClick(event: Event, href: string): void {
+  handleRouteClick(event: Event, href: string, requiresLogin?: boolean): void {
+    // Check if route requires login and user is not logged in
+    if (requiresLogin && !this.isLoggedIn) {
+      event.preventDefault();
+      event.stopPropagation();
+      // Store the intended destination for redirect after login
+      this.intendedRedirect = href;
+      this.closeMenu();
+      this.closeDropdown();
+      // Open login modal without clearing intendedRedirect
+      this.showLoginModal = true;
+      this.activeTab = 'signin';
+      this.name = '';
+      this.password = '';
+      this.loginError = '';
+      return;
+    }
+
+    // Clear intended redirect if user is already logged in
+    this.intendedRedirect = null;
+
     // For route links, scroll to top after navigation
     this.router.events
       .pipe(
@@ -133,6 +182,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
 
     this.closeMenu();
+    this.closeDropdown();
   }
 
   private scrollToElement(elementId: string): void {
@@ -168,6 +218,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isScrolled = scrollPosition > 10;
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    // Close dropdown if clicking outside the dropdown menu
+    if (this.openDropdown && !target.closest('.nav-dropdown')) {
+      this.openDropdown = null;
+    }
+  }
+
   ngOnInit(): void {
     // Check initial scroll position
     this.onWindowScroll();
@@ -189,6 +248,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.isLoggedIn) {
       return; // Don't open modal if already logged in
     }
+    // Clear intended redirect when opening login modal from login button
+    // This ensures default redirect to kundali page
+    this.intendedRedirect = null;
     this.showLoginModal = true;
     this.activeTab = 'signin';
     this.name = '';
@@ -202,6 +264,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.name = '';
     this.password = '';
     this.loginError = '';
+    // Clear intended redirect if modal is closed without logging in
+    this.intendedRedirect = null;
   }
 
   handleSignIn(event: Event): void {
@@ -245,7 +309,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }).subscribe(kundaliData => {
       localStorage.setItem('kundaliData', JSON.stringify(kundaliData));
       this.showBirthDetailsModal = false;
-      this.router.navigate(['/kundali']);
+      
+      // Redirect to intended destination if set, otherwise go to kundali
+      const redirectTo = this.intendedRedirect || '/kundali';
+      this.intendedRedirect = null; // Clear after use
+      this.router.navigate([redirectTo]);
     });
   }
 
@@ -257,6 +325,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     localStorage.removeItem('loggedInName');
     localStorage.removeItem('birthDetails');
     localStorage.removeItem('kundaliData');
+    // Clear intended redirect
+    this.intendedRedirect = null;
     if (this.router.url === '/kundali') {
       this.router.navigate(['/']);
     }
