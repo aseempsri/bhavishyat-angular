@@ -1,0 +1,418 @@
+<main class="min-h-screen bg-background relative">
+  <!-- Cosmic Background with Stars -->
+  <div class="cosmic-background fixed inset-0 z-0">
+    <div class="twinkling"></div>
+    <!-- Additional cosmic elements -->
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-20 left-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse"
+        style="animation-delay: 1s;"></div>
+      <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse"
+        style="animation-delay: 2s;"></div>
+    </div>
+  </div>
+
+  <app-header></app-header>
+
+  <!-- Hero Section -->
+  <section class="pt-32 pb-20 px-4 relative overflow-hidden">
+    <div class="container mx-auto relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="cosmic-glow w-96 h-96 rounded-full blur-3xl opacity-20"></div>
+        </div>
+        
+        <div class="inline-block px-4 py-2 bg-primary/20 rounded-full mb-6 relative z-10 animate-fade-in">
+          <span class="text-primary font-semibold">Daily Astrological Guide</span>
+        </div>
+
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-playfair font-bold text-foreground mb-6 relative z-10 animate-fade-in-up">
+          Daily Panchang
+        </h1>
+        
+        <p class="text-xl md:text-2xl text-foreground/80 mb-8 leading-relaxed relative z-10 animate-fade-in-up-delay">
+          Your Daily Cosmic Calendar
+        </p>
+
+        <p class="text-lg text-foreground/70 max-w-2xl mx-auto leading-relaxed relative z-10 animate-fade-in-up-delay-2">
+          Discover the auspicious timings, planetary positions, and cosmic energies that guide your day.
+        </p>
+
+        <div class="flex items-center justify-center gap-2 mt-8 relative z-10">
+          <div class="h-px w-20 bg-gradient-to-r from-transparent via-primary to-primary"></div>
+          <span class="text-3xl animate-pulse">🌙</span>
+          <div class="h-px w-20 bg-gradient-to-l from-transparent via-primary to-primary"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <section class="py-24 px-4 relative z-10">
+      <div class="container mx-auto max-w-6xl">
+        <div class="flex flex-col items-center justify-center py-20">
+          <div class="relative">
+            <div class="w-20 h-20 border-4 border-primary/30 rounded-full"></div>
+            <div class="w-20 h-20 border-4 border-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+          </div>
+          <p class="text-foreground/70 text-lg mt-6 animate-pulse">Loading cosmic wisdom...</p>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- Error State -->
+  @if (error && !isLoading) {
+    <section class="py-24 px-4 relative z-10">
+      <div class="container mx-auto max-w-6xl">
+        <div class="bg-destructive/10 border border-destructive/30 rounded-xl p-8 text-center animate-fade-in">
+          <div class="text-5xl mb-4">⚠️</div>
+          <p class="text-destructive mb-4 text-lg">{{ error }}</p>
+          <button 
+            (click)="refreshData()"
+            class="bg-primary hover:opacity-90 text-primary-foreground font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-primary/20">
+            Try Again
+          </button>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- Panchang Data -->
+  @if (panchangData && !isLoading) {
+    <section class="py-12 px-4 relative z-10">
+      <div class="container mx-auto max-w-6xl">
+        <!-- Date and Refresh -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4 animate-fade-in-up">
+          <div class="bg-card/80 backdrop-blur-sm border border-border rounded-xl p-6 shadow-lg">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center animate-pulse">
+                <span class="text-2xl">📅</span>
+              </div>
+              <div>
+                <h2 class="text-2xl md:text-3xl font-playfair font-bold text-foreground">
+                  {{ formatDate(panchangData.date) }}
+                </h2>
+                <p class="text-foreground/60 flex items-center gap-2 mt-1">
+                  <span>{{ panchangData.day }}</span>
+                  <span>•</span>
+                  <span>{{ panchangData.ritu }}</span>
+                  <span>•</span>
+                  <span>{{ panchangData.ayana }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <button 
+            (click)="refreshData()"
+            class="group flex items-center gap-2 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg shadow-primary/20">
+            <svg class="w-5 h-5 group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Refresh
+          </button>
+        </div>
+
+        <!-- Main Panchang Cards Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <!-- Tithi Card -->
+          <div class="panchang-card group bg-card border border-border rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/10 group-hover:to-accent/10 transition-all duration-500"></div>
+            <div class="relative z-10">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+                  <svg class="w-7 h-7 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-foreground">Tithi</h3>
+              </div>
+              <p class="text-3xl font-bold text-primary mb-2 group-hover:scale-110 transition-transform duration-300">{{ panchangData.tithi.name }}</p>
+              <div class="inline-block px-3 py-1 bg-primary/20 rounded-full mb-3">
+                <p class="text-sm font-medium text-primary">{{ panchangData.tithi.paksha }} Paksha</p>
+              </div>
+              <div class="flex items-center gap-2 text-sm text-foreground/60">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Ends at: <span class="font-semibold text-foreground/80">{{ panchangData.tithi.endTime }}</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nakshatra Card -->
+          <div class="panchang-card group bg-card border border-border rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-accent/0 to-primary/0 group-hover:from-accent/10 group-hover:to-primary/10 transition-all duration-500"></div>
+            <div class="relative z-10">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-accent to-primary rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+                  <svg class="w-7 h-7 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-foreground">Nakshatra</h3>
+              </div>
+              <p class="text-3xl font-bold text-primary mb-2 group-hover:scale-110 transition-transform duration-300">{{ panchangData.nakshatra.name }}</p>
+              <div class="flex items-center gap-2 text-sm text-foreground/60 mt-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Ends at: <span class="font-semibold text-foreground/80">{{ panchangData.nakshatra.endTime }}</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Yoga Card -->
+          <div class="panchang-card group bg-card border border-border rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/10 group-hover:to-accent/10 transition-all duration-500"></div>
+            <div class="relative z-10">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+                  <svg class="w-7 h-7 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-foreground">Yoga</h3>
+              </div>
+              <p class="text-3xl font-bold text-primary mb-2 group-hover:scale-110 transition-transform duration-300">{{ panchangData.yoga.name }}</p>
+              <div class="flex items-center gap-2 text-sm text-foreground/60 mt-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Ends at: <span class="font-semibold text-foreground/80">{{ panchangData.yoga.endTime }}</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Karana Card -->
+          <div class="panchang-card group bg-card border border-border rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-accent/0 to-primary/0 group-hover:from-accent/10 group-hover:to-primary/10 transition-all duration-500"></div>
+            <div class="relative z-10">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-accent to-primary rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+                  <svg class="w-7 h-7 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-foreground">Karana</h3>
+              </div>
+              <p class="text-3xl font-bold text-primary mb-2 group-hover:scale-110 transition-transform duration-300">{{ panchangData.karana.name }}</p>
+              <div class="flex items-center gap-2 text-sm text-foreground/60 mt-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Ends at: <span class="font-semibold text-foreground/80">{{ panchangData.karana.endTime }}</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sunrise/Sunset Card -->
+          <div class="panchang-card group bg-card border border-border rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/10 group-hover:to-accent/10 transition-all duration-500"></div>
+            <div class="relative z-10">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+                  <span class="text-3xl">☀️</span>
+                </div>
+                <h3 class="text-xl font-semibold text-foreground">Sun Timings</h3>
+              </div>
+              <div class="space-y-3">
+                <div class="flex justify-between items-center p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xl">🌅</span>
+                    <span class="text-foreground/70 font-medium">Sunrise</span>
+                  </div>
+                  <span class="text-xl font-bold text-primary">{{ panchangData.sunrise }}</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xl">🌇</span>
+                    <span class="text-foreground/70 font-medium">Sunset</span>
+                  </div>
+                  <span class="text-xl font-bold text-primary">{{ panchangData.sunset }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Moon Timings Card -->
+          <div class="panchang-card group bg-card border border-border rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-accent/0 to-primary/0 group-hover:from-accent/10 group-hover:to-primary/10 transition-all duration-500"></div>
+            <div class="relative z-10">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-accent to-primary rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
+                  <span class="text-3xl">🌙</span>
+                </div>
+                <h3 class="text-xl font-semibold text-foreground">Moon Timings</h3>
+              </div>
+              <div class="space-y-3">
+                <div class="flex justify-between items-center p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xl">🌜</span>
+                    <span class="text-foreground/70 font-medium">Moonrise</span>
+                  </div>
+                  <span class="text-xl font-bold text-primary">{{ panchangData.moonrise }}</span>
+                </div>
+                <div class="flex justify-between items-center p-3 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xl">🌛</span>
+                    <span class="text-foreground/70 font-medium">Moonset</span>
+                  </div>
+                  <span class="text-xl font-bold text-primary">{{ panchangData.moonset }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auspicious Timings Section -->
+        <div class="mb-12 animate-fade-in-up-delay">
+          <div class="flex items-center gap-4 mb-8">
+            <div class="h-px flex-1 bg-gradient-to-r from-transparent via-primary to-primary"></div>
+            <h2 class="text-3xl md:text-4xl font-playfair font-bold text-foreground flex items-center gap-3">
+              <span class="text-4xl animate-pulse">✨</span>
+              Auspicious Timings
+            </h2>
+            <div class="h-px flex-1 bg-gradient-to-l from-transparent via-primary to-primary"></div>
+          </div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Abhijit Muhurat -->
+            <div class="muhurat-card group bg-gradient-to-br from-primary/20 via-primary/15 to-accent/20 border-2 border-primary/40 rounded-xl p-6 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/30 relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+              <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="text-4xl animate-bounce">✨</span>
+                  <h3 class="text-xl font-semibold text-foreground">Abhijit Muhurat</h3>
+                </div>
+                <p class="text-foreground/70 mb-4 text-sm">Most auspicious time for new beginnings</p>
+                <div class="bg-background/50 backdrop-blur-sm rounded-lg p-4 border border-primary/20">
+                  <p class="text-2xl font-bold text-primary text-center">{{ panchangData.abhijitMuhurat.start }} - {{ panchangData.abhijitMuhurat.end }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Brahma Muhurat -->
+            <div class="muhurat-card group bg-gradient-to-br from-primary/20 via-primary/15 to-accent/20 border-2 border-primary/40 rounded-xl p-6 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/30 relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-2xl -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+              <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="text-4xl animate-pulse">🌅</span>
+                  <h3 class="text-xl font-semibold text-foreground">Brahma Muhurat</h3>
+                </div>
+                <p class="text-foreground/70 mb-4 text-sm">Ideal time for meditation and spiritual practices</p>
+                <div class="bg-background/50 backdrop-blur-sm rounded-lg p-4 border border-primary/20">
+                  <p class="text-2xl font-bold text-primary text-center">{{ panchangData.brahmaMuhurat.start }} - {{ panchangData.brahmaMuhurat.end }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Amrit Kaal -->
+            <div class="muhurat-card group bg-gradient-to-br from-primary/20 via-primary/15 to-accent/20 border-2 border-primary/40 rounded-xl p-6 hover:border-primary/60 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-primary/30 relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+              <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="text-4xl animate-bounce" style="animation-delay: 0.5s;">💫</span>
+                  <h3 class="text-xl font-semibold text-foreground">Amrit Kaal</h3>
+                </div>
+                <p class="text-foreground/70 mb-4 text-sm">Nectar time for important decisions</p>
+                <div class="bg-background/50 backdrop-blur-sm rounded-lg p-4 border border-primary/20">
+                  <p class="text-2xl font-bold text-primary text-center">{{ panchangData.amritKaal.start }} - {{ panchangData.amritKaal.end }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inauspicious Timings Section -->
+        <div class="mb-12 animate-fade-in-up-delay-2">
+          <div class="flex items-center gap-4 mb-8">
+            <div class="h-px flex-1 bg-gradient-to-r from-transparent via-destructive/50 to-destructive/50"></div>
+            <h2 class="text-3xl md:text-4xl font-playfair font-bold text-foreground flex items-center gap-3">
+              <span class="text-4xl">⚠️</span>
+              Inauspicious Timings
+            </h2>
+            <div class="h-px flex-1 bg-gradient-to-l from-transparent via-destructive/50 to-destructive/50"></div>
+          </div>
+          <p class="text-center text-foreground/60 mb-6">Avoid important work during these periods</p>
+          <div class="grid md:grid-cols-3 gap-6">
+            <!-- Rahu Kaal -->
+            <div class="inauspicious-card group bg-card border-2 border-destructive/30 rounded-xl p-6 hover:border-destructive/50 transition-all duration-500 hover:scale-105 hover:shadow-xl relative overflow-hidden">
+              <div class="absolute inset-0 bg-destructive/0 group-hover:bg-destructive/5 transition-all duration-500"></div>
+              <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="text-4xl">🌑</span>
+                  <h3 class="text-xl font-semibold text-foreground">Rahu Kaal</h3>
+                </div>
+                <p class="text-foreground/70 mb-4 text-sm">Avoid starting new ventures</p>
+                <div class="bg-destructive/10 rounded-lg p-4 border border-destructive/20">
+                  <p class="text-xl font-bold text-destructive text-center">{{ panchangData.rahuKaal.start }} - {{ panchangData.rahuKaal.end }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gulika Kaal -->
+            <div class="inauspicious-card group bg-card border-2 border-destructive/30 rounded-xl p-6 hover:border-destructive/50 transition-all duration-500 hover:scale-105 hover:shadow-xl relative overflow-hidden">
+              <div class="absolute inset-0 bg-destructive/0 group-hover:bg-destructive/5 transition-all duration-500"></div>
+              <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="text-4xl">⚫</span>
+                  <h3 class="text-xl font-semibold text-foreground">Gulika Kaal</h3>
+                </div>
+                <p class="text-foreground/70 mb-4 text-sm">Avoid important decisions</p>
+                <div class="bg-destructive/10 rounded-lg p-4 border border-destructive/20">
+                  <p class="text-xl font-bold text-destructive text-center">{{ panchangData.gulikaKaal.start }} - {{ panchangData.gulikaKaal.end }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Yamaganda -->
+            <div class="inauspicious-card group bg-card border-2 border-destructive/30 rounded-xl p-6 hover:border-destructive/50 transition-all duration-500 hover:scale-105 hover:shadow-xl relative overflow-hidden">
+              <div class="absolute inset-0 bg-destructive/0 group-hover:bg-destructive/5 transition-all duration-500"></div>
+              <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="text-4xl">⏰</span>
+                  <h3 class="text-xl font-semibold text-foreground">Yamaganda</h3>
+                </div>
+                <p class="text-foreground/70 mb-4 text-sm">Avoid new beginnings</p>
+                <div class="bg-destructive/10 rounded-lg p-4 border border-destructive/20">
+                  <p class="text-xl font-bold text-destructive text-center">{{ panchangData.yamaganda.start }} - {{ panchangData.yamaganda.end }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar Information -->
+        <div class="bg-card/80 backdrop-blur-sm border border-border rounded-xl p-8 shadow-lg mb-8 animate-fade-in-up-delay-3">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+              <span class="text-2xl">📆</span>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-playfair font-bold text-foreground">Calendar Information</h2>
+          </div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-background/50 backdrop-blur-sm rounded-lg p-6 border border-primary/20 hover:border-primary/40 transition-colors">
+              <p class="text-foreground/70 mb-2 text-sm uppercase tracking-wide">Vikram Samvat</p>
+              <p class="text-3xl font-bold text-primary">{{ panchangData.vikramSamvat }}</p>
+            </div>
+            <div class="bg-background/50 backdrop-blur-sm rounded-lg p-6 border border-primary/20 hover:border-primary/40 transition-colors">
+              <p class="text-foreground/70 mb-2 text-sm uppercase tracking-wide">Shaka Samvat</p>
+              <p class="text-3xl font-bold text-primary">{{ panchangData.shakaSamvat }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Last Updated -->
+        @if (lastUpdated) {
+          <div class="text-center mt-8 text-foreground/60 text-sm flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Last updated: {{ lastUpdated.toLocaleTimeString() }}</span>
+          </div>
+        }
+      </div>
+    </section>
+  }
+</main>

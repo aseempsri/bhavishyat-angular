@@ -72,11 +72,9 @@
                 </a>
               } @else {
                 <a
-                  [routerLink]="item.href"
-                  routerLinkActive="nav-active"
                   (click)="handleRouteClick($event, item.href, item.requiresLogin)"
                   class="nav-link relative px-4 py-2 text-foreground/70 hover:text-primary transition-colors font-medium text-sm group cursor-pointer"
-                  style="pointer-events: auto;"
+                  style="pointer-events: auto; cursor: pointer;"
                 >
                   {{ item.label }}
                   <span class="nav-indicator absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
@@ -179,10 +177,8 @@
                   </a>
                 } @else {
                   <a
-                    [routerLink]="item.href"
-                    routerLinkActive="mobile-nav-active"
                     (click)="handleRouteClick($event, item.href, item.requiresLogin)"
-                    class="mobile-nav-link px-4 py-3 text-foreground/70 hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200 font-medium"
+                    class="mobile-nav-link px-4 py-3 text-foreground/70 hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200 font-medium cursor-pointer"
                   >
                     {{ item.label }}
                   </a>

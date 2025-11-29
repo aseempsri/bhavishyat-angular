@@ -6,6 +6,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
   },
   {
+    path: 'daily-panchang',
+    loadComponent: () => import('./pages/daily-panchang/daily-panchang.component').then(m => m.DailyPanchangComponent)
+  },
+  {
     path: 'shinrin-yoku',
     loadComponent: () => import('./pages/shinrin-yoku/shinrin-yoku.component').then(m => m.ShinrinYokuComponent)
   },

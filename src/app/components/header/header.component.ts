@@ -44,6 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         { label: 'Contact Us', href: '#contact', isRoute: false }
       ]
     },
+    { label: 'Daily Panchang', href: '/daily-panchang', isRoute: true },
     { label: 'Shinrin Yoku', href: '/shinrin-yoku', isRoute: true },
     { label: 'Escape Retreats', href: '/escape-retreats', isRoute: true },
     { label: 'Remedies & Seva', href: '/remedies-seva', isRoute: true },
@@ -168,18 +169,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Clear intended redirect if user is already logged in
     this.intendedRedirect = null;
 
-    // For route links, scroll to top after navigation
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        take(1)
-      )
-      .subscribe(() => {
-        // Scroll to top after navigation completes
-        setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 100);
-      });
+    // Prevent default to handle navigation explicitly
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Navigate to the route
+    this.router.navigate([href]).then(() => {
+      // Scroll to top after navigation completes - multiple attempts to ensure it works
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }, 0);
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 200);
+    }).catch((error) => {
+      console.error('Navigation error:', error);
+    });
 
     this.closeMenu();
     this.closeDropdown();
