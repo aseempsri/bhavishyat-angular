@@ -1,7 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DOCUMENT } from '@angular/common';
+import { Router } from '@angular/router';
 import { ButtonComponent } from '../../ui/button/button.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-hero',
@@ -11,6 +13,17 @@ import { ButtonComponent } from '../../ui/button/button.component';
 })
 export class HeroComponent {
   private document = inject(DOCUMENT);
+  private router = inject(Router);
+  authService = inject(AuthService);
+
+  handleLearnWithUsClick(event: Event): void {
+    event.preventDefault();
+    if (this.authService.isLoggedIn) {
+      this.router.navigate(['/class-recordings']);
+    } else {
+      this.authService.requestLogin('/class-recordings');
+    }
+  }
   
   // Get base href from document to work with both local dev and production
   private getBaseHref(): string {

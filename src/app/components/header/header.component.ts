@@ -2,11 +2,12 @@ import { Component, inject, OnInit, OnDestroy, HostListener } from '@angular/cor
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { filter, take } from 'rxjs';
+import { filter, take, Subscription } from 'rxjs';
 import { ButtonComponent } from '../../ui/button/button.component';
 import { InputComponent } from '../../ui/input/input.component';
 import { BirthDetailsModalComponent } from '../birth-details-modal/birth-details-modal.component';
 import { AstrologyService } from '../../services/astrology.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +20,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private document = inject(DOCUMENT);
   private astrologyService = inject(AstrologyService);
+  private authService = inject(AuthService);
   isMenuOpen = false;
   isScrolled = false;
   showLoginModal = false;
@@ -49,7 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Escape Retreats', href: '/escape-retreats', isRoute: true },
     { label: 'Remedies & Seva', href: '/remedies-seva', isRoute: true },
     { label: 'Aarohanam', href: '/aarohanam', isRoute: true },
-    { label: 'Learn with Us', href: '/class-recordings', isRoute: true, requiresLogin: true },
+    { label: "Let's Learn", href: '/class-recordings', isRoute: true, requiresLogin: true },
   ];
 
   // Mobile bottom bar - About Us groups About, Services, Contact
@@ -59,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Retreats', href: '/escape-retreats', isRoute: true },
     { label: 'Remedies', href: '/remedies-seva', isRoute: true },
     { label: 'Aarohanam', href: '/aarohanam', isRoute: true },
-    { label: 'Classes', href: '/class-recordings', isRoute: true, requiresLogin: true },
+    { label: "Let's Learn", href: '/class-recordings', isRoute: true, requiresLogin: true },
   ];
 
   mobileAboutSubItems = [
@@ -69,6 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ];
 
   showMobileAboutDropdown = false;
+  private loginRequestSub?: Subscription;
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
@@ -270,10 +273,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.isLoggedIn = true;
       this.loggedInName = savedName;
     }
+    this.authService.setLoginState(this.isLoggedIn);
+
+    // Listen for login requests from other components (e.g. hero)
+    this.loginRequestSub = this.authService.onLoginRequest.subscribe(redirectTo => {
+      this.intendedRedirect = redirectTo;
+      this.showLoginModal = true;
+      this.activeTab = 'signin';
+      this.name = '';
+      this.password = '';
+      this.loginError = '';
+    });
   }
 
   ngOnDestroy(): void {
-    // Cleanup if needed
+    this.loginRequestSub?.unsubscribe();
   }
 
   openLoginModal(): void {
@@ -307,6 +321,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.name && this.password === 'admin') {
       this.isLoggedIn = true;
       this.loggedInName = this.name;
+      this.authService.setLoginState(true);
       // Save to localStorage
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('loggedInName', this.name);
@@ -352,6 +367,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout(): void {
     this.isLoggedIn = false;
     this.loggedInName = '';
+    this.authService.setLoginState(false);
     // Clear localStorage
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('loggedInName');

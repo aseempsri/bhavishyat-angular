@@ -119,13 +119,13 @@
 </header>
 
   <!-- Mobile Bottom Navigation - outside header so fixed bottom works (header's backdrop-blur creates containing block) -->
-  <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-[60] bg-background/95 backdrop-blur-sm border-t border-border/50 pb-[env(safe-area-inset-bottom)]">
-    <div class="flex flex-wrap justify-center gap-1 px-2 py-2">
+  <nav class="mobile-bottom-nav lg:hidden fixed bottom-0 left-0 right-0 z-[60] bg-background/95 backdrop-blur-sm border-t border-border/50 pb-[env(safe-area-inset-bottom)]">
+    <div class="grid grid-cols-4 gap-2 px-2 py-2 auto-rows-[30px]">
       <!-- About Us (with dropdown) -->
       <div class="relative mobile-about-trigger">
         <button
           (click)="toggleMobileAboutDropdown()"
-          class="px-2 py-1.5 rounded-lg text-foreground/70 hover:text-primary hover:bg-primary/10 transition-colors text-[10px] font-medium"
+          class="nav-pill px-2 rounded-xl text-foreground hover:text-primary font-bold w-full"
         >
           About Us
         </button>
@@ -135,7 +135,7 @@
               <a
                 [href]="sub.href"
                 (click)="handleHashClick($event, sub.href); showMobileAboutDropdown = false"
-                class="block px-3 py-2 text-foreground/70 hover:text-primary hover:bg-primary/5 text-xs"
+                class="block px-3 py-2 text-foreground hover:text-primary hover:bg-primary/5 text-xs font-medium"
               >
                 {{ sub.label }}
               </a>
@@ -149,7 +149,7 @@
             (click)="handleRouteClick($event, item.href, item.requiresLogin)"
             [routerLink]="item.href"
             routerLinkActive="text-primary"
-            class="px-2 py-1.5 rounded-lg text-foreground/70 hover:text-primary hover:bg-primary/10 transition-colors text-[10px] font-medium"
+            class="nav-pill px-2 rounded-xl text-foreground hover:text-primary font-bold w-full"
           >
             {{ item.label }}
           </a>
@@ -157,21 +157,21 @@
           <a
             [href]="item.href"
             (click)="handleHashClick($event, item.href)"
-            class="px-2 py-1.5 rounded-lg text-foreground/70 hover:text-primary hover:bg-primary/10 transition-colors text-[10px] font-medium"
+            class="nav-pill px-2 rounded-xl text-foreground hover:text-primary font-bold w-full"
           >
             {{ item.label }}
           </a>
         }
       }
       @if (isLoggedIn) {
-        <a [routerLink]="['/kundali']" (click)="handleKundaliLinkClick($event)" class="px-2 py-1.5 rounded-lg text-primary font-medium text-[10px]">
+        <a [routerLink]="['/kundali']" (click)="handleKundaliLinkClick($event)" class="nav-pill px-2 rounded-xl text-primary font-bold w-full">
           Kundali
         </a>
-        <button (click)="logout()" class="px-2 py-1.5 rounded-lg text-foreground/70 hover:text-primary hover:bg-primary/10 transition-colors text-[10px] font-medium">
+        <button (click)="logout()" class="nav-pill px-2 rounded-xl text-foreground hover:text-primary font-bold w-full">
           Logout
         </button>
       } @else {
-        <button (click)="openLoginModal()" class="px-2 py-1.5 rounded-lg bg-primary/20 text-primary font-medium text-[10px] hover:bg-primary/30 transition-colors">
+        <button (click)="openLoginModal()" class="nav-pill-login px-2 rounded-xl text-primary font-bold w-full">
           Login
         </button>
       }

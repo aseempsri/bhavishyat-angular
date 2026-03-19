@@ -7,6 +7,46 @@
   border-bottom-color: hsl(var(--border));
 }
 
+/* Mobile bottom nav - creative pill styling, uniform size, fluid font */
+.mobile-bottom-nav .nav-pill,
+.mobile-bottom-nav .nav-pill-login {
+  min-height: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: clamp(7px, 2.5vw, 12px);
+}
+.mobile-bottom-nav .nav-pill {
+  border: 2px solid hsl(28 90% 65% / 0.5);
+  box-shadow: 0 0 12px hsl(28 90% 65% / 0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+  background: linear-gradient(135deg, hsl(220 40% 14%) 0%, hsl(220 35% 18%) 100%);
+  transition: all 0.2s ease;
+}
+.mobile-bottom-nav .nav-pill:hover,
+.mobile-bottom-nav .nav-pill:active {
+  border-color: hsl(28 90% 65% / 0.8);
+  box-shadow: 0 0 18px hsl(28 90% 65% / 0.35);
+  transform: scale(1.02);
+}
+.mobile-bottom-nav .nav-pill-login {
+  border: 2px solid hsl(28 90% 65% / 0.6);
+  box-shadow: 0 0 16px hsl(28 90% 65% / 0.4);
+  background: linear-gradient(135deg, hsl(28 90% 65% / 0.4) 0%, hsl(38 100% 70% / 0.35) 100%);
+  transition: all 0.2s ease;
+}
+.mobile-bottom-nav .nav-pill-login:hover {
+  box-shadow: 0 0 24px hsl(28 90% 65% / 0.5);
+  transform: scale(1.02);
+}
+.mobile-bottom-nav .nav-pill.router-link-active {
+  color: hsl(var(--primary));
+  border-color: hsl(28 90% 65% / 0.8);
+  box-shadow: 0 0 14px hsl(28 90% 65% / 0.3);
+}
+
 /* Mobile: bare logo only - no background, border, or box (overrides global * border) */
 .mobile-logo-only,
 .mobile-logo-only img {
