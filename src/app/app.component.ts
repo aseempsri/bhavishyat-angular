@@ -47,8 +47,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  private isMobile(): boolean {
+    return typeof window !== 'undefined' && window.innerWidth < 768;
+  }
+
   initializeTrail() {
     if (this.isInitialized) return;
+    if (this.isMobile()) return; // Skip comet cursor on mobile
+
     this.isInitialized = true;
 
     if (typeof document === 'undefined' || !document.body) {

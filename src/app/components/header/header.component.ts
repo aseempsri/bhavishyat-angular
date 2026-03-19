@@ -52,6 +52,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Learn with Us', href: '/class-recordings', isRoute: true, requiresLogin: true },
   ];
 
+  // Mobile bottom bar - About Us groups About, Services, Contact
+  mobileNavItems = [
+    { label: 'Panchang', href: '/daily-panchang', isRoute: true },
+    { label: 'Shinrin Yoku', href: '/shinrin-yoku', isRoute: true },
+    { label: 'Retreats', href: '/escape-retreats', isRoute: true },
+    { label: 'Remedies', href: '/remedies-seva', isRoute: true },
+    { label: 'Aarohanam', href: '/aarohanam', isRoute: true },
+    { label: 'Classes', href: '/class-recordings', isRoute: true, requiresLogin: true },
+  ];
+
+  mobileAboutSubItems = [
+    { label: 'About Us', href: '#about', isRoute: false },
+    { label: 'Services', href: '#services', isRoute: false },
+    { label: 'Contact Us', href: '#contact', isRoute: false },
+  ];
+
+  showMobileAboutDropdown = false;
+
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
   }
@@ -70,6 +88,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   closeDropdown(): void {
     this.openDropdown = null;
+    this.showMobileAboutDropdown = false;
+  }
+
+  toggleMobileAboutDropdown(): void {
+    this.showMobileAboutDropdown = !this.showMobileAboutDropdown;
   }
 
   closeMenu(): void {
@@ -228,9 +251,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
-    // Close dropdown if clicking outside the dropdown menu
     if (this.openDropdown && !target.closest('.nav-dropdown')) {
       this.openDropdown = null;
+    }
+    if (this.showMobileAboutDropdown && !target.closest('.mobile-about-trigger') && !target.closest('.mobile-about-dropdown')) {
+      this.showMobileAboutDropdown = false;
     }
   }
 

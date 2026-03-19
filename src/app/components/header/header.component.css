@@ -7,6 +7,18 @@
   border-bottom-color: hsl(var(--border));
 }
 
+/* Mobile: bare logo only - no background, border, or box (overrides global * border) */
+.mobile-logo-only,
+.mobile-logo-only img {
+  background: none !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-width: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
 /* Logo Styles */
 .logo-link {
   transition: transform 0.3s ease;

@@ -4,9 +4,24 @@
     <div class="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background"></div>
   </div>
 
-  <!-- Diagonal Peach Accent - Top Right -->
-  <div
-    class="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-primary to-accent opacity-20 transform rotate-45 translate-x-1/2 -translate-y-1/2 blur-3xl">
+  <!-- Floating Star Particles -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    @for (star of stars; track star.id) {
+      <svg
+        class="absolute animate-twinkle text-amber-100 drop-shadow-[0_0_6px_rgba(255,251,235,0.9)]"
+        [style.left.%]="star.x"
+        [style.top.%]="star.y"
+        [style.width.px]="star.size"
+        [style.height.px]="star.size"
+        [style.animationDelay.s]="star.delay"
+        [style.animationDuration.s]="star.duration"
+        [attr.viewBox]="'0 0 24 24'"
+        style="transform: translate(-50%, -50%);">
+        <path
+          fill="currentColor"
+          d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2z"/>
+      </svg>
+    }
   </div>
 
   <!-- Zodiac Circle - Left Side -->
@@ -18,25 +33,26 @@
   <!-- Hero Content -->
   <div class="relative z-10 container mx-auto px-4">
     <div class="max-w-4xl mx-auto text-center">
-      <div class="animate-fade-in-up">
-        <!-- Main Heading -->
-        <h1 class="text-5xl md:text-7xl lg:text-8xl font-cinzel font-black mb-6">
-          <span
-            class="bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_auto] animate-shimmer bg-clip-text text-transparent">
-            BHAVISHYAT
-          </span>
-        </h1>
+      <div>
+        <!-- Main Logo - Gentle float -->
+        <div class="mb-6 flex justify-center animate-float-gentle">
+          <div class="relative">
+            <div class="absolute inset-0 bg-primary/20 rounded-full blur-3xl animate-pulse-glow -z-10"></div>
+            <img [src]="mainLogo" alt="Bhavishyat" class="max-w-[504px] md:max-w-[720px] lg:max-w-[900px] w-full h-auto object-contain relative" />
+          </div>
+        </div>
 
-        <h2 class="text-3xl md:text-5xl lg:text-6xl font-playfair font-bold text-foreground mb-6">
-          Ultimate Guide To Astrology
+        <h2 class="text-3xl md:text-5xl lg:text-6xl font-playfair font-bold mb-6 animate-fade-in-up" style="animation-delay: 0.2s;">
+          <span class="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
+            Ultimate Guide To Astrology
+          </span>
         </h2>
 
-        <p class="text-lg md:text-xl text-foreground/80 mb-8 max-w-3xl mx-auto leading-relaxed">
-          We have the World Famous Astrologers on the Best Astrology Website.
-          Unlock the mysteries of the cosmos and discover your true destiny through ancient wisdom.
+        <p class="text-lg md:text-xl text-foreground/80 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in-up" style="animation-delay: 0.4s;">
+          Where ancient Vedic wisdom illuminates your path. Decode your birth chart, embrace your cosmic story, and discover the destiny written in the stars.
         </p>
 
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style="animation-delay: 0.6s;">
           <app-button size="lg"
             className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-8 py-6 text-lg shadow-[0_0_30px_rgba(234,147,85,0.4)] transition-all duration-300 group min-w-[180px] sm:min-w-[200px]">
             <span class="inline-block">Learn More</span>

@@ -1,43 +1,21 @@
-import { Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ButtonComponent } from '../../ui/button/button.component';
-import { InputComponent } from '../../ui/input/input.component';
-import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-cta',
-  imports: [CommonModule, FormsModule, ButtonComponent, InputComponent],
+  imports: [CommonModule],
   templateUrl: './cta.component.html',
   styleUrl: './cta.component.css'
 })
-export class CtaComponent implements AfterViewInit {
-  email: string = '';
-  name: string = '';
-
-  constructor(private toastService: ToastService, private cdr: ChangeDetectorRef) {
-    // Ensure values are explicitly empty strings on initialization
-    this.email = '';
-    this.name = '';
-  }
-
-  ngAfterViewInit(): void {
-    // Force change detection after view initialization to ensure placeholders show
-    setTimeout(() => {
-      this.cdr.detectChanges();
-    }, 0);
-  }
-
-  handleSubmit(event: Event): void {
-    event.preventDefault();
-    if (this.email) {
-      this.toastService.toast({
-        title: 'Thank you for subscribing!',
-        description: 'We\'ll send you cosmic insights and special offers.',
-        type: 'success'
-      });
-      this.email = '';
-      this.name = '';
-    }
-  }
+export class CtaComponent {
+  stars = [
+    { id: 1, x: 8, y: 12, size: 4, delay: 0, duration: 2.2 },
+    { id: 2, x: 92, y: 18, size: 5, delay: 0.4, duration: 2.5 },
+    { id: 3, x: 15, y: 55, size: 3, delay: 0.8, duration: 2 },
+    { id: 4, x: 88, y: 48, size: 4, delay: 0.2, duration: 2.8 },
+    { id: 5, x: 45, y: 22, size: 3, delay: 0.6, duration: 2.3 },
+    { id: 6, x: 72, y: 78, size: 4, delay: 0.3, duration: 2.1 },
+    { id: 7, x: 28, y: 85, size: 3, delay: 0.5, duration: 2.6 },
+    { id: 8, x: 95, y: 65, size: 4, delay: 0.7, duration: 2.4 },
+  ];
 }

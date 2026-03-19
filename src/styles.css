@@ -74,6 +74,13 @@ All colors MUST be HSL.
     cursor: none !important; /* Hide default cursor - only show comet trail */
   }
 
+  /* Restore default cursor on mobile - comet trail is disabled there */
+  @media (max-width: 767px) {
+    * {
+      cursor: auto !important;
+    }
+  }
+
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5rem; /* Account for fixed header height */
@@ -86,3 +93,19 @@ All colors MUST be HSL.
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Mobile bottom nav - add padding so content isn't hidden */
+@media (max-width: 1023px) {
+  main {
+    padding-bottom: 4.5rem;
+  }
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
