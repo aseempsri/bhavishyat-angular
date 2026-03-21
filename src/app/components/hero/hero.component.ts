@@ -33,7 +33,6 @@ export class HeroComponent {
 
   galaxyBg = this.getBaseHref() + 'assets/galaxy-bg.jpg';
   zodiacCircle = this.getBaseHref() + 'assets/zodiac-circle.png';
-  mainLogo = this.getBaseHref() + 'assets/main_logo-P.png';
 
   // Floating star particles for cosmic ambiance
   stars = [
