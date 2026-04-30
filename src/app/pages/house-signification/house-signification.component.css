@@ -135,6 +135,21 @@
   width: 100%;
 }
 
+.interactive-chart-frame {
+  border: 2px solid rgba(255, 193, 99, 0.35);
+  box-shadow: 0 0 0 1px rgba(255, 193, 99, 0.2) inset, 0 0 30px rgba(255, 193, 99, 0.18);
+}
+
+.interactive-chart-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 1rem;
+  border: 2px solid rgba(255, 193, 99, 0.2);
+  animation: chart-frame-pulse 2.2s ease-in-out infinite;
+}
+
 .chart-wrapper img {
   position: relative;
   z-index: 1;
@@ -170,16 +185,38 @@
 }
 
 .house-region:hover polygon:not(.active) {
-  /* Hover effect removed - polygon stays invisible */
+  fill: rgba(255, 193, 99, 0.2);
+  stroke: rgba(255, 193, 99, 0.75);
+  stroke-width: 2.5;
 }
 
 .house-region:hover polygon.active {
-  /* Hover effect removed - polygon stays invisible */
+  fill-opacity: 0.6;
+  stroke-width: 3.2;
 }
 
 .house-region polygon.active {
   stroke-width: 3;
   animation: pulse-active 2s ease-in-out infinite;
+}
+
+.click-guide-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 193, 99, 0.45);
+  background: linear-gradient(135deg, rgba(255, 193, 99, 0.18), rgba(255, 153, 0, 0.08));
+  color: rgba(255, 247, 237, 0.95);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  box-shadow: 0 0 22px rgba(255, 193, 99, 0.2);
+}
+
+.guide-icon {
+  animation: guide-bounce 1.3s ease-in-out infinite;
 }
 
 @keyframes pulse-active {
@@ -190,6 +227,26 @@
   50% {
     stroke-opacity: 0.8;
     fill-opacity: 0.5;
+  }
+}
+
+@keyframes chart-frame-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes guide-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
   }
 }
 
@@ -540,6 +597,11 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .click-guide-pill {
+    font-size: 0.8rem;
+    padding: 0.45rem 0.75rem;
+  }
+
   .cosmic-glow {
     width: 200px;
     height: 200px;

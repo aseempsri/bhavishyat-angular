@@ -236,9 +236,6 @@
                             </p>
                         </div>
 
-                        <button (click)="selectProgram(program.id)" [class.bg-primary]="selectedProgram === program.id" [class.text-primary-foreground]="selectedProgram === program.id" class="w-full px-6 py-3 rounded-lg border-2 border-primary font-semibold hover:bg-primary hover:text-primary-foreground transition-all">
-                            <span>{{ selectedProgram === program.id ? 'Selected ✓' : 'Select This Program' }}</span>
-                        </button>
                     </div>
                 </div>
                 }
@@ -247,143 +244,42 @@
     </div>
 </section>
 
-<!-- Donation Form Section -->
-@if (selectedProgram) {
+<!-- Contact Us Section -->
 <section class="py-20 bg-gradient-to-b from-background to-navy-darker/30">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-playfair font-bold text-foreground mb-4">
-                    Complete Your Seva
+                    Contact Us
                 </h2>
-                <p class="text-lg text-foreground/70">
-                    @if (selectedProgramData) {
-                    Support: <span class="font-semibold text-primary">{{ selectedProgramData.title }}</span>
-                    }
+                <p class="text-lg text-foreground/70 max-w-3xl mx-auto">
+                    Need guidance for the right remedy? Our team helps you choose suitable puja, mantra, seva, and spiritual practices based on your current life challenges and goals.
                 </p>
             </div>
 
             <div class="bg-card/80 backdrop-blur-sm rounded-2xl p-8 border border-border shadow-xl">
-                <!-- Donation Amount Selection -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-foreground mb-4">Select Donation Amount</h3>
-                    @if (selectedProgramData) {
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
-                        @for (amount of selectedProgramData.donationAmounts; track amount) {
-                        <button (click)="selectDonationAmount(amount)" [class.bg-primary]="donationAmount === amount" [class.text-primary-foreground]="donationAmount === amount" [class.border-primary]="donationAmount === amount" class="px-4 py-3 rounded-lg border-2 border-border font-semibold hover:border-primary transition-all">
-                            ₹{{ amount }}
-                        </button>
-                        }
-                    </div>
-                    
-                    <div class="mt-4">
-                        <button 
-                            (click)="toggleCustomAmount()"
-                            class="w-full px-4 py-3 rounded-lg border-2 border-dashed border-border hover:border-primary transition-all text-foreground/70 hover:text-foreground"
-                            [ngClass]="{'bg-primary/10': showCustomAmount}"
-                        >
-                            <span>{{ showCustomAmount ? 'Hide Custom Amount' : 'Enter Custom Amount' }}</span>
-                        </button>
-                        
-                        @if (showCustomAmount) {
-                            <div class="mt-4">
-                                <input
-                                    type="number"
-                                    [(ngModel)]="customAmount"
-                                    placeholder="Enter amount in ₹"
-                                    min="100"
-                                    class="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:outline-none">
-                            </div>
-                        }
-                    </div>
-                    }
-                </div>
+                <p class="text-foreground/80 leading-relaxed mb-6">
+                    Share your concern related to health, relationships, career, finances, or peace of mind, and we will guide you with practical and authentic Vedic remedy suggestions you can follow with clarity.
+                </p>
 
-                <!-- Donor Information -->
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-foreground mb-4">Your Information</h3>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-foreground/70 mb-2">Full Name *</label>
-                            <input
-                                type="text"
-                                [(ngModel)]="donorName"
-                                placeholder="Enter your name"
-                                required
-                                class="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-foreground/70 mb-2">Email *</label>
-                            <input
-                                type="email"
-                                [(ngModel)]="donorEmail"
-                                placeholder="your.email@example.com"
-                                required
-                                class="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-foreground/70 mb-2">Phone Number</label>
-                            <input
-                                type="tel"
-                                [(ngModel)]="donorPhone"
-                                placeholder="+91 1234567890"
-                                class="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-foreground/70 mb-2">Selected Lagan</label>
-                            <input
-                                type="text"
-                                [value]="getSelectedLaganRemedy()?.name || 'Not selected'"
-                                disabled
-                                class="w-full px-4 py-3 rounded-lg border-2 border-border bg-muted text-foreground/60">
-                        </div>
+                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                    <div class="rounded-lg border border-border bg-background/60 p-4">
+                        <p class="text-sm text-foreground/60 mb-1">Email</p>
+                        <p class="text-foreground font-semibold">support&#64;bhavishyat.com</p>
                     </div>
-                    <div class="mt-4">
-                        <label class="block text-sm font-medium text-foreground/70 mb-2">Message (Optional)</label>
-                        <textarea
-                            [(ngModel)]="donorMessage"
-                            placeholder="Any special instructions or prayers..."
-                            rows="4"
-                            class="w-full px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:outline-none"></textarea>
+                    <div class="rounded-lg border border-border bg-background/60 p-4">
+                        <p class="text-sm text-foreground/60 mb-1">Phone</p>
+                        <p class="text-foreground font-semibold">+91 98765 43210</p>
                     </div>
                 </div>
 
-                <!-- Summary -->
-                <div class="mb-8 p-6 bg-primary/10 rounded-lg border border-primary/20">
-                    <h3 class="text-lg font-semibold text-foreground mb-4">Donation Summary</h3>
-                    <div class="space-y-2 text-foreground/80">
-                        <div class="flex justify-between">
-                            <span>Program:</span>
-                            <span class="font-semibold">{{ selectedProgramData ? selectedProgramData.title : 'Not selected' }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Amount:</span>
-                            <span class="font-semibold text-primary text-xl">
-                                ₹{{ showCustomAmount && customAmount > 0 ? customAmount : donationAmount }}
-                            </span>
-                        </div>
-                        @if (selectedLagan && selectedLaganData) {
-                        <div class="flex justify-between">
-                            <span>Lagan Remedy:</span>
-                            <span class="font-semibold">{{ selectedLaganData.name }}</span>
-                        </div>
-                        }
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <button (click)="submitDonation()" class="w-full px-8 py-4 rounded-lg bg-gradient-to-r from-primary to-accent text-primary-foreground font-bold text-lg hover:shadow-lg hover:shadow-primary/30 transition-all duration-300">
-                    Proceed to Payment
-                </button>
-
-                <p class="text-xs text-foreground/50 text-center mt-4">
-                    Your donation is secure and will be used transparently for the selected program.
+                <p class="text-sm text-foreground/60 text-center">
+                    We usually respond within 24 hours and help you take the next right step with confidence.
                 </p>
             </div>
         </div>
     </div>
 </section>
-}
 
 <!-- Impact Stories Section -->
 <section class="py-20 bg-gradient-to-b from-navy-darker/30 to-background">

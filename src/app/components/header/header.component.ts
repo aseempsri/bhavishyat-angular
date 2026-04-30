@@ -9,6 +9,16 @@ import { BirthDetailsModalComponent } from '../birth-details-modal/birth-details
 import { AstrologyService } from '../../services/astrology.service';
 import { AuthService } from '../../services/auth.service';
 
+type NavItem = {
+  label: string;
+  href: string;
+  isRoute: boolean;
+  hasDropdown?: boolean;
+  dropdownItems?: NavItem[];
+  requiresLogin?: boolean;
+  hidden?: boolean;
+};
+
 @Component({
   selector: 'app-header',
   imports: [CommonModule, RouterModule, FormsModule, ButtonComponent, InputComponent, BirthDetailsModalComponent],
@@ -34,37 +44,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
   openDropdown: string | null = null;
   intendedRedirect: string | null = null;
 
-  navItems = [
-    { 
-      label: 'About Us', 
-      href: '#about', 
-      isRoute: false,
-      hasDropdown: true,
-      dropdownItems: [
-        { label: 'About Us', href: '#about', isRoute: false },
-        { label: 'Services', href: '#services', isRoute: false },
-        { label: 'Contact Us', href: '#contact', isRoute: false }
-      ]
-    },
+  navItems: NavItem[] = [
+    { label: 'About Us', href: '#about', isRoute: false },
+    { label: 'Services', href: '#services', isRoute: false },
+    { label: 'Contact Us', href: '#contact', isRoute: false },
     { label: 'Daily Panchang', href: '/daily-panchang', isRoute: true },
-    { label: 'Shinrin Yoku', href: '/shinrin-yoku', isRoute: true },
-    { label: 'Escape Retreats', href: '/escape-retreats', isRoute: true },
+    { label: 'Shinrin Yoku', href: '/shinrin-yoku', isRoute: true, hidden: true },
+    { label: 'Escape Retreats', href: '/escape-retreats', isRoute: true, hidden: true },
     { label: 'Remedies & Seva', href: '/remedies-seva', isRoute: true },
-    { label: 'Aarohanam', href: '/aarohanam', isRoute: true },
-    { label: "Let's Learn", href: '/class-recordings', isRoute: true, requiresLogin: true },
+    { label: 'Aarohanam', href: '/aarohanam', isRoute: true, hidden: true },
+    { label: 'Gurukul', href: '/class-recordings', isRoute: true, requiresLogin: true },
   ];
 
   // Mobile bottom bar - About Us groups About, Services, Contact
-  mobileNavItems = [
+  mobileNavItems: NavItem[] = [
     { label: 'Panchang', href: '/daily-panchang', isRoute: true },
-    { label: 'Shinrin Yoku', href: '/shinrin-yoku', isRoute: true },
-    { label: 'Retreats', href: '/escape-retreats', isRoute: true },
+    { label: 'Shinrin Yoku', href: '/shinrin-yoku', isRoute: true, hidden: true },
+    { label: 'Retreats', href: '/escape-retreats', isRoute: true, hidden: true },
     { label: 'Remedies', href: '/remedies-seva', isRoute: true },
-    { label: 'Aarohanam', href: '/aarohanam', isRoute: true },
-    { label: "Let's Learn", href: '/class-recordings', isRoute: true, requiresLogin: true },
+    { label: 'Aarohanam', href: '/aarohanam', isRoute: true, hidden: true },
+    { label: 'Gurukul', href: '/class-recordings', isRoute: true, requiresLogin: true },
   ];
 
-  mobileAboutSubItems = [
+  mobileAboutSubItems: NavItem[] = [
     { label: 'About Us', href: '#about', isRoute: false },
     { label: 'Services', href: '#services', isRoute: false },
     { label: 'Contact Us', href: '#contact', isRoute: false },

@@ -15,7 +15,7 @@
       <!-- Desktop Navigation -->
       <nav class="hidden lg:flex items-center gap-1" style="pointer-events: auto;">
         @for (item of navItems; track $index) {
-          @if (item.hasDropdown) {
+          @if (!item.hidden && item.hasDropdown) {
             <!-- Dropdown Menu Item -->
             <div 
               class="nav-dropdown relative"
@@ -60,7 +60,7 @@
                 </div>
               }
             </div>
-          } @else {
+          } @else if (!item.hidden) {
             @if (item.isRoute) {
               @if (item.requiresLogin && !isLoggedIn) {
                 <a
@@ -144,7 +144,7 @@
         }
       </div>
       @for (item of mobileNavItems; track item.label) {
-        @if (item.isRoute) {
+        @if (!item.hidden && item.isRoute) {
           <a
             (click)="handleRouteClick($event, item.href, item.requiresLogin)"
             [routerLink]="item.href"
@@ -153,7 +153,7 @@
           >
             {{ item.label }}
           </a>
-        } @else {
+        } @else if (!item.hidden) {
           <a
             [href]="item.href"
             (click)="handleHashClick($event, item.href)"
@@ -171,9 +171,11 @@
           Logout
         </button>
       } @else {
-        <button (click)="openLoginModal()" class="nav-pill-login px-2 rounded-xl text-primary font-bold w-full">
-          Login
-        </button>
+        <div class="col-span-4">
+          <button (click)="openLoginModal()" class="nav-pill-login px-5 rounded-xl text-primary font-bold w-full">
+            Login
+          </button>
+        </div>
       }
     </div>
   </nav>

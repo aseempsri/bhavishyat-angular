@@ -35,17 +35,18 @@
     <div class="max-w-4xl mx-auto text-center">
       <div>
         <!-- Brand Name: soft glow + gradient text; mobile + web sizes -->
-        <div class="mb-6 flex justify-center max-md:py-5 md:py-8 lg:py-12 w-full min-w-0 max-md:px-2">
+        <div class="mb-1 md:mb-2 flex justify-center max-md:py-2 md:py-4 lg:py-5 w-full min-w-0 max-md:px-2">
           <div
             class="relative isolate flex w-full min-w-0 justify-center max-md:max-w-[min(100%,calc(100vw-2rem))] max-md:px-0 px-1 sm:px-2">
             <!-- Ambient halo behind wordmark (does not replace text; for decoration only) -->
             <div
               aria-hidden="true"
-              class="pointer-events-none absolute left-1/2 top-[52%] z-0 -translate-x-1/2 -translate-y-1/2 w-[min(110%,42rem)] max-w-[min(100%,calc(100vw-2rem))] h-20 max-md:h-[min(5.5rem,18vw)] md:h-28 lg:h-32 rounded-full bg-gradient-to-r from-primary/55 via-accent/45 to-primary/55 blur-[26px] md:blur-[40px] lg:blur-[48px] opacity-75 md:opacity-[0.82]"></div>
-            <h1
-              class="font-cinzel font-bold text-center bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent relative z-10 block w-full min-w-0 max-md:leading-[1.02] max-md:tracking-tighter max-md:text-[clamp(2.64rem,13.86vw,5.478rem)] md:leading-tight md:tracking-tight md:text-[5.733rem] lg:text-[7.16625rem] xl:text-[8.5995rem] md:max-w-none md:w-full max-md:[filter:drop-shadow(0_0_12px_rgba(234,147,85,0.5))_drop-shadow(0_0_28px_rgba(234,147,85,0.28))_drop-shadow(0_0_52px_rgba(234,147,85,0.16))] md:[filter:drop-shadow(0_0_18px_rgba(234,147,85,0.52))_drop-shadow(0_0_44px_rgba(234,147,85,0.32))_drop-shadow(0_0_88px_rgba(234,147,85,0.2))]">
-              BHAVISHYAT
-            </h1>
+              class="pointer-events-none absolute left-1/2 top-[52%] z-0 -translate-x-1/2 -translate-y-1/2 w-[min(106%,38rem)] max-w-[min(100%,calc(100vw-2rem))] h-14 max-md:h-[min(3.8rem,13vw)] md:h-20 lg:h-24 rounded-full bg-gradient-to-r from-primary/34 via-accent/26 to-primary/34 blur-[14px] md:blur-[22px] lg:blur-[28px] opacity-45 md:opacity-[0.5]"></div>
+            <img
+              [src]="mainLogo"
+              alt="Bhavishyat"
+              class="relative z-10 block w-full max-w-[min(100%,52rem)] md:max-w-[56rem] lg:max-w-[62rem] h-auto object-contain max-md:[filter:drop-shadow(0_0_12px_rgba(234,147,85,0.5))_drop-shadow(0_0_28px_rgba(234,147,85,0.28))_drop-shadow(0_0_52px_rgba(234,147,85,0.16))] md:[filter:drop-shadow(0_0_18px_rgba(234,147,85,0.52))_drop-shadow(0_0_44px_rgba(234,147,85,0.32))_drop-shadow(0_0_88px_rgba(234,147,85,0.2))]"
+            />
           </div>
         </div>
 
@@ -69,7 +70,7 @@
         <div class="hidden sm:flex lg:hidden flex-row gap-2 sm:gap-4 justify-center items-stretch sm:items-center animate-fade-in-up w-full sm:w-auto max-w-md sm:max-w-none mx-auto" style="animation-delay: 0.6s;">
           <app-button size="lg" (click)="handleLearnWithUsClick($event)"
             className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-3 py-2 text-xs sm:px-8 sm:py-6 sm:text-lg shadow-[0_0_30px_rgba(234,147,85,0.4)] transition-all duration-300 group flex-1 sm:flex-initial min-w-0 sm:min-w-[180px] sm:min-w-[200px]">
-            <span class="inline-block">Let's Learn</span>
+            <span class="inline-block">Gurukul</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
               class="ml-2 inline-block group-hover:translate-x-1 transition-transform shrink-0">

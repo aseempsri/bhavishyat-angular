@@ -37,10 +37,14 @@
     <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-16 items-center">
       <!-- Vedic Kundali Chart -->
       <div class="relative order-2 lg:order-1 flex flex-col items-center justify-center">
+        <div class="click-guide-pill -mb-4">
+          <span class="guide-icon">👇</span>
+          <span>Click any house on the chart to view its signification</span>
+        </div>
         <div class="kundali-chart-container relative mx-auto"
           style="max-width: 100%; transform: scale(0.84); transform-origin: center;">
           <!-- North Indian Vedic Chart Design with Clickable Overlay -->
-          <div class="relative w-full flex items-center justify-center overflow-hidden rounded-2xl chart-wrapper">
+          <div class="relative w-full flex items-center justify-center overflow-hidden rounded-2xl chart-wrapper interactive-chart-frame">
             @if (!imageError) {
             <img id="chart-image" src="assets/vedic-chart2.png" alt="North Indian Vedic Chart"
               class="w-full h-auto object-contain"
@@ -157,8 +161,12 @@
               </a>
             </svg>
           </div>
-          <p class="text-[20px] text-white text-center mt-1 italic font-bold">click on each house to reveal the
-            signification</p>
+          <div class="text-center mt-2">
+            <p class="text-base md:text-lg text-primary font-semibold tracking-wide">
+              Tap the highlighted house zones
+            </p>
+            <p class="text-sm text-foreground/70">Each click updates the details panel on the right</p>
+          </div>
         </div>
       </div>
 
