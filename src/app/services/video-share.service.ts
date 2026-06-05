@@ -6,9 +6,15 @@ import { YouTubeVideo } from './youtube.service';
 export class VideoShareService {
   private document = inject(DOCUMENT);
 
-  getShareUrl(video: YouTubeVideo): string {
+  getShareUrl(video: YouTubeVideo, bustCache = true): string {
     const origin = this.document.defaultView?.location.origin ?? '';
-    return `${origin}${this.getBaseHref()}share/${video.id}.html`;
+    const baseUrl = `${origin}${this.getBaseHref()}share/${video.id}.html`;
+
+    if (!bustCache) {
+      return baseUrl;
+    }
+
+    return `${baseUrl}?v=${Date.now()}`;
   }
 
   getGurukulVideoUrl(video: YouTubeVideo): string {

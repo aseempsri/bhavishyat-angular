@@ -148,13 +148,18 @@ function escapeHtml(text) {
     .replace(/'/g, '&#39;');
 }
 
-function buildSharePage(video) {
+function appendCacheBust(url, key, value) {
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}${key}=${encodeURIComponent(value)}`;
+}
+
+function buildSharePage(video, cacheBust) {
   const normalizedBase = BASE_HREF.endsWith('/') ? BASE_HREF : `${BASE_HREF}/`;
   const gurukulPath = `${normalizedBase}class-recordings?v=${video.id}`;
   const sharePath = `${normalizedBase}share/${video.id}.html`;
   const shareUrl = SITE_URL ? `${SITE_URL.replace(/\/$/, '')}${sharePath}` : sharePath;
   const title = escapeHtml(video.title);
-  const thumbnail = escapeHtml(video.thumbnailUrl);
+  const thumbnail = escapeHtml(appendCacheBust(video.thumbnailUrl, 'cb', cacheBust));
   const description = escapeHtml('Watch this astrology class on BHAVISHYAT Gurukul');
   const siteOrigin = SITE_URL ? SITE_URL.replace(/\/$/, '') : '';
   const faviconUrl = siteOrigin ? `${siteOrigin}${normalizedBase}favicon.ico` : `${normalizedBase}favicon.ico`;
@@ -199,7 +204,7 @@ function buildSharePage(video) {
 `;
 }
 
-function writeSharePages(videos) {
+function writeSharePages(videos, cacheBust) {
   if (fs.existsSync(SHARE_DIR)) {
     for (const file of fs.readdirSync(SHARE_DIR)) {
       if (file.endsWith('.html')) {
@@ -212,7 +217,7 @@ function writeSharePages(videos) {
 
   for (const video of videos) {
     const sharePagePath = path.join(SHARE_DIR, `${video.id}.html`);
-    fs.writeFileSync(sharePagePath, buildSharePage(video));
+    fs.writeFileSync(sharePagePath, buildSharePage(video, cacheBust));
   }
 }
 
@@ -250,10 +255,12 @@ async function main() {
       }
     }
 
+    const fetchedAt = new Date().toISOString();
+    const cacheBust = Date.now().toString();
     const payload = {
       channelId: CHANNEL_ID,
       channelUrl: 'https://www.youtube.com/@Bhavishyatastro/videos',
-      fetchedAt: new Date().toISOString(),
+      fetchedAt,
       videos
     };
 
@@ -261,7 +268,7 @@ async function main() {
     fs.writeFileSync(OUTPUT_PATH, JSON.stringify(payload, null, 2));
 
     if (videos.length > 0) {
-      writeSharePages(videos);
+      writeSharePages(videos, cacheBust);
       console.log(`Generated ${videos.length} share pages in ${SHARE_DIR}`);
     }
 
