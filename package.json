@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "fetch-youtube": "node scripts/fetch-youtube-videos.mjs",
+    "prebuild": "node scripts/fetch-youtube-videos.mjs",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

@@ -18,11 +18,12 @@ export class HeroComponent {
 
   handleLearnWithUsClick(event: Event): void {
     event.preventDefault();
-    if (this.authService.isLoggedIn) {
-      this.router.navigate(['/class-recordings']);
-    } else {
-      this.authService.requestLogin('/class-recordings');
-    }
+    this.router.navigate(['/class-recordings']);
+    // if (this.authService.isLoggedIn) {
+    //   this.router.navigate(['/class-recordings']);
+    // } else {
+    //   this.authService.requestLogin('/class-recordings');
+    // }
   }
   
   // Get base href from document to work with both local dev and production

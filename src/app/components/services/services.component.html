@@ -12,7 +12,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       @for (service of services; track service.badge; let index = $index) {
         <app-card 
-          className="bg-card/80 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(234,147,85,0.2)] group relative overflow-hidden animate-fade-in-up"
+          className="flex flex-col h-full bg-card/80 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(234,147,85,0.2)] group relative overflow-hidden animate-fade-in-up"
           [style.animation-delay]="index * 0.1 + 's'"
         >
           <!-- Badge -->

@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Escape Retreats', href: '/escape-retreats', isRoute: true, hidden: true },
     { label: 'Remedies & Seva', href: '/remedies-seva', isRoute: true },
     { label: 'Aarohanam', href: '/aarohanam', isRoute: true, hidden: true },
-    { label: 'Gurukul', href: '/class-recordings', isRoute: true, requiresLogin: true },
+    { label: 'Gurukul', href: '/class-recordings', isRoute: true }, // requiresLogin: true,
   ];
 
   // Mobile bottom bar - About Us groups About, Services, Contact
@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Retreats', href: '/escape-retreats', isRoute: true, hidden: true },
     { label: 'Remedies', href: '/remedies-seva', isRoute: true },
     { label: 'Aarohanam', href: '/aarohanam', isRoute: true, hidden: true },
-    { label: 'Gurukul', href: '/class-recordings', isRoute: true, requiresLogin: true },
+    { label: 'Gurukul', href: '/class-recordings', isRoute: true }, // requiresLogin: true,
   ];
 
   mobileAboutSubItems: NavItem[] = [

@@ -97,6 +97,10 @@
   animation: pulse-glow 12s ease-in-out infinite;
 }
 
+.page-hero .cosmic-glow {
+  opacity: 0.15;
+}
+
 @keyframes pulse-glow {
   0%, 100% {
     transform: scale(1);

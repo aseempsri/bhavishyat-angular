@@ -15,7 +15,7 @@ export class CardComponent {
   @Input() className: string = '';
 
   get cardClasses(): string {
-    return cn('rounded-lg border bg-card text-card-foreground shadow-sm', this.className);
+    return cn('block h-full rounded-lg border bg-card text-card-foreground shadow-sm', this.className);
   }
 }
 

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { Router } from '@angular/router';
 import { ButtonComponent } from '../../ui/button/button.component';
 
 @Component({
@@ -11,6 +11,7 @@ import { ButtonComponent } from '../../ui/button/button.component';
 })
 export class AboutComponent {
   private document = inject(DOCUMENT);
+  private router = inject(Router);
   
   // Get base href from document to work with both local dev and production
   private getBaseHref(): string {
@@ -19,4 +20,8 @@ export class AboutComponent {
   }
 
   zodiacWheel = this.getBaseHref() + 'assets/zodiac-wheel.png';
+
+  navigateToGurukul(): void {
+    this.router.navigate(['/class-recordings']);
+  }
 }
