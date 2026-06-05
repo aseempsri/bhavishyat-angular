@@ -78,7 +78,29 @@ This project is configured with GitHub Actions to automatically deploy to GitHub
 4. **Automatic Deployment:**
    - After pushing, GitHub Actions will automatically build and deploy your app
    - The deployment will appear in the Actions tab
-   - Once complete, your site will be available at: `https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME/`
+   - Once complete, your site will be available at: `https://bhavishyat.in` (custom domain) or `https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME/`
+
+## Custom domain (bhavishyat.in)
+
+### 1. GitHub (one-time)
+
+1. Open **Settings → Pages** in the repository.
+2. Under **Custom domain**, enter `bhavishyat.in` and save.
+3. Wait for DNS checks to pass, then enable **Enforce HTTPS**.
+
+### 2. Hostinger DNS
+
+In **Domain Overview → DNS / Nameservers → Edit**, add these records:
+
+| Type  | Name | Value                 |
+|-------|------|-----------------------|
+| A     | @    | 185.199.108.153       |
+| A     | @    | 185.199.109.153       |
+| A     | @    | 185.199.110.153       |
+| A     | @    | 185.199.111.153       |
+| CNAME | www  | aseempsri.github.io   |
+
+Remove any conflicting A or CNAME records for `@` or `www`. DNS can take up to 24–48 hours to propagate (often much faster).
 
 The GitHub Actions workflow (`.github/workflows/deploy.yml`) will automatically:
 - Build your Angular app on every push to `main` branch
