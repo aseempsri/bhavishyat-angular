@@ -18,8 +18,7 @@ export class VideoShareService {
 
   shareToWhatsApp(video: YouTubeVideo): void {
     const shareUrl = this.getShareUrl(video);
-    const text = `${video.title}\n${shareUrl}`;
-    this.openWindow(`https://wa.me/?text=${encodeURIComponent(text)}`);
+    this.openWindow(`https://wa.me/?text=${encodeURIComponent(shareUrl)}`);
   }
 
   shareToFacebook(video: YouTubeVideo): void {

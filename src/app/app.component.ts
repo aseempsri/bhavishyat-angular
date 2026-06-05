@@ -1,5 +1,14 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit, OnDestroy, AfterViewInit, inject } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter, Subscription } from 'rxjs';
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
+const GA_MEASUREMENT_ID = 'G-RDCP6X1G99';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +17,10 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+  private router = inject(Router);
+
   title = 'bhavishyat-angular';
+  private routerSub?: Subscription;
   private trail: HTMLElement[] = [];
   private positions: { x: number; y: number }[] = [];
   private trailLength = 20;
@@ -19,11 +31,17 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private isInitialized = false;
 
   ngOnInit() {
-    // Wait for DOM to be ready
     if (typeof window !== 'undefined') {
       this.mouseX = window.innerWidth / 2;
       this.mouseY = window.innerHeight / 2;
     }
+
+    this.routerSub = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        const url = (event as NavigationEnd).urlAfterRedirects;
+        window.gtag?.('config', GA_MEASUREMENT_ID, { page_path: url });
+      });
   }
 
   ngAfterViewInit() {
@@ -34,6 +52,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
+    this.routerSub?.unsubscribe();
+
     if (this.animationFrameId !== null) {
       cancelAnimationFrame(this.animationFrameId);
     }

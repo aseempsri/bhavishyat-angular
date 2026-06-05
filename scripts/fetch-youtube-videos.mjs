@@ -11,6 +11,7 @@ const OUTPUT_PATH = path.join(__dirname, '../public/youtube-videos.json');
 const SHARE_DIR = path.join(__dirname, '../public/share');
 const BASE_HREF = process.env.BASE_HREF || '/';
 const SITE_URL = process.env.SITE_URL || '';
+const GA_MEASUREMENT_ID = 'G-RDCP6X1G99';
 
 const CLIENT_CONTEXT = {
   client: {
@@ -155,14 +156,29 @@ function buildSharePage(video) {
   const title = escapeHtml(video.title);
   const thumbnail = escapeHtml(video.thumbnailUrl);
   const description = escapeHtml('Watch this astrology class on BHAVISHYAT Gurukul');
+  const siteOrigin = SITE_URL ? SITE_URL.replace(/\/$/, '') : '';
+  const faviconUrl = siteOrigin ? `${siteOrigin}${normalizedBase}favicon.ico` : `${normalizedBase}favicon.ico`;
+  const logoUrl = siteOrigin ? `${siteOrigin}${normalizedBase}assets/top_logo.png` : `${normalizedBase}assets/top_logo.png`;
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', '${GA_MEASUREMENT_ID}');
+  </script>
   <meta charset="utf-8">
   <title>${title} | BHAVISHYAT Gurukul</title>
   <meta name="description" content="${description}">
+  <link rel="icon" type="image/x-icon" href="${faviconUrl}">
+  <link rel="icon" type="image/png" href="${logoUrl}">
+  <link rel="apple-touch-icon" href="${logoUrl}">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BHAVISHYAT">
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${description}">
   <meta property="og:image" content="${thumbnail}">
