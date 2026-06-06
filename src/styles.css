@@ -94,10 +94,14 @@ All colors MUST be HSL.
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-/* Mobile bottom nav - add padding so content isn't hidden */
+/* Mobile header + dock spacing */
 @media (max-width: 1023px) {
+  html {
+    scroll-padding-top: 4.75rem;
+  }
+
   main {
-    padding-bottom: 4.5rem;
+    padding-bottom: 6.25rem;
   }
 }
 

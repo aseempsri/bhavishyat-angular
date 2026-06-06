@@ -19,6 +19,24 @@ type NavItem = {
   hidden?: boolean;
 };
 
+type MobileDockItem = {
+  label: string;
+  href: string;
+  isRoute: boolean;
+  icon: 'home' | 'panchang' | 'gurukul' | 'remedies' | 'explore';
+  isCenter?: boolean;
+  requiresLogin?: boolean;
+  hidden?: boolean;
+};
+
+type MobileExploreItem = {
+  label: string;
+  description: string;
+  href: string;
+  isRoute: boolean;
+  emoji: string;
+};
+
 @Component({
   selector: 'app-header',
   imports: [CommonModule, RouterModule, FormsModule, ButtonComponent, InputComponent, BirthDetailsModalComponent],
@@ -56,23 +74,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Gurukul', href: '/class-recordings', isRoute: true }, // requiresLogin: true,
   ];
 
-  // Mobile bottom bar - About Us groups About, Services, Contact
-  mobileNavItems: NavItem[] = [
-    { label: 'Panchang', href: '/daily-panchang', isRoute: true },
-    { label: 'Shinrin Yoku', href: '/shinrin-yoku', isRoute: true, hidden: true },
-    { label: 'Retreats', href: '/escape-retreats', isRoute: true, hidden: true },
-    { label: 'Remedies', href: '/remedies-seva', isRoute: true },
-    { label: 'Aarohanam', href: '/aarohanam', isRoute: true, hidden: true },
-    { label: 'Gurukul', href: '/class-recordings', isRoute: true }, // requiresLogin: true,
+  mobileDockItems: MobileDockItem[] = [
+    { label: 'Home', href: '/', isRoute: true, icon: 'home' },
+    { label: 'Panchang', href: '/daily-panchang', isRoute: true, icon: 'panchang' },
+    { label: 'Gurukul', href: '/class-recordings', isRoute: true, icon: 'gurukul', isCenter: true },
+    { label: 'Remedies', href: '/remedies-seva', isRoute: true, icon: 'remedies' },
+    { label: 'Explore', href: '#explore', isRoute: false, icon: 'explore' },
   ];
 
-  mobileAboutSubItems: NavItem[] = [
-    { label: 'About Us', href: '#about', isRoute: false },
-    { label: 'Services', href: '#services', isRoute: false },
-    { label: 'Contact Us', href: '#contact', isRoute: false },
+  mobileExploreItems: MobileExploreItem[] = [
+    { label: 'About Us', description: 'Our story and cosmic mission', href: '#about', isRoute: false, emoji: '✨' },
+    { label: 'Services', description: 'Astrology offerings and guidance', href: '#services', isRoute: false, emoji: '🔮' },
+    { label: 'Contact Us', description: 'Reach the BHAVISHYAT team', href: '#contact', isRoute: false, emoji: '📿' },
   ];
 
-  showMobileAboutDropdown = false;
+  showMobileExplore = false;
   private loginRequestSub?: Subscription;
 
   toggleMenu(): void {
@@ -93,11 +109,46 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   closeDropdown(): void {
     this.openDropdown = null;
-    this.showMobileAboutDropdown = false;
+    this.showMobileExplore = false;
   }
 
-  toggleMobileAboutDropdown(): void {
-    this.showMobileAboutDropdown = !this.showMobileAboutDropdown;
+  toggleMobileExplore(): void {
+    this.showMobileExplore = !this.showMobileExplore;
+  }
+
+  closeMobileExplore(): void {
+    this.showMobileExplore = false;
+  }
+
+  handleMobileDockClick(event: Event, item: MobileDockItem): void {
+    if (item.icon === 'explore') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.toggleMobileExplore();
+      return;
+    }
+
+    if (item.href === '/') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.handleLogoClick();
+      this.closeMobileExplore();
+      return;
+    }
+
+    if (item.isRoute) {
+      this.handleRouteClick(event, item.href, item.requiresLogin);
+      this.closeMobileExplore();
+    }
+  }
+
+  handleMobileExploreClick(event: Event, item: MobileExploreItem): void {
+    if (item.isRoute) {
+      this.handleRouteClick(event, item.href);
+    } else {
+      this.handleHashClick(event, item.href);
+    }
+    this.closeMobileExplore();
   }
 
   closeMenu(): void {
@@ -259,8 +310,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.openDropdown && !target.closest('.nav-dropdown')) {
       this.openDropdown = null;
     }
-    if (this.showMobileAboutDropdown && !target.closest('.mobile-about-trigger') && !target.closest('.mobile-about-dropdown')) {
-      this.showMobileAboutDropdown = false;
+    if (this.showMobileExplore && !target.closest('.mobile-dock') && !target.closest('.mobile-explore-panel')) {
+      this.showMobileExplore = false;
     }
   }
 

@@ -1,8 +1,19 @@
 <div class="header-wrapper">
-  <!-- Mobile: logo only, no container - completely bare -->
-  <a (click)="handleLogoClick()" class="mobile-logo-only lg:hidden fixed top-0 left-0 z-[60] p-3 cursor-pointer block" style="text-decoration: none;">
-    <img src="assets/top_logo.png" alt="Bhavishyat" class="h-9 w-auto object-contain block" />
-  </a>
+  <!-- Mobile top bar: always-visible brand -->
+  <header
+    class="mobile-top-bar lg:hidden fixed top-0 left-0 right-0 z-[60]"
+    [class.mobile-top-bar--scrolled]="isScrolled"
+  >
+    <a (click)="handleLogoClick()" class="mobile-brand" style="text-decoration: none;">
+      <span class="mobile-brand-badge">
+        <img src="assets/top_logo.png" alt="Bhavishyat" class="mobile-brand-logo" />
+      </span>
+      <span class="mobile-brand-copy">
+        <span class="mobile-brand-name">BHAVISHYAT</span>
+        <span class="mobile-brand-tagline">Cosmic Guidance</span>
+      </span>
+    </a>
+  </header>
 
 <header [class.scrolled]="isScrolled" class="header-container fixed top-0 left-0 right-0 z-[60] hidden lg:block lg:bg-background/95 lg:backdrop-blur-xl lg:border-b lg:border-border/50 transition-all duration-300">
   <div class="container mx-auto px-4">
@@ -120,69 +131,120 @@
   </div>
 </header>
 
-  <!-- Mobile Bottom Navigation - outside header so fixed bottom works (header's backdrop-blur creates containing block) -->
-  <nav class="mobile-bottom-nav lg:hidden fixed bottom-0 left-0 right-0 z-[60] bg-background/95 backdrop-blur-sm border-t border-border/50 pb-[env(safe-area-inset-bottom)]">
-    <div class="grid grid-cols-4 gap-2 px-2 py-2 auto-rows-[30px]">
-      <!-- About Us (with dropdown) -->
-      <div class="relative mobile-about-trigger">
-        <button
-          (click)="toggleMobileAboutDropdown()"
-          class="nav-pill px-2 rounded-xl text-foreground hover:text-primary font-bold w-full"
-        >
-          About Us
-        </button>
-        @if (showMobileAboutDropdown) {
-          <div class="mobile-about-dropdown absolute bottom-full left-0 mb-1 py-1 min-w-[120px] bg-background/95 backdrop-blur-xl border border-border/50 rounded-lg shadow-lg">
-            @for (sub of mobileAboutSubItems; track sub.href) {
-              <a
-                [href]="sub.href"
-                (click)="handleHashClick($event, sub.href); showMobileAboutDropdown = false"
-                class="block px-3 py-2 text-foreground hover:text-primary hover:bg-primary/5 text-xs font-medium"
-              >
-                {{ sub.label }}
-              </a>
-            }
-          </div>
+  <!-- Mobile cosmic dock -->
+  <nav class="mobile-dock lg:hidden fixed bottom-0 left-0 right-0 z-[60] pb-[env(safe-area-inset-bottom)]">
+    <div class="mobile-dock-inner">
+      @for (item of mobileDockItems; track item.label) {
+        @if (!item.hidden) {
+          @if (item.isCenter) {
+            <a
+              (click)="handleMobileDockClick($event, item)"
+              [routerLink]="item.href"
+              routerLinkActive="mobile-dock-item--active"
+              [routerLinkActiveOptions]="{ exact: false }"
+              class="mobile-dock-item mobile-dock-item--center"
+              [attr.aria-label]="item.label"
+            >
+              <span class="mobile-dock-center-ring">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h8M8 11h8M8 15h5"></path>
+                </svg>
+              </span>
+              <span class="mobile-dock-label mobile-dock-label--center">{{ item.label }}</span>
+            </a>
+          } @else if (item.icon === 'explore') {
+            <button
+              type="button"
+              (click)="handleMobileDockClick($event, item)"
+              class="mobile-dock-item"
+              [class.mobile-dock-item--active]="showMobileExplore"
+              aria-label="Explore more pages"
+            >
+              <span class="mobile-dock-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"></path>
+                </svg>
+              </span>
+              <span class="mobile-dock-label">{{ item.label }}</span>
+            </button>
+          } @else {
+            <a
+              (click)="handleMobileDockClick($event, item)"
+              [routerLink]="item.isRoute ? item.href : null"
+              routerLinkActive="mobile-dock-item--active"
+              [routerLinkActiveOptions]="{ exact: item.href === '/' }"
+              class="mobile-dock-item"
+              [attr.aria-label]="item.label"
+            >
+              <span class="mobile-dock-icon">
+                @switch (item.icon) {
+                  @case ('home') {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5L12 4l9 6.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"></path>
+                    </svg>
+                  }
+                  @case ('panchang') {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 3v3M16 3v3M4 8h16M6 12h3M6 16h3M12 12h3M12 16h3M18 12h.01M18 16h.01"></path>
+                      <rect x="4" y="6" width="16" height="14" rx="2"></rect>
+                    </svg>
+                  }
+                  @case ('remedies') {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l1.8 4.6L18 9.4l-4.2 1.8L12 15.8 10.2 11.2 6 9.4l4.2-1.8L12 3z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 19c2-2 4-3 7-3s5 1 7 3"></path>
+                    </svg>
+                  }
+                }
+              </span>
+              <span class="mobile-dock-label">{{ item.label }}</span>
+            </a>
+          }
         }
-      </div>
-      @for (item of mobileNavItems; track item.label) {
-        @if (!item.hidden && item.isRoute) {
-          <a
-            (click)="handleRouteClick($event, item.href, item.requiresLogin)"
-            [routerLink]="item.href"
-            routerLinkActive="text-primary"
-            class="nav-pill px-2 rounded-xl text-foreground hover:text-primary font-bold w-full"
-          >
-            {{ item.label }}
-          </a>
-        } @else if (!item.hidden) {
-          <a
-            [href]="item.href"
-            (click)="handleHashClick($event, item.href)"
-            class="nav-pill px-2 rounded-xl text-foreground hover:text-primary font-bold w-full"
-          >
-            {{ item.label }}
-          </a>
-        }
-      }
-      @if (isLoggedIn) {
-        <a [routerLink]="['/kundali']" (click)="handleKundaliLinkClick($event)" class="nav-pill px-2 rounded-xl text-primary font-bold w-full">
-          Kundali
-        </a>
-        <button (click)="logout()" class="nav-pill px-2 rounded-xl text-foreground hover:text-primary font-bold w-full">
-          Logout
-        </button>
-      } @else {
-        <!-- Login button
-        <div class="col-span-4">
-          <button (click)="openLoginModal()" class="nav-pill-login px-5 rounded-xl text-primary font-bold w-full">
-            Login
-          </button>
-        </div>
-        -->
       }
     </div>
   </nav>
+
+  @if (showMobileExplore) {
+    <div class="mobile-explore-backdrop lg:hidden" (click)="closeMobileExplore()"></div>
+    <section class="mobile-explore-panel lg:hidden" aria-label="Explore BHAVISHYAT">
+      <div class="mobile-explore-handle"></div>
+      <div class="mobile-explore-header">
+        <h2>Explore BHAVISHYAT</h2>
+        <p>Choose where you want to go</p>
+      </div>
+      <div class="mobile-explore-grid">
+        @for (item of mobileExploreItems; track item.href) {
+          <button
+            type="button"
+            class="mobile-explore-card"
+            (click)="handleMobileExploreClick($event, item)"
+          >
+            <span class="mobile-explore-emoji">{{ item.emoji }}</span>
+            <span class="mobile-explore-copy">
+              <span class="mobile-explore-title">{{ item.label }}</span>
+              <span class="mobile-explore-desc">{{ item.description }}</span>
+            </span>
+            <svg class="mobile-explore-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        }
+      </div>
+      @if (isLoggedIn) {
+        <div class="mobile-explore-auth">
+          <a [routerLink]="['/kundali']" (click)="handleKundaliLinkClick($event); closeMobileExplore()" class="mobile-explore-auth-link">
+            Hi, {{ loggedInName }} · Open Kundali
+          </a>
+          <button type="button" (click)="logout(); closeMobileExplore()" class="mobile-explore-logout">
+            Logout
+          </button>
+        </div>
+      }
+    </section>
+  }
 
   <!-- Login Modal -->
   @if (showLoginModal) {
