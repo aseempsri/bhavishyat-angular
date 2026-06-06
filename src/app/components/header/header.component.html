@@ -4,13 +4,9 @@
     class="mobile-top-bar lg:hidden fixed top-0 left-0 right-0 z-[60]"
     [class.mobile-top-bar--scrolled]="isScrolled"
   >
-    <a (click)="handleLogoClick()" class="mobile-brand" style="text-decoration: none;">
+    <a (click)="handleLogoClick()" class="mobile-brand" style="text-decoration: none;" aria-label="BHAVISHYAT home">
       <span class="mobile-brand-badge">
         <img src="assets/top_logo.png" alt="Bhavishyat" class="mobile-brand-logo" />
-      </span>
-      <span class="mobile-brand-copy">
-        <span class="mobile-brand-name">BHAVISHYAT</span>
-        <span class="mobile-brand-tagline">Cosmic Guidance</span>
       </span>
     </a>
   </header>
