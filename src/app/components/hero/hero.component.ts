@@ -32,7 +32,7 @@ export class HeroComponent {
     return baseTag?.getAttribute('href') || '/';
   }
 
-  galaxyBg = this.getBaseHref() + 'assets/galaxy-bg.jpg';
+  galaxyBg = this.getBaseHref() + 'assets/new-hero.png';
   zodiacCircle = this.getBaseHref() + 'assets/zodiac-circle.png';
   mainLogo = this.getBaseHref() + 'assets/main_logo-P.png';
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, inject, HostListener } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 
@@ -45,35 +45,61 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Initialize after view is ready
     setTimeout(() => {
-      this.initializeTrail();
+      this.syncCursorTrail();
     }, 100);
   }
 
   ngOnDestroy() {
     this.routerSub?.unsubscribe();
+    this.destroyTrail();
+  }
 
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.syncCursorTrail();
+  }
+
+  private shouldShowCursorTrail(): boolean {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    return window.matchMedia('(pointer: fine)').matches;
+  }
+
+  private syncCursorTrail(): void {
+    if (this.shouldShowCursorTrail()) {
+      this.initializeTrail();
+      return;
+    }
+
+    this.destroyTrail();
+  }
+
+  private destroyTrail(): void {
     if (this.animationFrameId !== null) {
       cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
     }
+
     if (typeof document !== 'undefined') {
       document.removeEventListener('mousemove', this.mouseMoveHandler);
     }
-    this.trail.forEach(particle => {
-      if (particle && particle.parentNode) {
+
+    this.trail.forEach((particle) => {
+      if (particle?.parentNode) {
         particle.remove();
       }
     });
-  }
 
-  private isMobile(): boolean {
-    return typeof window !== 'undefined' && window.innerWidth < 768;
+    this.trail = [];
+    this.positions = [];
+    this.isInitialized = false;
   }
 
   initializeTrail() {
-    if (this.isInitialized) return;
-    if (this.isMobile()) return; // Skip comet cursor on mobile
+    if (this.isInitialized || !this.shouldShowCursorTrail()) return;
 
     this.isInitialized = true;
 
@@ -113,7 +139,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       particle.style.background = 'radial-gradient(circle, rgba(255, 201, 99, 1) 0%, rgba(255, 153, 0, 0.9) 40%, rgba(255, 201, 99, 0.4) 100%)';
       particle.style.boxShadow = '0 0 15px rgba(255, 201, 99, 0.8), 0 0 30px rgba(255, 153, 0, 0.6), 0 0 45px rgba(255, 153, 0, 0.3)';
       particle.style.pointerEvents = 'none';
-      particle.style.zIndex = '99999';
+      particle.style.zIndex = '2147483646';
       particle.style.transformOrigin = 'center';
       particle.style.willChange = 'transform, opacity';
       

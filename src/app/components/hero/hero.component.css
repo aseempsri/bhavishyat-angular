@@ -1,0 +1,19 @@
+.hero-bg {
+  background-position: center 40%;
+  filter: saturate(1.1) contrast(1.08) brightness(1.04);
+  transform: scale(1.03);
+}
+
+.hero-bg-vignette {
+  background:
+    radial-gradient(ellipse at 50% 42%, transparent 0%, rgba(10, 14, 24, 0.12) 58%, rgba(10, 14, 24, 0.5) 100%),
+    linear-gradient(180deg, rgba(10, 14, 24, 0.1) 0%, transparent 42%, rgba(10, 14, 24, 0.82) 100%);
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .hero-bg {
+    background-position: center 36%;
+    filter: saturate(1.12) contrast(1.1) brightness(1.06);
+  }
+}

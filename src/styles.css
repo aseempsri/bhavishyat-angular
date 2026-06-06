@@ -71,13 +71,11 @@ All colors MUST be HSL.
 @layer base {
   * {
     @apply border-border;
-    cursor: none !important; /* Hide default cursor - only show comet trail */
   }
 
-  /* Restore default cursor on mobile - comet trail is disabled there */
-  @media (max-width: 767px) {
+  @media (pointer: fine) {
     * {
-      cursor: auto !important;
+      cursor: none !important;
     }
   }
 
