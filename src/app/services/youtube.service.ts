@@ -3,6 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { normalizeVideoTitle } from '../utils/video-title.util';
 
 export interface YouTubeVideo {
   id: string;
@@ -27,7 +28,7 @@ export class YoutubeService {
   private http = inject(HttpClient);
   private document = inject(DOCUMENT);
 
-  private readonly CACHE_KEY = 'bhavishyat_youtube_videos_v3';
+  private readonly CACHE_KEY = 'bhavishyat_youtube_videos_v4';
   private readonly CACHE_TTL_MS = 60 * 60 * 1000;
 
   getChannelVideos(): Observable<YouTubeVideo[]> {
@@ -57,7 +58,10 @@ export class YoutubeService {
         }
       })
       .pipe(
-        map((payload) => payload.videos ?? []),
+        map((payload) => (payload.videos ?? []).map((video) => ({
+          ...video,
+          title: normalizeVideoTitle(video.title, video.id)
+        }))),
         tap((videos) => {
           if (videos.length > 0) {
             this.setCache(videos);

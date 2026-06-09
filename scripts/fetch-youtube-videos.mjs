@@ -46,6 +46,78 @@ function parseDuration(duration) {
   return null;
 }
 
+const MINOR_WORDS = new Set([
+  'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'its', 'is'
+]);
+
+const TITLE_OVERRIDES = {
+  YRip9YUV10I: 'Seek Answers From the World',
+  czzkh7LjcuI: 'Do Gemstones Really Work? The Truth Explained'
+};
+
+function titleCaseSegment(segment) {
+  const words = segment.split(/(\s+)/);
+
+  return words
+    .map((part, index) => {
+      if (/^\s+$/.test(part)) {
+        return part;
+      }
+
+      const isFirstWord = !words.slice(0, index).some((item) => /\S/.test(item));
+      const alpha = part.replace(/[^a-zA-Z]/g, '').toLowerCase();
+
+      if (!isFirstWord && MINOR_WORDS.has(alpha)) {
+        return part.toLowerCase();
+      }
+
+      const firstAlphaIndex = part.search(/[a-zA-Z]/);
+      if (firstAlphaIndex === -1) {
+        return part;
+      }
+
+      return (
+        part.slice(0, firstAlphaIndex) +
+        part.charAt(firstAlphaIndex).toUpperCase() +
+        part.slice(firstAlphaIndex + 1).toLowerCase()
+      );
+    })
+    .join('');
+}
+
+function toTitleCase(title) {
+  return title
+    .split(' | ')
+    .map((segment) => titleCaseSegment(segment.trim()))
+    .join(' | ');
+}
+
+function normalizeVideoTitle(title, videoId) {
+  if (videoId && TITLE_OVERRIDES[videoId]) {
+    return TITLE_OVERRIDES[videoId];
+  }
+
+  let normalized = title
+    .replace(/\s*@\s*Bhavishyatastro\s*/gi, ' ')
+    .replace(/\s*@\s*Bhavishyat\s*/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  normalized = normalized.replace(/Dwisvabhav/gi, 'Dwiswabhav');
+  normalized = normalized.replace(/Honest Truth/gi, 'Truth');
+  normalized = normalized.replace(/\(PART\s*(\d+)\)/gi, '(Part $1)');
+  normalized = normalized.replace(/\(part\s*(\d+)\)/gi, '(Part $1)');
+  normalized = normalized.replace(/part-ii/gi, 'Part-II');
+  normalized = normalized.replace(/part-i(?!\w)/gi, 'Part-I');
+  normalized = normalized.replace(/([a-z])(\()/gi, '$1 $2');
+
+  if (/^before you seek answers in the world/i.test(normalized)) {
+    return 'Seek Answers From the World';
+  }
+
+  return toTitleCase(normalized);
+}
+
 function isShortVideo(duration, title) {
   const seconds = parseDuration(duration);
 
@@ -119,7 +191,7 @@ function extractPlaylistVideos(response) {
       if (id && title && !isShortVideo(duration, title)) {
         videos.push({
           id,
-          title,
+          title: normalizeVideoTitle(title, id),
           thumbnailUrl,
           videoUrl: `https://www.youtube.com/watch?v=${id}`,
           publishedAt: ''
@@ -257,22 +329,26 @@ async function main() {
 
     const fetchedAt = new Date().toISOString();
     const cacheBust = Date.now().toString();
+    const normalizedVideos = videos.map((video) => ({
+      ...video,
+      title: normalizeVideoTitle(video.title, video.id)
+    }));
     const payload = {
       channelId: CHANNEL_ID,
       channelUrl: 'https://www.youtube.com/@Bhavishyatastro/videos',
       fetchedAt,
-      videos
+      videos: normalizedVideos
     };
 
     fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
     fs.writeFileSync(OUTPUT_PATH, JSON.stringify(payload, null, 2));
 
-    if (videos.length > 0) {
-      writeSharePages(videos, cacheBust);
-      console.log(`Generated ${videos.length} share pages in ${SHARE_DIR}`);
+    if (normalizedVideos.length > 0) {
+      writeSharePages(normalizedVideos, cacheBust);
+      console.log(`Generated ${normalizedVideos.length} share pages in ${SHARE_DIR}`);
     }
 
-    console.log(`Saved ${videos.length} YouTube videos to ${OUTPUT_PATH}`);
+    console.log(`Saved ${normalizedVideos.length} YouTube videos to ${OUTPUT_PATH}`);
   } catch (error) {
     console.warn('Could not fetch YouTube videos at build time:', error.message);
 

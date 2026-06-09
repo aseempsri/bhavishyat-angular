@@ -24,20 +24,20 @@ export class ServicesComponent {
       badge: '1'
     },
     {
-      icon: 'moon',
-      title: 'Love Vedic Jada',
+      icon: 'heart',
+      title: 'Relationship & Astrology',
       description: 'Understand your love nature, emotional needs, and relationship timing through a focused Vedic analysis of your chart.',
       badge: '2'
     },
     {
-      icon: 'heart',
-      title: 'Career of consultations',
+      icon: 'trending-up',
+      title: 'Career Consultations',
       description: 'Get practical guidance for career crossroads, role changes, and growth phases using planetary periods and house strengths.',
       badge: '3'
     },
     {
-      icon: 'trending-up',
-      title: 'Analysis of Horoscopes',
+      icon: 'book',
+      title: 'Horoscope Analysis',
       description: 'Receive an in-depth interpretation of planetary placements, yogas, and patterns to clarify your life themes.',
       badge: '4'
     },
