@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { HeaderComponent } from '../../components/header/header.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -22,13 +23,24 @@ interface LaganRemedy {
     benefits: string[];
 }
 
+interface CarouselMedia {
+    type: 'image' | 'video';
+    src: string;
+}
+
 @Component({
     selector: 'app-remedies-seva',
     imports: [HeaderComponent, CommonModule, FormsModule],
     templateUrl: './remedies-seva.component.html',
     styleUrl: './remedies-seva.component.css'
 })
-export class RemediesSevaComponent {
+export class RemediesSevaComponent implements OnInit, AfterViewInit, OnDestroy {
+    @ViewChildren('naulaVideo') naulaVideos!: QueryList<ElementRef<HTMLVideoElement>>;
+
+    private document = inject(DOCUMENT);
+    private carouselTimer?: ReturnType<typeof setInterval>;
+    private naulaAdvanceTimer?: ReturnType<typeof setTimeout>;
+
     selectedLagan: string = '';
     selectedProgram: string = '';
     donationAmount: number = 0;
@@ -39,13 +51,51 @@ export class RemediesSevaComponent {
     donorPhone: string = '';
     donorMessage: string = '';
 
+    naulaCarouselIndex = 0;
+    naulaMedia: CarouselMedia[] = (
+        [
+            { type: 'image', src: 'assets/naula-dhara/01.jpg' },
+            { type: 'image', src: 'assets/naula-dhara/02.jpg' },
+            { type: 'image', src: 'assets/naula-dhara/03.jpg' },
+            { type: 'image', src: 'assets/naula-dhara/04.jpg' },
+            { type: 'image', src: 'assets/naula-dhara/05.jpg' },
+            { type: 'image', src: 'assets/naula-dhara/06.jpg' },
+            { type: 'image', src: 'assets/naula-dhara/07.jpg' },
+            { type: 'video', src: 'assets/naula-dhara/v01.mp4' },
+            { type: 'video', src: 'assets/naula-dhara/v02.mp4' },
+            { type: 'video', src: 'assets/naula-dhara/v03.mp4' }
+        ] as const
+    ).map((item): CarouselMedia => ({
+        type: item.type,
+        src: this.getBaseHref() + item.src
+    }));
+
+    gaushalaCarouselIndex = 0;
+    gaushalaImages: string[] = [
+        'assets/gaushala/01.jpg',
+        'assets/gaushala/02.jpg'
+    ].map((path) => this.getBaseHref() + path);
+
+    templeCarouselIndex = 0;
+    templeImages: string[] = [
+        'assets/temple/01.jpg'
+    ].map((path) => this.getBaseHref() + path);
+
+    treeCarouselIndex = 0;
+    treeImages: string[] = [
+        'assets/tree-plantation/01.jpg',
+        'assets/tree-plantation/02.jpg',
+        'assets/tree-plantation/03.jpg',
+        'assets/tree-plantation/04.jpg'
+    ].map((path) => this.getBaseHref() + path);
+
     remedyPrograms: RemedyProgram[] = [
         {
             id: 'water',
             title: 'Water Reservoir / Naula Restoration',
             description: 'Support the restoration of ancient water sources (Naulas) and construction of water reservoirs to ensure clean water access for communities.',
             icon: '💧',
-            image: 'https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+            image: this.getBaseHref() + 'assets/naula-dhara/01.jpg',
             features: [
                 'Restoration of traditional water sources',
                 'Community water access improvement',
@@ -60,7 +110,7 @@ export class RemediesSevaComponent {
             title: 'Tree Plantation with Geo-Tagging',
             description: 'Plant trees with complete geo-tagging, unique ID profiling, and receive monthly development updates on your tree\'s growth.',
             icon: '🌳',
-            image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+            image: this.getBaseHref() + 'assets/tree-plantation/01.jpg',
             features: [
                 'Geo-tagged tree location',
                 'Unique ID for each tree',
@@ -76,7 +126,7 @@ export class RemediesSevaComponent {
             title: 'Gaushala Donation & Support',
             description: 'Support cow shelters (Gaushalas) that provide care for abandoned and rescued cows, preserving this sacred tradition.',
             icon: '🐄',
-            image: 'https://images.unsplash.com/photo-1560493676-04071c5f467b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+            image: this.getBaseHref() + 'assets/gaushala/01.jpg',
             features: [
                 'Daily feed and care support',
                 'Medical treatment for cows',
@@ -91,7 +141,7 @@ export class RemediesSevaComponent {
             title: 'Temple Restoration Support',
             description: 'Contribute to the restoration and maintenance of ancient temples, preserving our cultural and spiritual heritage.',
             icon: '🕉️',
-            image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+            image: this.getBaseHref() + 'assets/temple/01.jpg',
             features: [
                 'Temple structure restoration',
                 'Heritage conservation',
@@ -156,6 +206,233 @@ export class RemediesSevaComponent {
         if (lagan && lagan.suggestedPrograms.length > 0) {
             this.selectedProgram = lagan.suggestedPrograms[0];
         }
+    }
+
+    ngOnInit(): void {
+        this.startFeatureCarousels();
+        this.scheduleNaulaAdvance();
+    }
+
+    ngAfterViewInit(): void {
+        this.syncNaulaVideos();
+    }
+
+    ngOnDestroy(): void {
+        this.stopFeatureCarousels();
+        this.clearNaulaAdvance();
+        this.pauseAllNaulaVideos();
+    }
+
+    get waterProgram(): RemedyProgram | undefined {
+        return this.remedyPrograms.find((program) => program.id === 'water');
+    }
+
+    get gaushalaProgram(): RemedyProgram | undefined {
+        return this.remedyPrograms.find((program) => program.id === 'gaushala');
+    }
+
+    get templeProgram(): RemedyProgram | undefined {
+        return this.remedyPrograms.find((program) => program.id === 'temple');
+    }
+
+    get treeProgram(): RemedyProgram | undefined {
+        return this.remedyPrograms.find((program) => program.id === 'tree');
+    }
+
+    get otherPrograms(): RemedyProgram[] {
+        return this.remedyPrograms.filter(
+            (program) =>
+                program.id !== 'water' &&
+                program.id !== 'gaushala' &&
+                program.id !== 'temple' &&
+                program.id !== 'tree'
+        );
+    }
+
+    nextNaulaSlide(event?: Event): void {
+        event?.stopPropagation();
+        this.advanceNaulaSlide();
+    }
+
+    prevNaulaSlide(event?: Event): void {
+        event?.stopPropagation();
+        this.naulaCarouselIndex =
+            (this.naulaCarouselIndex - 1 + this.naulaMedia.length) % this.naulaMedia.length;
+        this.afterNaulaSlideChange();
+    }
+
+    goToNaulaSlide(index: number, event?: Event): void {
+        event?.stopPropagation();
+        this.naulaCarouselIndex = index;
+        this.afterNaulaSlideChange();
+    }
+
+    onNaulaVideoEnded(): void {
+        this.advanceNaulaSlide();
+    }
+
+    nextGaushalaSlide(event?: Event): void {
+        event?.stopPropagation();
+        this.gaushalaCarouselIndex = (this.gaushalaCarouselIndex + 1) % this.gaushalaImages.length;
+        this.restartFeatureCarousels();
+    }
+
+    prevGaushalaSlide(event?: Event): void {
+        event?.stopPropagation();
+        this.gaushalaCarouselIndex =
+            (this.gaushalaCarouselIndex - 1 + this.gaushalaImages.length) % this.gaushalaImages.length;
+        this.restartFeatureCarousels();
+    }
+
+    goToGaushalaSlide(index: number, event?: Event): void {
+        event?.stopPropagation();
+        this.gaushalaCarouselIndex = index;
+        this.restartFeatureCarousels();
+    }
+
+    nextTempleSlide(event?: Event): void {
+        event?.stopPropagation();
+        if (this.templeImages.length < 2) {
+            return;
+        }
+        this.templeCarouselIndex = (this.templeCarouselIndex + 1) % this.templeImages.length;
+        this.restartFeatureCarousels();
+    }
+
+    prevTempleSlide(event?: Event): void {
+        event?.stopPropagation();
+        if (this.templeImages.length < 2) {
+            return;
+        }
+        this.templeCarouselIndex =
+            (this.templeCarouselIndex - 1 + this.templeImages.length) % this.templeImages.length;
+        this.restartFeatureCarousels();
+    }
+
+    goToTempleSlide(index: number, event?: Event): void {
+        event?.stopPropagation();
+        this.templeCarouselIndex = index;
+        this.restartFeatureCarousels();
+    }
+
+    nextTreeSlide(event?: Event): void {
+        event?.stopPropagation();
+        this.treeCarouselIndex = (this.treeCarouselIndex + 1) % this.treeImages.length;
+        this.restartFeatureCarousels();
+    }
+
+    prevTreeSlide(event?: Event): void {
+        event?.stopPropagation();
+        this.treeCarouselIndex =
+            (this.treeCarouselIndex - 1 + this.treeImages.length) % this.treeImages.length;
+        this.restartFeatureCarousels();
+    }
+
+    goToTreeSlide(index: number, event?: Event): void {
+        event?.stopPropagation();
+        this.treeCarouselIndex = index;
+        this.restartFeatureCarousels();
+    }
+
+    private advanceNaulaSlide(): void {
+        this.naulaCarouselIndex = (this.naulaCarouselIndex + 1) % this.naulaMedia.length;
+        this.afterNaulaSlideChange();
+    }
+
+    private afterNaulaSlideChange(): void {
+        this.scheduleNaulaAdvance();
+        // Wait a tick so the active video element is in the DOM with the new index.
+        setTimeout(() => this.syncNaulaVideos(), 0);
+    }
+
+    private scheduleNaulaAdvance(): void {
+        this.clearNaulaAdvance();
+        const current = this.naulaMedia[this.naulaCarouselIndex];
+        if (!current || this.naulaMedia.length < 2) {
+            return;
+        }
+
+        // Images auto-advance after 1s; videos advance when playback ends.
+        if (current.type === 'image') {
+            this.naulaAdvanceTimer = setTimeout(() => this.advanceNaulaSlide(), 2000);
+        }
+    }
+
+    private clearNaulaAdvance(): void {
+        if (this.naulaAdvanceTimer) {
+            clearTimeout(this.naulaAdvanceTimer);
+            this.naulaAdvanceTimer = undefined;
+        }
+    }
+
+    private syncNaulaVideos(): void {
+        const videoEls = this.naulaVideos?.toArray() ?? [];
+        let videoOrdinal = 0;
+
+        this.naulaMedia.forEach((item, mediaIndex) => {
+            if (item.type !== 'video') {
+                return;
+            }
+
+            const video = videoEls[videoOrdinal]?.nativeElement;
+            videoOrdinal += 1;
+            if (!video) {
+                return;
+            }
+
+            if (mediaIndex === this.naulaCarouselIndex) {
+                video.muted = true;
+                video.currentTime = 0;
+                const playPromise = video.play();
+                if (playPromise) {
+                    playPromise.catch(() => {
+                        // Autoplay can be blocked; keep muted retry soft-fail.
+                    });
+                }
+            } else {
+                video.pause();
+                video.currentTime = 0;
+            }
+        });
+    }
+
+    private pauseAllNaulaVideos(): void {
+        this.naulaVideos?.forEach((ref) => {
+            ref.nativeElement.pause();
+        });
+    }
+
+    private startFeatureCarousels(): void {
+        this.stopFeatureCarousels();
+        this.carouselTimer = setInterval(() => {
+            if (this.gaushalaImages.length > 1) {
+                this.gaushalaCarouselIndex =
+                    (this.gaushalaCarouselIndex + 1) % this.gaushalaImages.length;
+            }
+            if (this.templeImages.length > 1) {
+                this.templeCarouselIndex =
+                    (this.templeCarouselIndex + 1) % this.templeImages.length;
+            }
+            if (this.treeImages.length > 1) {
+                this.treeCarouselIndex = (this.treeCarouselIndex + 1) % this.treeImages.length;
+            }
+        }, 2000);
+    }
+
+    private stopFeatureCarousels(): void {
+        if (this.carouselTimer) {
+            clearInterval(this.carouselTimer);
+            this.carouselTimer = undefined;
+        }
+    }
+
+    private restartFeatureCarousels(): void {
+        this.startFeatureCarousels();
+    }
+
+    private getBaseHref(): string {
+        const baseTag = this.document.querySelector('base');
+        return baseTag?.getAttribute('href') || '/';
     }
 
     selectProgram(programId: string): void {

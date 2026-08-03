@@ -31,6 +31,129 @@
     transform: scale(1.1);
 }
 
+.naula-feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+    .naula-feature-grid {
+        grid-template-columns: 3fr 2fr;
+        min-height: 420px;
+    }
+}
+
+.naula-carousel {
+    position: relative;
+    min-height: 280px;
+    background: hsl(var(--muted));
+    overflow: hidden;
+}
+
+@media (min-width: 900px) {
+    .naula-carousel {
+        min-height: 100%;
+    }
+}
+
+.naula-carousel-track {
+    position: absolute;
+    inset: 0;
+}
+
+.naula-carousel-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 0.7s ease, transform 0.9s ease;
+}
+
+.naula-carousel-image.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.naula-carousel-video {
+    object-fit: cover;
+    background: #000;
+    pointer-events: none;
+}
+
+.naula-dot-video {
+    border-radius: 2px;
+}
+
+.naula-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    border: 1px solid hsl(var(--border) / 0.5);
+    background: hsl(var(--background) / 0.55);
+    color: hsl(var(--foreground));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+}
+
+.naula-nav:hover {
+    background: hsl(var(--background) / 0.8);
+    transform: translateY(-50%);
+}
+
+.naula-nav svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.naula-nav-prev {
+    left: 0.75rem;
+}
+
+.naula-nav-next {
+    right: 0.75rem;
+}
+
+.naula-dots {
+    position: absolute;
+    left: 50%;
+    bottom: 0.9rem;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    gap: 0.4rem;
+}
+
+.naula-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    border: none;
+    background: hsl(var(--foreground) / 0.35);
+    cursor: pointer;
+    padding: 0;
+    transform: none;
+}
+
+.naula-dot:hover {
+    transform: none;
+    background: hsl(var(--foreground) / 0.55);
+}
+
+.naula-dot.active {
+    width: 1.35rem;
+    background: hsl(var(--primary));
+}
+
 @keyframes subtle-fade-in {
     from {
         opacity: 0;
@@ -43,7 +166,8 @@
 @media (prefers-reduced-motion: reduce) {
     .lagan-card,
     .program-card,
-    .program-card img {
+    .program-card img,
+    .naula-carousel-image {
         transition: none;
         transform: none;
     }
@@ -61,15 +185,15 @@ textarea:focus {
 }
 
 /* Button Hover Effects */
-button {
+button:not(.naula-nav):not(.naula-dot) {
     transition: all 0.3s ease;
 }
 
-button:hover {
+button:not(.naula-nav):not(.naula-dot):hover {
     transform: translateY(-2px);
 }
 
-button:active {
+button:not(.naula-nav):not(.naula-dot):active {
     transform: translateY(0);
 }
 

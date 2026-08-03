@@ -191,9 +191,364 @@
                 </p>
             </div>
 
-            <!-- Program Cards -->
+            <!-- Featured Naula Restoration -->
+            @if (waterProgram; as program) {
+            <div
+                [class.border-primary]="selectedProgram === program.id"
+                [class.ring-2]="selectedProgram === program.id"
+                class="naula-feature mb-10 rounded-2xl overflow-hidden border-2 border-border bg-card/80 backdrop-blur-sm hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300"
+                (click)="selectProgram(program.id)">
+                <div class="naula-feature-grid">
+                    <!-- Media carousel (60%) -->
+                    <div class="naula-carousel" (click)="$event.stopPropagation()">
+                        <div class="naula-carousel-track">
+                            @for (item of naulaMedia; track item.src; let i = $index) {
+                                @if (item.type === 'image') {
+                                <img
+                                    [src]="item.src"
+                                    [alt]="program.title + ' photo ' + (i + 1)"
+                                    [class.active]="naulaCarouselIndex === i"
+                                    class="naula-carousel-image"
+                                    loading="lazy">
+                                } @else {
+                                <video
+                                    #naulaVideo
+                                    [src]="item.src"
+                                    [class.active]="naulaCarouselIndex === i"
+                                    class="naula-carousel-image naula-carousel-video"
+                                    muted
+                                    playsinline
+                                    preload="metadata"
+                                    (ended)="onNaulaVideoEnded()">
+                                </video>
+                                }
+                            }
+                        </div>
+
+                        <button
+                            type="button"
+                            class="naula-nav naula-nav-prev"
+                            aria-label="Previous media"
+                            (click)="prevNaulaSlide($event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            class="naula-nav naula-nav-next"
+                            aria-label="Next media"
+                            (click)="nextNaulaSlide($event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+
+                        <div class="naula-dots">
+                            @for (item of naulaMedia; track item.src; let i = $index) {
+                            <button
+                                type="button"
+                                class="naula-dot"
+                                [class.active]="naulaCarouselIndex === i"
+                                [class.naula-dot-video]="item.type === 'video'"
+                                [attr.aria-label]="'Go to slide ' + (i + 1)"
+                                (click)="goToNaulaSlide(i, $event)">
+                            </button>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Text content (40%) -->
+                    <div class="naula-copy p-6 md:p-8 flex flex-col justify-center">
+                        <div class="inline-flex items-center gap-2 mb-4">
+                            <span class="text-3xl">{{ program.icon }}</span>
+                            <span class="text-xs uppercase tracking-wider text-primary font-semibold">Featured Seva</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-playfair font-bold text-foreground mb-4">
+                            {{ program.title }}
+                        </h3>
+                        <p class="text-foreground/80 mb-6 leading-relaxed">{{ program.description }}</p>
+
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">Key Features:</h4>
+                            <ul class="space-y-2">
+                                @for (feature of program.features; track $index) {
+                                <li class="flex items-start gap-2 text-sm text-foreground/70">
+                                    <span class="text-primary mt-1">•</span>
+                                    <span>{{ feature }}</span>
+                                </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="p-4 bg-primary/10 rounded-lg">
+                            <p class="text-sm text-foreground/80">
+                                <span class="font-semibold text-primary">Impact:</span> {{ program.impact }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+
+            <!-- Featured Gaushala Support -->
+            @if (gaushalaProgram; as program) {
+            <div
+                [class.border-primary]="selectedProgram === program.id"
+                [class.ring-2]="selectedProgram === program.id"
+                class="naula-feature mb-10 rounded-2xl overflow-hidden border-2 border-border bg-card/80 backdrop-blur-sm hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300"
+                (click)="selectProgram(program.id)">
+                <div class="naula-feature-grid">
+                    <div class="naula-carousel" (click)="$event.stopPropagation()">
+                        <div class="naula-carousel-track">
+                            @for (image of gaushalaImages; track image; let i = $index) {
+                            <img
+                                [src]="image"
+                                [alt]="program.title + ' photo ' + (i + 1)"
+                                [class.active]="gaushalaCarouselIndex === i"
+                                class="naula-carousel-image"
+                                loading="lazy">
+                            }
+                        </div>
+
+                        <button
+                            type="button"
+                            class="naula-nav naula-nav-prev"
+                            aria-label="Previous image"
+                            (click)="prevGaushalaSlide($event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            class="naula-nav naula-nav-next"
+                            aria-label="Next image"
+                            (click)="nextGaushalaSlide($event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+
+                        <div class="naula-dots">
+                            @for (image of gaushalaImages; track image; let i = $index) {
+                            <button
+                                type="button"
+                                class="naula-dot"
+                                [class.active]="gaushalaCarouselIndex === i"
+                                [attr.aria-label]="'Go to image ' + (i + 1)"
+                                (click)="goToGaushalaSlide(i, $event)">
+                            </button>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="naula-copy p-6 md:p-8 flex flex-col justify-center">
+                        <div class="inline-flex items-center gap-2 mb-4">
+                            <span class="text-3xl">{{ program.icon }}</span>
+                            <span class="text-xs uppercase tracking-wider text-primary font-semibold">Featured Seva</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-playfair font-bold text-foreground mb-4">
+                            {{ program.title }}
+                        </h3>
+                        <p class="text-foreground/80 mb-6 leading-relaxed">{{ program.description }}</p>
+
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">Key Features:</h4>
+                            <ul class="space-y-2">
+                                @for (feature of program.features; track $index) {
+                                <li class="flex items-start gap-2 text-sm text-foreground/70">
+                                    <span class="text-primary mt-1">•</span>
+                                    <span>{{ feature }}</span>
+                                </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="p-4 bg-primary/10 rounded-lg">
+                            <p class="text-sm text-foreground/80">
+                                <span class="font-semibold text-primary">Impact:</span> {{ program.impact }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+
+            <!-- Featured Temple Restoration -->
+            @if (templeProgram; as program) {
+            <div
+                [class.border-primary]="selectedProgram === program.id"
+                [class.ring-2]="selectedProgram === program.id"
+                class="naula-feature mb-10 rounded-2xl overflow-hidden border-2 border-border bg-card/80 backdrop-blur-sm hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300"
+                (click)="selectProgram(program.id)">
+                <div class="naula-feature-grid">
+                    <div class="naula-carousel" (click)="$event.stopPropagation()">
+                        <div class="naula-carousel-track">
+                            @for (image of templeImages; track image; let i = $index) {
+                            <img
+                                [src]="image"
+                                [alt]="program.title + ' photo ' + (i + 1)"
+                                [class.active]="templeCarouselIndex === i"
+                                class="naula-carousel-image"
+                                loading="lazy">
+                            }
+                        </div>
+
+                        @if (templeImages.length > 1) {
+                        <button
+                            type="button"
+                            class="naula-nav naula-nav-prev"
+                            aria-label="Previous image"
+                            (click)="prevTempleSlide($event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            class="naula-nav naula-nav-next"
+                            aria-label="Next image"
+                            (click)="nextTempleSlide($event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+
+                        <div class="naula-dots">
+                            @for (image of templeImages; track image; let i = $index) {
+                            <button
+                                type="button"
+                                class="naula-dot"
+                                [class.active]="templeCarouselIndex === i"
+                                [attr.aria-label]="'Go to image ' + (i + 1)"
+                                (click)="goToTempleSlide(i, $event)">
+                            </button>
+                            }
+                        </div>
+                        }
+                    </div>
+
+                    <div class="naula-copy p-6 md:p-8 flex flex-col justify-center">
+                        <div class="inline-flex items-center gap-2 mb-4">
+                            <span class="text-3xl">{{ program.icon }}</span>
+                            <span class="text-xs uppercase tracking-wider text-primary font-semibold">Featured Seva</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-playfair font-bold text-foreground mb-4">
+                            {{ program.title }}
+                        </h3>
+                        <p class="text-foreground/80 mb-6 leading-relaxed">{{ program.description }}</p>
+
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">Key Features:</h4>
+                            <ul class="space-y-2">
+                                @for (feature of program.features; track $index) {
+                                <li class="flex items-start gap-2 text-sm text-foreground/70">
+                                    <span class="text-primary mt-1">•</span>
+                                    <span>{{ feature }}</span>
+                                </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="p-4 bg-primary/10 rounded-lg">
+                            <p class="text-sm text-foreground/80">
+                                <span class="font-semibold text-primary">Impact:</span> {{ program.impact }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+
+            <!-- Featured Tree Plantation -->
+            @if (treeProgram; as program) {
+            <div
+                [class.border-primary]="selectedProgram === program.id"
+                [class.ring-2]="selectedProgram === program.id"
+                class="naula-feature mb-10 rounded-2xl overflow-hidden border-2 border-border bg-card/80 backdrop-blur-sm hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300"
+                (click)="selectProgram(program.id)">
+                <div class="naula-feature-grid">
+                    <div class="naula-carousel" (click)="$event.stopPropagation()">
+                        <div class="naula-carousel-track">
+                            @for (image of treeImages; track image; let i = $index) {
+                            <img
+                                [src]="image"
+                                [alt]="program.title + ' photo ' + (i + 1)"
+                                [class.active]="treeCarouselIndex === i"
+                                class="naula-carousel-image"
+                                loading="lazy">
+                            }
+                        </div>
+
+                        <button
+                            type="button"
+                            class="naula-nav naula-nav-prev"
+                            aria-label="Previous image"
+                            (click)="prevTreeSlide($event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            class="naula-nav naula-nav-next"
+                            aria-label="Next image"
+                            (click)="nextTreeSlide($event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+
+                        <div class="naula-dots">
+                            @for (image of treeImages; track image; let i = $index) {
+                            <button
+                                type="button"
+                                class="naula-dot"
+                                [class.active]="treeCarouselIndex === i"
+                                [attr.aria-label]="'Go to image ' + (i + 1)"
+                                (click)="goToTreeSlide(i, $event)">
+                            </button>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="naula-copy p-6 md:p-8 flex flex-col justify-center">
+                        <div class="inline-flex items-center gap-2 mb-4">
+                            <span class="text-3xl">{{ program.icon }}</span>
+                            <span class="text-xs uppercase tracking-wider text-primary font-semibold">Featured Seva</span>
+                        </div>
+                        <h3 class="text-2xl md:text-3xl font-playfair font-bold text-foreground mb-4">
+                            {{ program.title }}
+                        </h3>
+                        <p class="text-foreground/80 mb-6 leading-relaxed">{{ program.description }}</p>
+
+                        <div class="mb-6">
+                            <h4 class="text-sm font-semibold text-foreground mb-3 uppercase tracking-wide">Key Features:</h4>
+                            <ul class="space-y-2">
+                                @for (feature of program.features; track $index) {
+                                <li class="flex items-start gap-2 text-sm text-foreground/70">
+                                    <span class="text-primary mt-1">•</span>
+                                    <span>{{ feature }}</span>
+                                </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="p-4 bg-primary/10 rounded-lg">
+                            <p class="text-sm text-foreground/80">
+                                <span class="font-semibold text-primary">Impact:</span> {{ program.impact }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+
+            <!-- Other Program Cards -->
+            @if (otherPrograms.length > 0) {
             <div class="grid md:grid-cols-2 gap-8 mb-16">
-                @for (program of remedyPrograms; track program.id) {
+                @for (program of otherPrograms; track program.id) {
                 <div 
                     [class.border-primary]="selectedProgram === program.id"
                     [class.ring-2]="selectedProgram === program.id"
@@ -240,6 +595,7 @@
                 </div>
                 }
             </div>
+            }
         </div>
     </div>
 </section>
