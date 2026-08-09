@@ -10,7 +10,7 @@ const INNERTUBE_API_KEY = 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
 const OUTPUT_PATH = path.join(__dirname, '../public/youtube-videos.json');
 const SHARE_DIR = path.join(__dirname, '../public/share');
 const BASE_HREF = process.env.BASE_HREF || '/';
-const SITE_URL = process.env.SITE_URL || '';
+const SITE_URL = (process.env.SITE_URL || 'https://bhavishyat.in').replace(/\/$/, '');
 const GA_MEASUREMENT_ID = 'G-RDCP6X1G99';
 
 const CLIENT_CONTEXT = {
@@ -229,16 +229,39 @@ function buildSharePage(video, cacheBust) {
   const normalizedBase = BASE_HREF.endsWith('/') ? BASE_HREF : `${BASE_HREF}/`;
   const gurukulPath = `${normalizedBase}class-recordings?v=${video.id}`;
   const sharePath = `${normalizedBase}share/${video.id}.html`;
-  const shareUrl = SITE_URL ? `${SITE_URL.replace(/\/$/, '')}${sharePath}` : sharePath;
+  const shareUrl = `${SITE_URL}${sharePath}`;
+  const canonicalUrl = `${SITE_URL}${gurukulPath}`;
   const title = escapeHtml(video.title);
   const thumbnail = escapeHtml(appendCacheBust(video.thumbnailUrl, 'cb', cacheBust));
-  const description = escapeHtml('Watch this astrology class on BHAVISHYAT Gurukul');
-  const siteOrigin = SITE_URL ? SITE_URL.replace(/\/$/, '') : '';
-  const faviconUrl = siteOrigin ? `${siteOrigin}${normalizedBase}favicon.ico` : `${normalizedBase}favicon.ico`;
-  const logoUrl = siteOrigin ? `${siteOrigin}${normalizedBase}assets/top_logo.png` : `${normalizedBase}assets/top_logo.png`;
+  const description = escapeHtml(
+    `Watch "${video.title}" — a Vedic astrology class from BHAVISHYAT Gurukul (@Bhavishyatastro).`
+  );
+  const faviconUrl = `${SITE_URL}${normalizedBase}favicon.ico`;
+  const logoUrl = `${SITE_URL}${normalizedBase}assets/top_logo.png`;
+  const videoObject = {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: video.title,
+    description: `Watch "${video.title}" on BHAVISHYAT Gurukul.`,
+    thumbnailUrl: [video.thumbnailUrl],
+    contentUrl: video.videoUrl,
+    embedUrl: `https://www.youtube.com/embed/${video.id}`,
+    publisher: {
+      '@type': 'Organization',
+      name: 'BHAVISHYAT',
+      url: SITE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}${normalizedBase}assets/main_logo-P.png`
+      }
+    }
+  };
+  if (video.publishedAt) {
+    videoObject.uploadDate = video.publishedAt;
+  }
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"></script>
@@ -251,26 +274,35 @@ function buildSharePage(video, cacheBust) {
   <meta charset="utf-8">
   <title>${title} | BHAVISHYAT Gurukul</title>
   <meta name="description" content="${description}">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="${escapeHtml(canonicalUrl)}">
   <link rel="icon" type="image/x-icon" href="${faviconUrl}">
   <link rel="icon" type="image/png" href="${logoUrl}">
   <link rel="apple-touch-icon" href="${logoUrl}">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="video.other">
   <meta property="og:site_name" content="BHAVISHYAT">
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${description}">
   <meta property="og:image" content="${thumbnail}">
-  <meta property="og:url" content="${shareUrl}">
+  <meta property="og:url" content="${escapeHtml(shareUrl)}">
+  <meta property="og:video" content="https://www.youtube.com/embed/${escapeHtml(video.id)}">
+  <meta property="og:video:type" content="text/html">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${title}">
   <meta name="twitter:description" content="${description}">
   <meta name="twitter:image" content="${thumbnail}">
+  <script type="application/ld+json">${JSON.stringify(videoObject)}</script>
   <script>
     window.location.replace('${gurukulPath}');
   </script>
 </head>
 <body>
-  <p>Opening BHAVISHYAT Gurukul...</p>
-  <p><a href="${gurukulPath}">Continue to video</a></p>
+  <main>
+    <h1>${title}</h1>
+    <p>${description}</p>
+    <p><a href="${gurukulPath}">Continue to BHAVISHYAT Gurukul</a></p>
+    <p><a href="${SITE_URL}/">BHAVISHYAT home</a></p>
+  </main>
 </body>
 </html>
 `;

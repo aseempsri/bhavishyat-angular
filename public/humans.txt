@@ -1,0 +1,10 @@
+/* TEAM */
+Organization: BHAVISHYAT
+Site: https://bhavishyat.in
+YouTube: https://www.youtube.com/@Bhavishyatastro
+
+/* SITE */
+Standards: HTML5, CSS3, Angular
+Components: Vedic astrology, Kundali, Daily Panchang, Gurukul, Remedies & Seva
+Last update: 2026
+Language: English (India)

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, inject, HostListener } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
+import { SeoService } from './core/seo/seo.service';
 
 declare global {
   interface Window {
@@ -18,8 +19,8 @@ const GA_MEASUREMENT_ID = 'G-RDCP6X1G99';
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private router = inject(Router);
+  private seo = inject(SeoService);
 
-  title = 'bhavishyat-angular';
   private routerSub?: Subscription;
   private trail: HTMLElement[] = [];
   private positions: { x: number; y: number }[] = [];
@@ -40,8 +41,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
         const url = (event as NavigationEnd).urlAfterRedirects;
+        this.seo.applyForUrl(url);
         window.gtag?.('config', GA_MEASUREMENT_ID, { page_path: url });
       });
+
+    // Apply SEO for the initial route (NavigationEnd may have already fired).
+    this.seo.applyForUrl(this.router.url);
   }
 
   ngAfterViewInit() {

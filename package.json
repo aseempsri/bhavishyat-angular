@@ -5,8 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "fetch-youtube": "node scripts/fetch-youtube-videos.mjs",
-    "prebuild": "node scripts/fetch-youtube-videos.mjs",
+    "generate-sitemap": "node scripts/generate-sitemap.mjs",
+    "prebuild": "node scripts/fetch-youtube-videos.mjs && node scripts/generate-sitemap.mjs",
     "build": "ng build",
+    "postbuild": "node scripts/generate-route-shells.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

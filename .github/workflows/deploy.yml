@@ -32,14 +32,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Fetch latest YouTube videos
-        run: BASE_HREF=/ SITE_URL=https://bhavishyat.in npm run fetch-youtube
-
-      - name: Build Angular app
+      - name: Build Angular app (fetch videos + sitemap + route SEO shells)
+        env:
+          BASE_HREF: /
+          SITE_URL: https://bhavishyat.in
         run: npm run build -- --base-href /
-
-      - name: Add SPA fallback for GitHub Pages
-        run: cp dist/bhavishyat-angular/browser/index.html dist/bhavishyat-angular/browser/404.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
