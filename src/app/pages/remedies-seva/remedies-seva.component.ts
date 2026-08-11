@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { HeaderComponent } from '../../components/header/header.component';
+import { AdBannerComponent } from '../../components/ad-banner/ad-banner.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -30,7 +31,7 @@ interface CarouselMedia {
 
 @Component({
     selector: 'app-remedies-seva',
-    imports: [HeaderComponent, CommonModule, FormsModule],
+    imports: [HeaderComponent, CommonModule, FormsModule, AdBannerComponent],
     templateUrl: './remedies-seva.component.html',
     styleUrl: './remedies-seva.component.css'
 })

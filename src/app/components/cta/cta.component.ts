@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AdBannerComponent } from '../ad-banner/ad-banner.component';
 
 @Component({
   selector: 'app-cta',
-  imports: [CommonModule],
+  imports: [CommonModule, AdBannerComponent],
   templateUrl: './cta.component.html',
   styleUrl: './cta.component.css'
 })

@@ -129,6 +129,12 @@
   padding: 0;
 }
 
+.youtube-grid-with-ads {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .youtube-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));

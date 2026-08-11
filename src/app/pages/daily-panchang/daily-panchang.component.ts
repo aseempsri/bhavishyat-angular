@@ -4,11 +4,12 @@ import { Router, NavigationEnd } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
 import { filter } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header.component';
+import { AdBannerComponent } from '../../components/ad-banner/ad-banner.component';
 import { PanchangService, PanchangData } from '../../services/panchang.service';
 
 @Component({
   selector: 'app-daily-panchang',
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, HeaderComponent, AdBannerComponent],
   templateUrl: './daily-panchang.component.html',
   styleUrl: './daily-panchang.component.css'
 })
