@@ -1,5 +1,5 @@
-import { Component, inject, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { Component, inject, OnInit, OnDestroy, HostListener, DOCUMENT } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { filter, take, Subscription } from 'rxjs';

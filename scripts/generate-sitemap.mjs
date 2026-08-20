@@ -3,21 +3,12 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SITE_URL = (process.env.SITE_URL || 'https://bhavishyat.in').replace(/\/$/, '');
+const SEO_DATA_PATH = path.join(__dirname, '../src/app/core/seo/seo-data.json');
 const OUTPUT_PATH = path.join(__dirname, '../public/sitemap.xml');
 const YOUTUBE_JSON = path.join(__dirname, '../public/youtube-videos.json');
 
-const STATIC_ROUTES = [
-  { path: '/', changefreq: 'weekly', priority: '1.0' },
-  { path: '/daily-panchang', changefreq: 'daily', priority: '0.9' },
-  { path: '/kundali', changefreq: 'weekly', priority: '0.9' },
-  { path: '/class-recordings', changefreq: 'daily', priority: '0.9' },
-  { path: '/house-signification', changefreq: 'monthly', priority: '0.8' },
-  { path: '/remedies-seva', changefreq: 'weekly', priority: '0.8' },
-  { path: '/shinrin-yoku', changefreq: 'monthly', priority: '0.7' },
-  { path: '/escape-retreats', changefreq: 'monthly', priority: '0.7' },
-  { path: '/aarohanam', changefreq: 'weekly', priority: '0.7' }
-];
+const seoData = JSON.parse(fs.readFileSync(SEO_DATA_PATH, 'utf8'));
+const SITE_URL = (process.env.SITE_URL || seoData.siteOrigin).replace(/\/$/, '');
 
 function escapeXml(value) {
   return value
@@ -65,12 +56,16 @@ function main() {
   const lastmod = todayIsoDate();
   const classRecordingsLastmod = readVideoLastmod();
 
-  const entries = STATIC_ROUTES.map((route) =>
+  const routes = Object.entries(seoData.routes)
+    .filter(([key, route]) => key !== '**' && !route.robots?.includes('noindex'))
+    .map(([, route]) => route);
+
+  const entries = routes.map((route) =>
     buildUrlEntry({
       loc: `${SITE_URL}${route.path === '/' ? '/' : route.path}`,
       lastmod: route.path === '/class-recordings' ? classRecordingsLastmod : lastmod,
-      changefreq: route.changefreq,
-      priority: route.priority
+      changefreq: route.changefreq || 'monthly',
+      priority: route.priority || '0.5'
     })
   );
 

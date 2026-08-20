@@ -220,6 +220,16 @@ function escapeHtml(text) {
     .replace(/'/g, '&#39;');
 }
 
+/** Safe JSON for inline <script> tags — neutralize </script> breakout. */
+function jsonForHtmlScript(value) {
+  return JSON.stringify(value)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
+}
+
 function appendCacheBust(url, key, value) {
   const separator = url.includes('?') ? '&' : '?';
   return `${url}${separator}${key}=${encodeURIComponent(value)}`;
@@ -291,7 +301,7 @@ function buildSharePage(video, cacheBust) {
   <meta name="twitter:title" content="${title}">
   <meta name="twitter:description" content="${description}">
   <meta name="twitter:image" content="${thumbnail}">
-  <script type="application/ld+json">${JSON.stringify(videoObject)}</script>
+  <script type="application/ld+json">${jsonForHtmlScript(videoObject)}</script>
   <script>
     window.location.replace('${gurukulPath}');
   </script>

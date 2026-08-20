@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, DOCUMENT } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DOCUMENT } from '@angular/common';
+
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../ui/button/button.component';
 import { AuthService } from '../../services/auth.service';

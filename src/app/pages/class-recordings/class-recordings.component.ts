@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, inject, HostListener } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { Component, OnInit, OnDestroy, inject, HostListener, DOCUMENT } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule, NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header.component';

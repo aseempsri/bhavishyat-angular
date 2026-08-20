@@ -1,0 +1,199 @@
+{
+  "siteOrigin": "https://bhavishyat.in",
+  "siteName": "BHAVISHYAT",
+  "defaultOgImage": "https://bhavishyat.in/assets/new-hero.png",
+  "defaultLogo": "https://bhavishyat.in/assets/main_logo-P.png",
+  "defaultRobots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "ogImageWidth": 1200,
+  "ogImageHeight": 630,
+  "twitterSite": "@Bhavishyatastro",
+  "defaultSeo": {
+    "path": "/",
+    "title": "BHAVISHYAT | Vedic Astrology, Kundali & Cosmic Guidance",
+    "description": "BHAVISHYAT offers Vedic astrology, personalized kundali analysis, daily panchang, remedies, seva, and Gurukul class recordings to illuminate your cosmic path.",
+    "keywords": "BHAVISHYAT, Vedic astrology, kundali, janam kundli, daily panchang, astrology classes, Gurukul, remedies, seva, shinrin yoku, aarohanam, birth chart",
+    "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "ogType": "website",
+    "schemaType": "WebSite",
+    "bodyHeadline": "BHAVISHYAT — Vedic Astrology & Cosmic Guidance",
+    "bodySummary": "Discover ancient Vedic wisdom with personalized kundali insights, daily panchang, remedies & seva, and Gurukul class recordings."
+  },
+  "routes": {
+    "": {
+      "path": "/",
+      "title": "BHAVISHYAT | Vedic Astrology, Kundali & Cosmic Guidance",
+      "description": "BHAVISHYAT offers Vedic astrology, personalized kundali analysis, daily panchang, remedies, seva, and Gurukul class recordings to illuminate your cosmic path.",
+      "keywords": "BHAVISHYAT, Vedic astrology, kundali, janam kundli, daily panchang, astrology classes, Gurukul, remedies, seva, shinrin yoku, aarohanam, birth chart",
+      "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+      "ogType": "website",
+      "schemaType": "WebPage",
+      "changefreq": "weekly",
+      "priority": "1.0",
+      "bodyHeadline": "BHAVISHYAT — Vedic Astrology & Cosmic Guidance",
+      "bodySummary": "Discover ancient Vedic wisdom with personalized kundali insights, daily panchang, remedies & seva, and Gurukul class recordings.",
+      "bodyPoints": [
+        "Personalized kundali and birth chart analysis",
+        "Daily Vedic panchang and muhurat guidance",
+        "Gurukul class recordings on Vedic astrology",
+        "Remedies, seva, retreats, and Aarohanam events"
+      ]
+    },
+    "daily-panchang": {
+      "path": "/daily-panchang",
+      "title": "Daily Panchang | Auspicious Timings & Cosmic Calendar | BHAVISHYAT",
+      "description": "Check today’s Vedic panchang with tithi, nakshatra, yoga, karana, and muhurat guidance from BHAVISHYAT — your daily cosmic calendar.",
+      "keywords": "daily panchang, tithi, nakshatra, muhurat, Vedic calendar, Hindu calendar, BHAVISHYAT",
+      "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+      "ogType": "website",
+      "schemaType": "WebPage",
+      "changefreq": "daily",
+      "priority": "0.9",
+      "bodyHeadline": "Daily Panchang — Auspicious Timings & Cosmic Calendar",
+      "bodySummary": "View today’s Vedic panchang with tithi, nakshatra, yoga, karana, and muhurat guidance from BHAVISHYAT.",
+      "bodyPoints": [
+        "Tithi, nakshatra, yoga, and karana for the day",
+        "Muhurat guidance for auspicious activities",
+        "Vedic calendar insights rooted in tradition"
+      ]
+    },
+    "shinrin-yoku": {
+      "path": "/shinrin-yoku",
+      "title": "Shinrin-Yoku Forest Bathing Retreats | BHAVISHYAT",
+      "description": "Experience Shinrin-Yoku forest bathing with BHAVISHYAT — nature immersion for calm, clarity, and reconnection with the living world.",
+      "keywords": "shinrin-yoku, forest bathing, nature retreat, wellness, BHAVISHYAT",
+      "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+      "ogType": "website",
+      "schemaType": "EventSeries",
+      "changefreq": "monthly",
+      "priority": "0.7",
+      "bodyHeadline": "Shinrin-Yoku Forest Bathing Retreats",
+      "bodySummary": "Nature immersion experiences with BHAVISHYAT for calm, clarity, and reconnection with the living world.",
+      "bodyPoints": [
+        "Guided forest bathing practices",
+        "Mindful nature immersion",
+        "Restorative wellness in living landscapes"
+      ]
+    },
+    "escape-retreats": {
+      "path": "/escape-retreats",
+      "title": "Escape Retreats | Sacred Getaways & Cosmic Renewal | BHAVISHYAT",
+      "description": "Join BHAVISHYAT Escape Retreats — restorative getaways blending stillness, nature, and Vedic wisdom for inner renewal.",
+      "keywords": "astrology retreat, escape retreat, spiritual getaway, BHAVISHYAT",
+      "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+      "ogType": "website",
+      "schemaType": "EventSeries",
+      "changefreq": "monthly",
+      "priority": "0.7",
+      "bodyHeadline": "Escape Retreats — Sacred Getaways & Cosmic Renewal",
+      "bodySummary": "Restorative getaways blending stillness, nature, and Vedic wisdom for inner renewal.",
+      "bodyPoints": [
+        "Curated mindful escapes and homestays",
+        "Nature, culture, and slow travel",
+        "Space for stillness and cosmic renewal"
+      ]
+    },
+    "kundali": {
+      "path": "/kundali",
+      "title": "Kundali Analysis | Birth Chart & Planetary Insights | BHAVISHYAT",
+      "description": "Explore personalized kundali and birth chart insights with BHAVISHYAT — planets, houses, dasha, and Vedic guidance for your life path.",
+      "keywords": "kundali, janam kundli, birth chart, Vedic astrology chart, dasha, planetary positions, BHAVISHYAT",
+      "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+      "ogType": "website",
+      "schemaType": "Service",
+      "changefreq": "weekly",
+      "priority": "0.9",
+      "bodyHeadline": "Kundali Analysis — Birth Chart & Planetary Insights",
+      "bodySummary": "Personalized kundali and birth chart insights covering planets, houses, dasha, and Vedic guidance for your life path.",
+      "bodyPoints": [
+        "Janam kundli and planetary positions",
+        "House and dasha interpretation",
+        "Guidance rooted in classical Vedic astrology"
+      ]
+    },
+    "class-recordings": {
+      "path": "/class-recordings",
+      "title": "Gurukul Class Recordings | Learn Vedic Astrology | BHAVISHYAT",
+      "description": "Watch BHAVISHYAT Gurukul class recordings on Vedic astrology — free lessons covering charts, planets, houses, and cosmic wisdom.",
+      "keywords": "astrology classes, Gurukul, Vedic astrology course, astrology YouTube, Bhavishyatastro, BHAVISHYAT",
+      "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+      "ogType": "website",
+      "schemaType": "Course",
+      "changefreq": "daily",
+      "priority": "0.9",
+      "bodyHeadline": "Gurukul Class Recordings — Learn Vedic Astrology",
+      "bodySummary": "Free BHAVISHYAT Gurukul lessons on Vedic astrology covering charts, planets, houses, and cosmic wisdom.",
+      "bodyPoints": [
+        "Free Vedic astrology class recordings",
+        "Lessons on planets, houses, and charts",
+        "Learn with BHAVISHYAT Gurukul on YouTube"
+      ]
+    },
+    "house-signification": {
+      "path": "/house-signification",
+      "title": "House Signification in Vedic Astrology | BHAVISHYAT",
+      "description": "Learn the meaning of the twelve houses in Vedic astrology — significations for career, relationships, health, and destiny with BHAVISHYAT.",
+      "keywords": "house signification, bhavas, twelve houses, Vedic astrology, BHAVISHYAT",
+      "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+      "ogType": "article",
+      "schemaType": "Article",
+      "changefreq": "monthly",
+      "priority": "0.8",
+      "bodyHeadline": "House Signification in Vedic Astrology",
+      "bodySummary": "Learn the meaning of the twelve houses (bhavas) — career, relationships, health, and destiny — with BHAVISHYAT.",
+      "bodyPoints": [
+        "Significations of all twelve Vedic houses",
+        "How bhavas shape life themes",
+        "Practical chart-reading context"
+      ]
+    },
+    "remedies-seva": {
+      "path": "/remedies-seva",
+      "title": "Astrological Remedies & Seva | Naula, Gaushala, Temple | BHAVISHYAT",
+      "description": "Discover Vedic remedies and seva with BHAVISHYAT — naula dhara, gaushala, temple seva, tree plantation, and lagna-based guidance.",
+      "keywords": "astrology remedies, upay, seva, gaushala, temple seva, naula, tree plantation, BHAVISHYAT",
+      "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+      "ogType": "website",
+      "schemaType": "WebPage",
+      "changefreq": "weekly",
+      "priority": "0.8",
+      "bodyHeadline": "Astrological Remedies & Seva",
+      "bodySummary": "Vedic remedies and seva through naula dhara, gaushala, temple restoration, tree plantation, and lagna-based guidance.",
+      "bodyPoints": [
+        "Lagna-based remedy pathways",
+        "Naula, gaushala, temple, and tree seva",
+        "Gift-economy spiritual giving"
+      ]
+    },
+    "aarohanam": {
+      "path": "/aarohanam",
+      "title": "Aarohanam | Events, Articles & Ascending Path | BHAVISHYAT",
+      "description": "Explore Aarohanam with BHAVISHYAT — events, articles, and practices for spiritual ascent guided by Vedic insight.",
+      "keywords": "aarohanam, spiritual events, Vedic articles, BHAVISHYAT",
+      "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+      "ogType": "website",
+      "schemaType": "EventSeries",
+      "changefreq": "weekly",
+      "priority": "0.7",
+      "bodyHeadline": "Aarohanam — Events, Articles & Ascending Path",
+      "bodySummary": "Events, articles, and practices for spiritual ascent guided by Vedic insight from BHAVISHYAT.",
+      "bodyPoints": [
+        "Spiritual events and gatherings",
+        "Articles on the ascending path",
+        "Practices rooted in Vedic wisdom"
+      ]
+    },
+    "**": {
+      "path": "/",
+      "title": "Page Not Found | BHAVISHYAT",
+      "description": "This page could not be found. Return to BHAVISHYAT for Vedic astrology and cosmic guidance.",
+      "ogImage": "https://bhavishyat.in/assets/new-hero.png",
+      "ogType": "website",
+      "robots": "noindex, follow",
+      "schemaType": "WebPage",
+      "bodyHeadline": "Page Not Found",
+      "bodySummary": "This page could not be found. Return to BHAVISHYAT for Vedic astrology and cosmic guidance.",
+      "bodyPoints": []
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren, inject, DOCUMENT } from '@angular/core';
+
 import { HeaderComponent } from '../../components/header/header.component';
 import { AdBannerComponent } from '../../components/ad-banner/ad-banner.component';
 import { CommonModule } from '@angular/common';
