@@ -2,21 +2,21 @@
   "name": "BHAVISHYAT",
   "short_name": "BHAVISHYAT",
   "description": "Vedic astrology, kundali, daily panchang, remedies, seva, and Gurukul class recordings.",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#1a120b",
   "theme_color": "#1a120b",
   "lang": "en-IN",
   "icons": [
     {
-      "src": "/assets/top_logo.png",
+      "src": "assets/top_logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/top_logo.png",
+      "src": "assets/top_logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
