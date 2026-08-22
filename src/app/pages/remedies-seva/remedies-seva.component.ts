@@ -7,7 +7,8 @@ import { FormsModule } from '@angular/forms';
 import {
   openWhatsApp,
   WHATSAPP_CONSULTATION_MESSAGE,
-  WHATSAPP_DISPLAY
+  WHATSAPP_DISPLAY,
+  whatsappUrl
 } from '../../core/contact/contact.config';
 
 interface RemedyProgram {
@@ -42,6 +43,7 @@ interface CarouselMedia {
 })
 export class RemediesSevaComponent implements OnInit, AfterViewInit, OnDestroy {
     readonly whatsappDisplay = WHATSAPP_DISPLAY;
+    readonly whatsappHref = whatsappUrl(WHATSAPP_CONSULTATION_MESSAGE);
 
     connectViaWhatsApp(event: Event): void {
         event.preventDefault();

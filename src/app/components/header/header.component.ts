@@ -129,10 +129,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     if (item.href === '/') {
-      event.preventDefault();
-      event.stopPropagation();
-      this.handleLogoClick();
-      this.closeMobileExplore();
+      this.handleLogoClick(event);
       return;
     }
 
@@ -208,23 +205,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleLogoClick(): void {
-    // Navigate to home and scroll to top
-    const currentUrl = this.router.url;
+  handleLogoClick(event?: Event): void {
+    const currentUrl = this.router.url.split('#')[0];
     const isOnHomePage = currentUrl === '/' || currentUrl === '';
 
     if (isOnHomePage) {
-      // If already on home page, just scroll to top
+      event?.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      // Navigate to home and scroll to top after navigation
-      this.router.navigate(['/']).then(() => {
-        setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 100);
-      });
     }
+
     this.closeMenu();
+    this.closeDropdown();
+    this.closeMobileExplore();
   }
 
   handleRouteClick(event: Event, href: string, requiresLogin?: boolean): void {
@@ -247,26 +239,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // Clear intended redirect if user is already logged in
     this.intendedRedirect = null;
-
-    // Prevent default to handle navigation explicitly
-    event.preventDefault();
-    event.stopPropagation();
-
-    // Navigate to the route
-    this.router.navigate([href]).then(() => {
-      // Scroll to top after navigation completes - multiple attempts to ensure it works
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-      }, 0);
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 200);
-    }).catch((error) => {
-      console.error('Navigation error:', error);
-    });
-
     this.closeMenu();
     this.closeDropdown();
   }

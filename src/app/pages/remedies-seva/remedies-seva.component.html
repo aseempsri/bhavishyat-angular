@@ -626,7 +626,7 @@
                     </div>
                     <div class="rounded-lg border border-border bg-background/60 p-4">
                         <p class="text-sm text-foreground/60 mb-1">WhatsApp</p>
-                        <a href="#" (click)="connectViaWhatsApp($event)" class="text-foreground font-semibold hover:text-primary transition-colors">{{ whatsappDisplay }}</a>
+                        <a [href]="whatsappHref" target="_blank" rel="noopener noreferrer" (click)="connectViaWhatsApp($event)" class="text-foreground font-semibold hover:text-primary transition-colors">{{ whatsappDisplay }}</a>
                     </div>
                     <div class="rounded-lg border border-border bg-background/60 p-4">
                         <p class="text-sm text-foreground/60 mb-1">Head Office</p>

@@ -48,7 +48,7 @@
       <!-- Contact nodes -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 lg:gap-16">
         <!-- WhatsApp -->
-        <a href="#" (click)="connectViaWhatsApp($event)" class="group flex flex-col items-center text-center animate-fade-in-up" style="animation-delay: 0.1s">
+        <a [href]="whatsappHref" target="_blank" rel="noopener noreferrer" (click)="connectViaWhatsApp($event)" class="group flex flex-col items-center text-center animate-fade-in-up" style="animation-delay: 0.1s">
           <div class="relative mb-6">
             <div class="absolute inset-0 bg-primary/30 rounded-full blur-xl group-hover:opacity-100 opacity-0 transition-opacity"></div>
             <div class="relative w-20 h-20 rounded-full border-2 border-primary/40 flex items-center justify-center
@@ -122,9 +122,9 @@
           ©️ 2026 Adrika Tech. All rights reserved.
         </p>
         <div class="flex gap-6">
-          <a href="#" class="text-foreground/60 hover:text-primary transition-colors text-sm">Privacy Policy</a>
-          <a href="#" class="text-foreground/60 hover:text-primary transition-colors text-sm">Terms of Service</a>
-          <a href="#" class="text-foreground/60 hover:text-primary transition-colors text-sm">Cookie Policy</a>
+          <span class="text-foreground/60 text-sm">Privacy Policy</span>
+          <span class="text-foreground/60 text-sm">Terms of Service</span>
+          <span class="text-foreground/60 text-sm">Cookie Policy</span>
         </div>
       </div>
     </div>

@@ -65,100 +65,124 @@
             <svg class="chart-overlay" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet"
               xmlns="http://www.w3.org/2000/svg" aria-hidden="false">
               <!-- House 1 (center top) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[0].number"
-                (click)="selectHouse(houses[0]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[0].number"
+                (click)="selectHouse(houses[0])"
+                (keydown.enter)="selectHouse(houses[0])"
+                (keydown.space)="selectHouse(houses[0]); $event.preventDefault()">
                 <polygon points="500,59 690,180 500,336 310,180" [class.active]="selectedHouse?.number === 1"
                   [attr.fill]="selectedHouse?.number === 1 ? houses[0].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 1 ? houses[0].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 2 (top-left) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[1].number"
-                (click)="selectHouse(houses[1]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[1].number"
+                (click)="selectHouse(houses[1])"
+                (keydown.enter)="selectHouse(houses[1])"
+                (keydown.space)="selectHouse(houses[1]); $event.preventDefault()">
                 <polygon points="38,40 500,40 232,180" [class.active]="selectedHouse?.number === 2"
                   [attr.fill]="selectedHouse?.number === 2 ? houses[1].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 2 ? houses[1].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 3 (left top corner) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[2].number"
-                (click)="selectHouse(houses[2]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[2].number"
+                (click)="selectHouse(houses[2])"
+                (keydown.enter)="selectHouse(houses[2])"
+                (keydown.space)="selectHouse(houses[2]); $event.preventDefault()">
                 <polygon points="20,54 170,180 60,320 20,320" [class.active]="selectedHouse?.number === 3"
                   [attr.fill]="selectedHouse?.number === 3 ? houses[2].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 3 ? houses[2].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 4 (upper-left middle) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[3].number"
-                (click)="selectHouse(houses[3]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[3].number"
+                (click)="selectHouse(houses[3])"
+                (keydown.enter)="selectHouse(houses[3])"
+                (keydown.space)="selectHouse(houses[3]); $event.preventDefault()">
                 <polygon points="220,215 440,390 270,530 54,355" [class.active]="selectedHouse?.number === 4"
                   [attr.fill]="selectedHouse?.number === 4 ? houses[3].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 4 ? houses[3].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 5 (lower-left) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[4].number"
-                (click)="selectHouse(houses[4]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[4].number"
+                (click)="selectHouse(houses[4])"
+                (keydown.enter)="selectHouse(houses[4])"
+                (keydown.space)="selectHouse(houses[4]); $event.preventDefault()">
                 <polygon points="20,370 165,540 20,666" [class.active]="selectedHouse?.number === 5"
                   [attr.fill]="selectedHouse?.number === 5 ? houses[4].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 5 ? houses[4].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 6 (bottom left) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[5].number"
-                (click)="selectHouse(houses[5]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[5].number"
+                (click)="selectHouse(houses[5])"
+                (keydown.enter)="selectHouse(houses[5])"
+                (keydown.space)="selectHouse(houses[5]); $event.preventDefault()">
                 <polygon points="150,620 320,560 500,700 40,700" [class.active]="selectedHouse?.number === 6"
                   [attr.fill]="selectedHouse?.number === 6 ? houses[5].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 6 ? houses[5].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 7 (bottom center) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[6].number"
-                (click)="selectHouse(houses[6]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[6].number"
+                (click)="selectHouse(houses[6])"
+                (keydown.enter)="selectHouse(houses[6])"
+                (keydown.space)="selectHouse(houses[6]); $event.preventDefault()">
                 <polygon points="500,420 660,560 500,700 340,560" [class.active]="selectedHouse?.number === 7"
                   [attr.fill]="selectedHouse?.number === 7 ? houses[6].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 7 ? houses[6].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 8 (bottom right) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[7].number"
-                (click)="selectHouse(houses[7]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[7].number"
+                (click)="selectHouse(houses[7])"
+                (keydown.enter)="selectHouse(houses[7])"
+                (keydown.space)="selectHouse(houses[7]); $event.preventDefault()">
                 <polygon points="660,560 980,560 940,700 500,700" [class.active]="selectedHouse?.number === 8"
                   [attr.fill]="selectedHouse?.number === 8 ? houses[7].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 8 ? houses[7].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 9 (lower-right) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[8].number"
-                (click)="selectHouse(houses[8]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[8].number"
+                (click)="selectHouse(houses[8])"
+                (keydown.enter)="selectHouse(houses[8])"
+                (keydown.space)="selectHouse(houses[8]); $event.preventDefault()">
                 <polygon points="956,390 996,490 956,654 804,574" [class.active]="selectedHouse?.number === 9"
                   [attr.fill]="selectedHouse?.number === 9 ? houses[8].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 9 ? houses[8].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 10 (right middle) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[9].number"
-                (click)="selectHouse(houses[9]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[9].number"
+                (click)="selectHouse(houses[9])"
+                (keydown.enter)="selectHouse(houses[9])"
+                (keydown.space)="selectHouse(houses[9]); $event.preventDefault()">
                 <polygon points="560,360 720,220 920,320 780,500" [class.active]="selectedHouse?.number === 10"
                   [attr.fill]="selectedHouse?.number === 10 ? houses[9].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 10 ? houses[9].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 11 (upper-right) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[10].number"
-                (click)="selectHouse(houses[10]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[10].number"
+                (click)="selectHouse(houses[10])"
+                (keydown.enter)="selectHouse(houses[10])"
+                (keydown.space)="selectHouse(houses[10]); $event.preventDefault()">
                 <polygon points="820,140 980,40 1000,280 760,180" [class.active]="selectedHouse?.number === 11"
                   [attr.fill]="selectedHouse?.number === 11 ? houses[10].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 11 ? houses[10].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
 
               <!-- House 12 (top-right corner) -->
-              <a class="house-region" href="#" [attr.data-house]="houses[11].number"
-                (click)="selectHouse(houses[11]); $event.preventDefault()">
+              <g class="house-region" role="button" tabindex="0" [attr.data-house]="houses[11].number"
+                (click)="selectHouse(houses[11])"
+                (keydown.enter)="selectHouse(houses[11])"
+                (keydown.space)="selectHouse(houses[11]); $event.preventDefault()">
                 <polygon points="600,40 970,40 780,150 780,180" [class.active]="selectedHouse?.number === 12"
                   [attr.fill]="selectedHouse?.number === 12 ? houses[11].color + '40' : 'transparent'"
                   [attr.stroke]="selectedHouse?.number === 12 ? houses[11].color : 'rgba(0,0,0,0)'"></polygon>
-              </a>
+              </g>
             </svg>
           </div>
           <div class="text-center mt-2">
