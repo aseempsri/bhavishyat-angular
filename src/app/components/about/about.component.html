@@ -14,7 +14,7 @@
 
         <h2 class="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold mb-6 animate-fade-in-up" style="animation-delay: 0.2s;">
           <span class="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
-            Your Trusted Guide to the Cosmos
+            The BHAVISHYAT Approach
           </span>
         </h2>
 
@@ -50,8 +50,19 @@
           <!-- Mandala Image -->
           <div class="relative w-full max-w-[700px] mx-auto">
             <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-3xl animate-pulse-glow"></div>
-            <img [src]="zodiacWheel" alt="Vedic zodiac wheel illustrating BHAVISHYAT astrology guidance" loading="lazy" decoding="async"
-              class="relative w-full h-auto animate-[spin_120s_linear_infinite]" />
+            <picture class="relative block w-full">
+              <source [srcset]="zodiacWheelWebp" type="image/webp">
+              <img
+                [src]="zodiacWheel"
+                alt="Vedic zodiac wheel illustrating BHAVISHYAT astrology guidance"
+                width="500"
+                height="500"
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
+                class="relative w-full h-auto animate-[spin_120s_linear_infinite]"
+              />
+            </picture>
           </div>
  
           <!-- Decorative Elements -->

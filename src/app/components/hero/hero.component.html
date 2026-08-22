@@ -1,6 +1,18 @@
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-  <!-- Background -->
-  <div class="hero-bg absolute inset-0 bg-cover bg-no-repeat" [style.background-image]="'url(' + galaxyBg + ')'">
+  <!-- Background (img + WebP for faster LCP vs CSS background-image) -->
+  <div class="hero-bg absolute inset-0 overflow-hidden">
+    <picture class="block h-full w-full">
+      <source [srcset]="galaxyBgWebp" type="image/webp">
+      <img
+        [src]="galaxyBg"
+        alt=""
+        width="1920"
+        height="1080"
+        fetchpriority="high"
+        decoding="async"
+        class="hero-bg-image"
+      />
+    </picture>
     <div class="absolute inset-0 bg-gradient-to-b from-background/15 via-transparent to-background/90"></div>
     <div class="absolute inset-0 hero-bg-vignette"></div>
   </div>
@@ -44,22 +56,25 @@
               aria-hidden="true"
               class="pointer-events-none absolute left-1/2 top-[52%] z-0 -translate-x-1/2 -translate-y-1/2 w-[min(106%,38rem)] max-w-[min(100%,calc(100vw-2rem))] h-14 max-md:h-[min(3.8rem,13vw)] md:h-20 lg:h-24 rounded-full bg-gradient-to-r from-primary/34 via-accent/26 to-primary/34 blur-[14px] md:blur-[22px] lg:blur-[28px] opacity-45 md:opacity-[0.5]"></div>
             <h1 class="relative z-10 m-0 w-full min-w-0">
-              <img
-                [src]="mainLogo"
-                alt="BHAVISHYAT — Vedic Astrology Guide"
-                width="1280"
-                height="334"
-                fetchpriority="high"
-                decoding="async"
-                class="relative z-10 block w-full max-w-[min(100%,52rem)] md:max-w-[56rem] lg:max-w-[62rem] h-auto object-contain max-md:[filter:drop-shadow(0_0_12px_rgba(234,147,85,0.5))_drop-shadow(0_0_28px_rgba(234,147,85,0.28))_drop-shadow(0_0_52px_rgba(234,147,85,0.16))] md:[filter:drop-shadow(0_0_18px_rgba(234,147,85,0.52))_drop-shadow(0_0_44px_rgba(234,147,85,0.32))_drop-shadow(0_0_88px_rgba(234,147,85,0.2))]"
-              />
+              <picture class="relative z-10 block w-full max-w-[min(100%,52rem)] md:max-w-[56rem] lg:max-w-[62rem]">
+                <source [srcset]="mainLogoWebp" type="image/webp">
+                <img
+                  [src]="mainLogo"
+                  alt="BHAVISHYAT — Vedic Astrology Guide"
+                  width="1280"
+                  height="334"
+                  fetchpriority="high"
+                  decoding="async"
+                  class="block w-full h-auto object-contain max-md:[filter:drop-shadow(0_0_12px_rgba(234,147,85,0.5))_drop-shadow(0_0_28px_rgba(234,147,85,0.28))_drop-shadow(0_0_52px_rgba(234,147,85,0.16))] md:[filter:drop-shadow(0_0_18px_rgba(234,147,85,0.52))_drop-shadow(0_0_44px_rgba(234,147,85,0.32))_drop-shadow(0_0_88px_rgba(234,147,85,0.2))]"
+                />
+              </picture>
             </h1>
           </div>
         </div>
 
         <h2 class="text-2xl max-md:leading-snug md:text-5xl lg:text-6xl font-playfair font-bold mb-4 md:mb-6 animate-fade-in-up" style="animation-delay: 0.2s;">
           <span class="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
-            Ultimate Guide To Astrology
+            Guidance Written in Your Stars
           </span>
         </h2>
 

@@ -1,0 +1,46 @@
+<section id="testimonials" class="testimonials-section py-24 px-4 relative overflow-hidden">
+  <div class="container mx-auto relative z-10 max-w-6xl">
+    <header class="testimonials-header text-center mb-14 md:mb-16 animate-fade-in-up">
+      <p class="text-primary font-semibold tracking-[0.3em] uppercase text-sm mb-4">
+        Client Voices
+      </p>
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold mb-5">
+        <span class="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
+          What People Say
+        </span>
+      </h2>
+      <p class="text-foreground/70 text-lg max-w-2xl mx-auto leading-relaxed">
+        Real messages from people who came for clarity on decisions that mattered.
+      </p>
+    </header>
+
+    <div class="chat-threads-grid">
+      @for (thread of threads; track thread.label; let i = $index) {
+        <article
+          class="chat-thread animate-fade-in-up"
+          [style.animation-delay.s]="0.1 + i * 0.08"
+        >
+          <div class="chat-thread__header">
+            <span class="chat-thread__avatar" aria-hidden="true">✦</span>
+            <div class="chat-thread__meta">
+              <p class="chat-thread__label">{{ thread.label }}</p>
+              <p class="chat-thread__status">WhatsApp conversation</p>
+            </div>
+          </div>
+
+          <div class="chat-thread__body">
+            @for (message of thread.messages; track $index) {
+              <div
+                class="chat-bubble"
+                [class.chat-bubble--outgoing]="message.from === 'shubhram'"
+              >
+                <p class="chat-bubble__text">{{ message.text }}</p>
+                <time class="chat-bubble__time">{{ message.time }}</time>
+              </div>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

@@ -4,6 +4,11 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { AdBannerComponent } from '../../components/ad-banner/ad-banner.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {
+  openWhatsApp,
+  WHATSAPP_CONSULTATION_MESSAGE,
+  WHATSAPP_DISPLAY
+} from '../../core/contact/contact.config';
 
 interface RemedyProgram {
     id: string;
@@ -36,6 +41,13 @@ interface CarouselMedia {
     styleUrl: './remedies-seva.component.css'
 })
 export class RemediesSevaComponent implements OnInit, AfterViewInit, OnDestroy {
+    readonly whatsappDisplay = WHATSAPP_DISPLAY;
+
+    connectViaWhatsApp(event: Event): void {
+        event.preventDefault();
+        openWhatsApp(WHATSAPP_CONSULTATION_MESSAGE, 'connect-with-us');
+    }
+
     @ViewChildren('naulaVideo') naulaVideos!: QueryList<ElementRef<HTMLVideoElement>>;
 
     private document = inject(DOCUMENT);

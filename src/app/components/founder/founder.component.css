@@ -1,0 +1,115 @@
+.founder-section {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--navy-darker)) 45%,
+    hsl(var(--background)) 100%
+  );
+}
+
+.founder-header {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.founder-layout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.founder-layout__photo {
+  margin: 0;
+  max-width: 22rem;
+  width: 100%;
+  justify-self: center;
+}
+
+.founder-portrait__frame {
+  overflow: hidden;
+  border: 1px solid hsl(var(--border) / 0.7);
+  border-radius: 0.75rem;
+  background: hsl(var(--card));
+  box-shadow: var(--shadow-card);
+}
+
+.founder-portrait__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.founder-portrait__caption {
+  margin-top: 0.85rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.founder-layout__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.founder-heading {
+  margin: 0;
+  color: hsl(var(--foreground) / 0.92);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.5rem, 2.8vw, 2.15rem);
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.founder-subtext {
+  margin: 0;
+  color: hsl(var(--foreground) / 0.78);
+  font-size: clamp(0.98rem, 1.6vw, 1.05rem);
+  line-height: 1.75;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .founder-header {
+    text-align: left;
+    margin-bottom: 3rem;
+  }
+
+  .founder-layout {
+    gap: 2rem 3rem;
+    grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+    grid-template-areas: 'photo copy';
+    align-items: center;
+  }
+
+  .founder-layout__photo {
+    grid-area: photo;
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .founder-layout__copy {
+    grid-area: copy;
+  }
+
+  .founder-heading,
+  .founder-subtext {
+    text-align: left;
+  }
+
+  .founder-portrait__caption {
+    text-align: left;
+  }
+}
+
+@media (min-width: 1024px) {
+  .founder-layout {
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+    gap: 2.5rem 3.5rem;
+  }
+}

@@ -1,49 +1,115 @@
-<section id="services" class="py-24 px-4 relative bg-gradient-to-b from-background via-navy-darker to-background">
+<section id="services" class="consultations-section py-24 px-4 relative bg-gradient-to-b from-background via-navy-darker to-background">
   <div class="container mx-auto">
-    <div class="text-center mb-16 animate-fade-in-up">
+    <div class="text-center max-w-3xl mx-auto mb-14 md:mb-16 animate-fade-in-up">
+      <p class="text-primary font-semibold tracking-[0.3em] uppercase text-sm mb-4">
+        Consultations
+      </p>
       <h2 class="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold mb-4">
         <span class="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
-          Our Best Services
+          Personalised Vedic Consultations
         </span>
       </h2>
-      
+      <p class="text-xl md:text-2xl font-playfair text-foreground/90 italic">
+        Every chart is unique. Your guidance should be too.
+      </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      @for (service of services; track service.badge; let index = $index) {
-        <app-card 
-          className="flex flex-col h-full bg-card/80 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(234,147,85,0.2)] group relative overflow-hidden animate-fade-in-up"
-          [style.animation-delay]="index * 0.1 + 's'"
-        >
-          <!-- Badge -->
-          <div class="absolute top-4 right-4 w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-bold shadow-lg">
-            {{ service.badge }}
-          </div>
-
-          <app-card-header className="pt-8">
-            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-              @if (getIconSvg(service.icon)) {
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" [attr.viewBox]="getIconSvg(service.icon).viewBox" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                  @for (path of getIconSvg(service.icon).paths; track $index) {
-                    <path [attr.d]="path"></path>
-                  }
-                </svg>
+    <div class="launch-ticker max-w-6xl mx-auto mb-10 md:mb-12 animate-fade-in-up" style="animation-delay: 0.15s;">
+      <p class="sr-only">Launch offer: 50% off for the first 50 early-bird customers.</p>
+      <div class="launch-ticker__viewport" aria-hidden="true">
+        <div class="launch-ticker__track">
+          @for (copy of [1, 2]; track copy) {
+            <div class="launch-ticker__group">
+              @for (segment of launchTickerSegments; track segment) {
+                <span class="launch-ticker__segment">{{ segment }}</span>
               }
             </div>
-            <app-card-title className="text-foreground font-playfair text-xl">
-              {{ service.title }}
-            </app-card-title>
-          </app-card-header>
-          <app-card-content>
-            <app-card-description className="text-foreground/70">
-              {{ service.description }}
-            </app-card-description>
-          </app-card-content>
+          }
+        </div>
+      </div>
+    </div>
 
-          <!-- Hover Effect Line -->
-          <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
-        </app-card>
+    <div class="consultations-grid max-w-6xl mx-auto mb-16">
+      @for (offering of offerings; track offering.title; let index = $index) {
+        <article
+          class="consultation-plan animate-fade-in-up"
+          [class.consultation-plan--featured]="offering.featured"
+          [style.animation-delay]="index * 0.1 + 's'"
+        >
+          @if (offering.badge) {
+            <span class="consultation-plan__badge">{{ offering.badge }}</span>
+          }
+
+          <p class="consultation-plan__label">{{ offering.label }}</p>
+
+          <h3 class="consultation-plan__title">{{ offering.title }}</h3>
+
+          <div class="consultation-plan__price-block">
+            <p class="consultation-plan__price">{{ offering.priceAmount }}</p>
+            @if (offering.price.startsWith('From')) {
+              <p class="consultation-plan__price-prefix">from</p>
+            }
+            @if (offering.priceNote) {
+              <p class="consultation-plan__price-note">{{ offering.priceNote }}</p>
+            }
+          </div>
+
+          <ul class="consultation-plan__points">
+            @for (point of offering.highlights; track point) {
+              <li>{{ point }}</li>
+            }
+          </ul>
+
+          <div class="consultation-plan__best-for">
+            <p class="consultation-plan__detail-label">Best suited for</p>
+            <ul class="consultation-plan__points consultation-plan__points--compact">
+              @for (point of offering.bestFor; track point) {
+                <li>{{ point }}</li>
+              }
+            </ul>
+          </div>
+
+          <div class="consultation-plan__action">
+            @if (offering.featured) {
+              <app-button
+                size="lg"
+                (click)="requestSlotViaWhatsApp()"
+                className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold tracking-[0.18em] uppercase text-xs md:text-sm py-6 shadow-[0_0_30px_rgba(234,147,85,0.35)] transition-all duration-300"
+              >
+                Request a Slot
+              </app-button>
+            } @else {
+              <app-button
+                size="lg"
+                variant="outline"
+                (click)="requestSlotViaWhatsApp()"
+                className="w-full border-2 border-primary/60 text-primary hover:bg-primary/10 font-semibold tracking-[0.18em] uppercase text-xs md:text-sm py-6 transition-all duration-300"
+              >
+                Request a Slot
+              </app-button>
+            }
+          </div>
+        </article>
       }
+    </div>
+
+    <div class="max-w-3xl mx-auto text-center animate-fade-in-up" style="animation-delay: 0.4s;">
+      <div class="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/10 via-background to-accent/10 px-6 py-10 md:px-10 backdrop-blur-sm">
+        <p class="text-lg md:text-xl font-playfair text-foreground mb-2">
+          Not sure which consultation is right for you?
+        </p>
+        <p class="text-foreground/75 leading-relaxed mb-8">
+          Every situation is different.
+          <span class="text-foreground/90 font-medium">Speak with us first, and we will recommend the consultation format best suited to your requirements.</span>
+        </p>
+        <app-button
+          size="lg"
+          (click)="chatViaWhatsApp()"
+          className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-8 py-6 text-lg shadow-[0_0_30px_rgba(234,147,85,0.4)] transition-all duration-300 hover:scale-105"
+        >
+          Connect With Us
+        </app-button>
+      </div>
     </div>
   </div>
 </section>

@@ -1,14 +1,27 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdBannerComponent } from '../ad-banner/ad-banner.component';
+import { FaqComponent } from '../faq/faq.component';
+import {
+  openWhatsApp,
+  WHATSAPP_CONSULTATION_MESSAGE,
+  WHATSAPP_DISPLAY
+} from '../../core/contact/contact.config';
 
 @Component({
   selector: 'app-cta',
-  imports: [CommonModule, AdBannerComponent],
+  imports: [CommonModule, AdBannerComponent, FaqComponent],
   templateUrl: './cta.component.html',
   styleUrl: './cta.component.css'
 })
 export class CtaComponent {
+  readonly whatsappDisplay = WHATSAPP_DISPLAY;
+
+  connectViaWhatsApp(event: Event): void {
+    event.preventDefault();
+    openWhatsApp(WHATSAPP_CONSULTATION_MESSAGE, 'connect-with-us');
+  }
+
   stars = [
     { id: 1, x: 8, y: 12, size: 4, delay: 0, duration: 2.2 },
     { id: 2, x: 92, y: 18, size: 5, delay: 0.4, duration: 2.5 },

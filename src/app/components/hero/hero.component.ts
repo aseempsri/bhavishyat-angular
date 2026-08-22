@@ -33,8 +33,10 @@ export class HeroComponent {
   }
 
   galaxyBg = this.getBaseHref() + 'assets/new-hero.png';
+  galaxyBgWebp = this.getBaseHref() + 'assets/new-hero.webp';
   zodiacCircle = this.getBaseHref() + 'assets/zodiac-circle.png';
   mainLogo = this.getBaseHref() + 'assets/main_logo-P.png';
+  mainLogoWebp = this.getBaseHref() + 'assets/main_logo-P.webp';
 
   // Floating star particles for cosmic ambiance
   stars = [

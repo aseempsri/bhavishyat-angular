@@ -1,0 +1,50 @@
+<section
+  id="faq"
+  class="faq-section px-4 relative overflow-hidden"
+  [class.faq-section--embedded]="embedded()"
+  [class.py-24]="!embedded()"
+  [class.faq-section--embedded-spacing]="embedded()"
+>
+  <div class="container mx-auto relative z-10 max-w-3xl">
+    <header class="faq-header text-center mb-12 md:mb-14 animate-fade-in-up">
+      <p class="text-primary font-semibold tracking-[0.3em] uppercase text-sm mb-4">
+        Common Questions
+      </p>
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold mb-5">
+        <span class="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
+          FAQ
+        </span>
+      </h2>
+      <p class="text-foreground/70 text-lg leading-relaxed">
+        Answers to what people usually ask before booking a consultation.
+      </p>
+    </header>
+
+    <div class="faq-list animate-fade-in-up" style="animation-delay: 0.1s;">
+      @for (item of items; track item.id) {
+        <div class="faq-item" [class.faq-item--open]="isOpen(item.id)">
+          <button
+            type="button"
+            class="faq-item__trigger"
+            (click)="toggle(item.id)"
+            [attr.aria-expanded]="isOpen(item.id)"
+            [attr.aria-controls]="'faq-panel-' + item.id"
+            [id]="'faq-trigger-' + item.id"
+          >
+            <span class="faq-item__question">{{ item.question }}</span>
+            <span class="faq-item__icon" aria-hidden="true"></span>
+          </button>
+          <div
+            class="faq-item__panel"
+            [id]="'faq-panel-' + item.id"
+            role="region"
+            [attr.aria-labelledby]="'faq-trigger-' + item.id"
+            [hidden]="!isOpen(item.id)"
+          >
+            <p class="faq-item__answer">{{ item.answer }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

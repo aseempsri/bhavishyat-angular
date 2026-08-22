@@ -20,6 +20,7 @@ export class AboutComponent {
   }
 
   zodiacWheel = this.getBaseHref() + 'assets/zodiac-wheel.png';
+  zodiacWheelWebp = this.getBaseHref() + 'assets/zodiac-wheel.webp';
 
   navigateToGurukul(): void {
     this.router.navigate(['/class-recordings']);

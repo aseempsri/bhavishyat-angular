@@ -1,0 +1,122 @@
+.faq-section {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--navy-darker)) 40%,
+    hsl(var(--background)) 100%
+  );
+}
+
+.faq-section--embedded,
+.faq-section--embedded.faq-section {
+  background: transparent;
+}
+
+.faq-section--embedded-spacing {
+  padding-top: 2.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.faq-section--embedded .faq-header {
+  margin-bottom: 2rem;
+}
+
+.faq-section--embedded .faq-header h2 {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.faq-item {
+  overflow: hidden;
+  border: 1px solid hsl(var(--border) / 0.6);
+  border-radius: 0.75rem;
+  background: hsl(var(--card) / 0.65);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-item--open {
+  border-color: hsl(var(--primary) / 0.35);
+  box-shadow: 0 0 24px hsl(var(--primary) / 0.08);
+}
+
+.faq-item__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.15rem 1.25rem;
+  border: none;
+  background: transparent;
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  text-align: left;
+}
+
+.faq-item__trigger:hover {
+  color: hsl(var(--primary));
+}
+
+.faq-item__question {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.02rem, 2vw, 1.12rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.faq-item__icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.faq-item__icon::before,
+.faq-item__icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: hsl(var(--primary));
+  border-radius: 1px;
+  transition: transform 0.2s ease;
+}
+
+.faq-item__icon::before {
+  width: 12px;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+
+.faq-item__icon::after {
+  width: 2px;
+  height: 12px;
+  transform: translate(-50%, -50%);
+}
+
+.faq-item--open .faq-item__icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
+}
+
+.faq-item__panel {
+  padding: 0 1.25rem 1.15rem;
+}
+
+.faq-item__panel[hidden] {
+  display: none;
+}
+
+.faq-item__answer {
+  margin: 0;
+  padding-top: 0.15rem;
+  border-top: 1px solid hsl(var(--border) / 0.4);
+  color: hsl(var(--foreground) / 0.78);
+  font-size: 0.96rem;
+  line-height: 1.75;
+}
