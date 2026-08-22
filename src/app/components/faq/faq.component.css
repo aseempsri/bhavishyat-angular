@@ -10,6 +10,8 @@
 .faq-section--embedded,
 .faq-section--embedded.faq-section {
   background: transparent;
+  position: relative;
+  z-index: 0;
 }
 
 .faq-section--embedded-spacing {
