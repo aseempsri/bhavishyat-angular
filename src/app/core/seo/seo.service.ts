@@ -60,11 +60,13 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:description', content: seo.description });
     this.meta.updateTag({ property: 'og:type', content: ogType });
     this.meta.updateTag({ property: 'og:url', content: absoluteUrl });
+    const imageType = /\.jpe?g($|\?)/i.test(image) ? 'image/jpeg' : 'image/png';
+
     this.meta.updateTag({ property: 'og:image', content: image });
     this.meta.updateTag({ property: 'og:image:alt', content: `${SITE_NAME} — Vedic astrology` });
     this.meta.updateTag({ property: 'og:image:width', content: String(OG_IMAGE_WIDTH) });
     this.meta.updateTag({ property: 'og:image:height', content: String(OG_IMAGE_HEIGHT) });
-    this.meta.updateTag({ property: 'og:image:type', content: 'image/png' });
+    this.meta.updateTag({ property: 'og:image:type', content: imageType });
     this.meta.updateTag({ property: 'og:site_name', content: SITE_NAME });
     this.meta.updateTag({ property: 'og:locale', content: 'en_IN' });
 
