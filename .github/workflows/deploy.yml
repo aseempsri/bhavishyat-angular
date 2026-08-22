@@ -34,9 +34,9 @@ jobs:
 
       - name: Build Angular app (fetch videos + sitemap + route SEO shells)
         env:
-          BASE_HREF: /bhavishyat-angular/
-          SITE_URL: https://aseempsri.github.io/bhavishyat-angular
-        run: npm run build -- --base-href /bhavishyat-angular/
+          BASE_HREF: /
+          SITE_URL: https://bhavishyat.in
+        run: npm run build -- --base-href /
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
