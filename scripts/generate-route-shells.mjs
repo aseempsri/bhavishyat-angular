@@ -320,11 +320,11 @@ function replaceMeta(html, route) {
   }
 
   const body = buildCrawlableBody(route, absolute);
-  if (/<app-root>[\s\S]*?<\/app-root>/.test(out)) {
-    out = out.replace(/<app-root>[\s\S]*?<\/app-root>/, `<app-root>${body}</app-root>`);
-  } else {
-    out = out.replace('<app-root></app-root>', `<app-root>${body}</app-root>`);
-  }
+  const shell = `<div id="seo-crawl-shell" hidden aria-hidden="true">\n  ${body}\n</div>`;
+
+  // Keep app-root empty for Angular bootstrap; SEO copy lives in a hidden sibling for crawlers.
+  out = out.replace(/\s*<div id="seo-crawl-shell" hidden[^>]*>[\s\S]*?<\/div>\s*/g, '');
+  out = out.replace(/<app-root>[\s\S]*?<\/app-root>/, `<app-root></app-root>\n  ${shell}`);
 
   return out;
 }

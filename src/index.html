@@ -93,6 +93,18 @@
     ]
   }
   </script>
+  <style>
+    /* Prevent flash of unstyled content before Angular bootstraps */
+    html,
+    body {
+      background: hsl(220 45% 8%);
+    }
+
+    app-root:empty {
+      display: block;
+      min-height: 100vh;
+    }
+  </style>
 </head>
 
 <body>
