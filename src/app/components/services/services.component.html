@@ -73,7 +73,7 @@
             @if (offering.featured) {
               <app-button
                 size="lg"
-                (click)="requestSlotViaWhatsApp()"
+                (buttonClick)="requestSlotViaWhatsApp()"
                 className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold tracking-[0.18em] uppercase text-xs md:text-sm py-6 shadow-[0_0_30px_rgba(234,147,85,0.35)] transition-all duration-300"
               >
                 Request a Slot
@@ -82,7 +82,7 @@
               <app-button
                 size="lg"
                 variant="outline"
-                (click)="requestSlotViaWhatsApp()"
+                (buttonClick)="requestSlotViaWhatsApp()"
                 className="w-full border-2 border-primary/60 text-primary hover:bg-primary/10 font-semibold tracking-[0.18em] uppercase text-xs md:text-sm py-6 transition-all duration-300"
               >
                 Request a Slot
@@ -104,7 +104,7 @@
         </p>
         <app-button
           size="lg"
-          (click)="chatViaWhatsApp()"
+          (buttonClick)="chatViaWhatsApp()"
           className="bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-8 py-6 text-lg shadow-[0_0_30px_rgba(234,147,85,0.4)] transition-all duration-300 hover:scale-105"
         >
           Connect With Us

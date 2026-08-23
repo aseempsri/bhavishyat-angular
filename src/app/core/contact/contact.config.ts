@@ -18,10 +18,19 @@ export function whatsappUrl(message?: string): string {
   return `${base}?text=${encodeURIComponent(message)}`;
 }
 
+let lastWhatsAppOpenAt = 0;
+
 export function openWhatsApp(message?: string, cta: WhatsAppCta = 'connect-with-us'): void {
   if (typeof window === 'undefined') {
     return;
   }
+
+  const now = Date.now();
+  if (now - lastWhatsAppOpenAt < 1500) {
+    return;
+  }
+  lastWhatsAppOpenAt = now;
+
   logWhatsAppCtaClick(cta, message);
   window.open(whatsappUrl(message), '_blank', 'noopener,noreferrer');
 }

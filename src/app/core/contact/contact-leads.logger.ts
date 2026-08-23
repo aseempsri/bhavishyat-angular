@@ -52,6 +52,22 @@ export function logWhatsAppCtaClick(cta: WhatsAppCta, message?: string): void {
     return;
   }
 
+  const dedupeKey = `${cta}|${window.location.pathname}|${message ?? ''}`;
+  const storageKey = 'bhavishyat_whatsapp_lead';
+  const last = sessionStorage.getItem(storageKey);
+  const now = Date.now();
+  if (last) {
+    try {
+      const parsed = JSON.parse(last) as { key: string; at: number };
+      if (parsed.key === dedupeKey && now - parsed.at < 1500) {
+        return;
+      }
+    } catch {
+      // ignore malformed storage
+    }
+  }
+  sessionStorage.setItem(storageKey, JSON.stringify({ key: dedupeKey, at: now }));
+
   const params = new URLSearchParams({
     secret: GOOGLE_SHEETS_LEADS_SECRET,
     cta,

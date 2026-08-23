@@ -11,9 +11,7 @@ export type ButtonSize = 'default' | 'sm' | 'lg' | 'icon';
   templateUrl: './button.component.html',
   styleUrl: './button.component.css',
   host: {
-    '[class]': 'buttonClasses',
-    '[attr.type]': 'type',
-    '[disabled]': 'disabled'
+    class: 'inline-block'
   }
 })
 export class ButtonComponent {
@@ -22,7 +20,7 @@ export class ButtonComponent {
   @Input() className: string = '';
   @Input() disabled: boolean = false;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
-  @Output() click = new EventEmitter<MouseEvent>();
+  @Output() buttonClick = new EventEmitter<MouseEvent>();
 
   get buttonClasses(): string {
     const baseClasses = 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
@@ -52,8 +50,11 @@ export class ButtonComponent {
   }
 
   onClick(event: MouseEvent): void {
-    if (!this.disabled) {
-      this.click.emit(event);
+    if (this.disabled) {
+      return;
     }
+    event.preventDefault();
+    event.stopPropagation();
+    this.buttonClick.emit(event);
   }
 }

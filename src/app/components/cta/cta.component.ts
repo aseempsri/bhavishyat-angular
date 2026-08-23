@@ -5,8 +5,7 @@ import { FaqComponent } from '../faq/faq.component';
 import {
   openWhatsApp,
   WHATSAPP_CONSULTATION_MESSAGE,
-  WHATSAPP_DISPLAY,
-  whatsappUrl
+  WHATSAPP_DISPLAY
 } from '../../core/contact/contact.config';
 
 @Component({
@@ -17,10 +16,10 @@ import {
 })
 export class CtaComponent {
   readonly whatsappDisplay = WHATSAPP_DISPLAY;
-  readonly whatsappHref = whatsappUrl(WHATSAPP_CONSULTATION_MESSAGE);
 
   connectViaWhatsApp(event: Event): void {
     event.preventDefault();
+    event.stopPropagation();
     openWhatsApp(WHATSAPP_CONSULTATION_MESSAGE, 'connect-with-us');
   }
 

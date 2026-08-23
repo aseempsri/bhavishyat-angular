@@ -48,7 +48,7 @@
       <!-- Contact nodes -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 lg:gap-16">
         <!-- WhatsApp -->
-        <a [href]="whatsappHref" target="_blank" rel="noopener noreferrer" (click)="connectViaWhatsApp($event)" class="group flex flex-col items-center text-center animate-fade-in-up" style="animation-delay: 0.1s">
+        <button type="button" (click)="connectViaWhatsApp($event)" class="group flex flex-col items-center text-center animate-fade-in-up border-0 bg-transparent p-0 cursor-pointer" style="animation-delay: 0.1s">
           <div class="relative mb-6">
             <div class="absolute inset-0 bg-primary/30 rounded-full blur-xl group-hover:opacity-100 opacity-0 transition-opacity"></div>
             <div class="relative w-20 h-20 rounded-full border-2 border-primary/40 flex items-center justify-center
@@ -60,7 +60,7 @@
           </div>
           <span class="text-primary font-playfair font-semibold text-lg mb-2 block">Connect With Us</span>
           <span class="text-foreground/90">{{ whatsappDisplay }}</span>
-        </a>
+        </button>
 
         <!-- Email -->
         <a href="mailto:contact&#64;bhavishyat.in" class="group flex flex-col items-center text-center animate-fade-in-up" style="animation-delay: 0.2s">
