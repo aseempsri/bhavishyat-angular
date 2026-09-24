@@ -1,8 +1,8 @@
 import { WhatsAppCta } from './contact-leads.config';
 import { logWhatsAppCtaClick } from './contact-leads.logger';
 
-export const WHATSAPP_NUMBER = '917007229788';
-export const WHATSAPP_DISPLAY = '+91 70072 29788';
+export const WHATSAPP_NUMBER = '919981754120';
+export const WHATSAPP_DISPLAY = '+91 99817 54120';
 
 export const WHATSAPP_CONSULTATION_MESSAGE =
   'Hello Shubhram, I would like to enquire about a Vedic consultation.';

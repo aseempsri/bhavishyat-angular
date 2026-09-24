@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BHAVISHYAT — Janma Kundli • Shubham Bathwal</title>
+<style>
+  :root {
+    --maroon: #7a1f1f;
+    --gold: #9a7b3c;
+    --gold-soft: #c4a574;
+    --text: #1f1a14;
+    --muted: #5c5348;
+    --bg: #f9efdc;
+    --paper: #f3e6cb;
+    --row: #f1e4c8;
+    --border: #c9b48a;
+    --thead: #7a1f1f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #ebe0c8;
+    color: var(--text);
+    font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    line-height: 1.55;
+  }
+  .doc {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 24px 12px 64px;
+  }
+  .page {
+    width: 820px;
+    background: var(--bg);
+    margin: 0 auto 28px;
+    padding: 28px 34px 22px;
+    border: 1px solid #ddd4c4;
+    box-shadow: 0 8px 28px rgba(40, 25, 10, 0.08);
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .page:not(.cover-page) {
+    height: 1230px;
+    min-height: 1230px;
+    max-height: 1230px;
+    display: flex;
+    flex-direction: column;
+  }
+  .page:not(.cover-page)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("backgroundimage-Photoroom.png") center center / min(92%, 640px) no-repeat;
+    opacity: 0.07;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .page > * {
+    position: relative;
+    z-index: 1;
+  }
+  .page.cover-page {
+    padding: 0;
+    overflow: hidden;
+    background: var(--bg);
+    width: 820px;
+    height: 1230px;
+    min-height: 1230px;
+    max-height: 1230px;
+  }
+  .page.cover-page::before {
+    display: none;
+  }
+  .page.cover-page img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .page-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .page-body.center-content {
+    justify-content: center;
+  }
+  .page.page-dense {
+    line-height: 1.42;
+    font-size: 0.94rem;
+  }
+  .page.page-dense h2 { margin: 10px 0 6px; }
+  .page.page-dense h3 { margin: 8px 0 4px; }
+  .page.page-dense .bullets li { margin-bottom: 3px; }
+  .page.page-dense .kv td { padding: 5px 8px; font-size: 0.88rem; }
+  .footer-num {
+    text-align: center;
+    color: #888;
+    font-size: 0.8rem;
+    margin-top: auto;
+    padding-top: 12px;
+  }
+  .brand {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .brand-logo {
+    display: block;
+    width: 220px;
+    height: 43px;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+  .brand .sub {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+    margin: 8px 0 12px;
+    position: relative;
+  }
+  .rule::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    background: var(--gold);
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  h2 {
+    color: var(--maroon);
+    font-size: 1.12rem;
+    margin: 0 0 6px;
+  }
+  h2.section-gap {
+    margin-top: 16px;
+  }
+  h3 {
+    color: var(--maroon);
+    font-size: 0.98rem;
+    margin: 10px 0 5px;
+  }
+  .gold-head {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    margin: 10px 0 4px;
+  }
+  p { margin: 0 0 7px; color: var(--text); }
+  .muted { color: var(--muted); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 8px;
+    font-size: 0.82rem;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 3px 6px;
+    vertical-align: top;
+  }
+  th {
+    background: var(--thead);
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+  }
+  tbody tr:nth-child(odd) { background: var(--bg); }
+  tbody tr:nth-child(even) { background: var(--row); }
+  .kv td:nth-child(odd) {
+    width: 22%;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .kv td:nth-child(even) {
+    width: 28%;
+    color: var(--text);
+  }
+  .chart-wrap {
+    text-align: center;
+    margin: 4px 0 10px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 8px;
+  }
+  .chart-wrap img {
+    max-width: 100%;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    display: inline-block;
+    object-fit: contain;
+  }
+  .nav-tara-chakra {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 12px;
+    font-size: 0.84rem;
+  }
+  .nav-tara-chakra td {
+    border: 1px solid var(--border);
+    padding: 6px 8px;
+    vertical-align: middle;
+    text-align: center;
+    color: var(--text);
+    background: var(--bg);
+  }
+  .nav-tara-chakra tr:nth-child(even) td {
+    background: var(--row);
+  }
+  .nav-tara-chakra td.tara-label {
+    text-align: left;
+    font-weight: 700;
+    color: var(--maroon);
+    background: #f0d9c4;
+    width: 28%;
+    white-space: nowrap;
+  }
+  .nav-tara-chakra tr:nth-child(even) td.tara-label {
+    background: #ebcfb6;
+  }
+  .nav-tara-chakra td.tara-num {
+    width: 7%;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .nav-tara-chakra td.tara-planets {
+    width: 17%;
+    text-align: left;
+  }
+  .bullets {
+    margin: 0 0 8px;
+    padding-left: 1.1rem;
+  }
+  .bullets li { margin: 0 0 4px; }
+  .note {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+    margin: 12px 0;
+    font-size: 0.92rem;
+  }
+  .closing {
+    text-align: center;
+    padding: 8% 10% 10%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    min-height: 0;
+  }
+  .closing h2 {
+    font-size: 1.85rem;
+    margin: 0;
+  }
+  .closing .muted {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+  .closing .quote {
+    font-style: italic;
+    max-width: 28em;
+    margin: 0 auto;
+    color: var(--text);
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+  .closing .quote-gita {
+    font-weight: 700;
+  }
+  .closing .quote-sanskrit {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    max-width: 22em;
+  }
+  .closing .quote-hindi {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    max-width: 26em;
+  }
+  .closing .attr {
+    color: var(--gold);
+    font-size: 1rem;
+    margin: 0;
+  }
+  .closing .blessing {
+    margin: 0 auto;
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 28em;
+  }
+  .closing .quote-final {
+    font-size: 1.25rem;
+    margin: 0 auto;
+  }
+  .abbr-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr 80px 1fr;
+    gap: 14px 16px;
+    font-size: 1rem;
+    margin-top: 8px;
+  }
+  .abbr-grid .code { color: var(--maroon); font-weight: 700; }
+  @media print {
+    @page {
+      size: 820px 1230px;
+      margin: 0;
+    }
+    html, body {
+      background: #fff !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .doc {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+    }
+    .page {
+      box-shadow: none !important;
+      border: none !important;
+      margin: 0 !important;
+      width: 820px;
+      min-height: 1230px;
+      page-break-after: always;
+      break-after: page;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+    .page.cover-page {
+      min-height: 1230px;
+      height: 1230px;
+      display: flex;
+      align-items: stretch;
+    }
+    .page.cover-page img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+
+<!-- PAGE 1: Cover -->
+<section class="page cover-page" id="page-1">
+  <img src="cover.png" alt="BHAVISHYAT Janma Kundli cover for Shubham Bathwal">
+</section>
+
+<!-- PAGE 2 -->
+<section class="page" id="page-2">
+  <header class="brand">
+    <img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT">
+    <p class="sub">Janma Kundli • Shubham Bathwal</p>
+  </header>
+  <div class="rule"></div>
+
+  <h2>Birth Details &amp; Panchang</h2>
+  <table class="kv">
+    <tbody>
+      <tr><td>Name</td><td>Shubham Bathwal</td><td>Paksha</td><td>Shukla</td></tr>
+      <tr><td>Date of Birth</td><td>20 December 1999</td><td>Tithi</td><td>Trayodashi (13)</td></tr>
+      <tr><td>Time of Birth</td><td>12:20 PM</td><td>Nakshatra</td><td>Krittika</td></tr>
+      <tr><td>Birth Place</td><td>Gorakhpur</td><td>Vaar</td><td>Monday</td></tr>
+      <tr><td>Longitude</td><td>83°22' E</td><td>Yoga</td><td>Siddha</td></tr>
+      <tr><td>Latitude</td><td>26°45' N</td><td>Karan</td><td>Kaulava</td></tr>
+    </tbody>
+  </table>
+
+  <table class="kv">
+    <tbody>
+      <tr><td>Ascendant</td><td>Pisces</td><td>Asc Lord</td><td>Jupiter</td></tr>
+      <tr><td>Tithi Lord</td><td>Jupiter</td><td>Tithi Deity</td><td>Kamadeva</td></tr>
+      <tr><td>Nakshatra Lord</td><td>Sun</td><td>Nakshatra Deity</td><td>Agni (Fire)</td></tr>
+      <tr><td>Yoga Deity</td><td>Kartikeya</td><td>Karan Deity</td><td>Yama</td></tr>
+      <tr><td>Yogi</td><td>Ketu</td><td>Duplicate Yogi</td><td>Mars</td></tr>
+      <tr><td>Abhiyogi</td><td>Rahu</td><td>Dagdha Rashi</td><td>Taurus (2), Leo (5)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Natal Chart (Rashi)</h2>
+  <div class="chart-wrap">
+    <img src="natal-chart.jpeg" alt="North Indian natal chart (Rashi) for Shubham Bathwal">
+  </div>
+
+  <table class="kv">
+    <tbody>
+      <tr><td>Planet Distribution</td><td colspan="3">Right (Visible Half), Upper Half — family, wealth, social circle, status, work, long travel &amp; unearned wealth as focus areas</td></tr>
+      <tr><td>Ascendant</td><td>Pisces (Meena)</td><td>Moon / Sun Sign</td><td>Aries (Mesha) / Sagittarius (Dhanu)</td></tr>
+      <tr><td>Malefic</td><td>Venus, Sun, Saturn</td><td>Shunya Nakshatra</td><td>Ardra, Ashlesha, Hasta</td></tr>
+      <tr><td>Maraka</td><td>Mercury, Mars</td><td>Dasha Balance</td><td>4Y 9M 11D</td></tr>
+      <tr><td>Badhaka</td><td>Mercury (Budha)</td><td>Mangalik</td><td>No</td></tr>
+      <tr><td>Birth Dasha</td><td colspan="3">Su-Ra-Ra (1-4-4)</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">1 / 12</p>
+</section>
+
+<!-- PAGE 3 -->
+<section class="page" id="page-3">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+
+  <h2>Favourable Influences</h2>
+  <table class="kv">
+    <tbody>
+      <tr><td>Benefic Years</td><td colspan="3">18, 20, 25, 27, 29, 34, 36, 38</td></tr>
+      <tr><td>Favourable Days</td><td colspan="3">Monday, Tuesday, Thursday</td></tr>
+      <tr><td>Favourable Planets</td><td colspan="3">Moon, Mars, Jupiter</td></tr>
+      <tr><td>Favourable Signs</td><td colspan="3">Aquarius (11), Gemini (3), Virgo (6)</td></tr>
+      <tr><td>Favourable Ratna</td><td>Yellow Sapphire, Pearl</td><td>Favourable UpRatna</td><td>Yellow Topaz, Moonstone</td></tr>
+      <tr><td>Lucky Ratna</td><td>Coral</td><td>Favourable Deity</td><td>Jagdamba</td></tr>
+      <tr><td>Favourable Metal</td><td>Bronze</td><td>Favourable Colour</td><td>Yellow</td></tr>
+      <tr><td>Direction</td><td>North-East</td><td>Favourable Cereals</td><td>Gram</td></tr>
+      <tr><td>Favourable Items</td><td colspan="3">Turmeric, Yellow Fruit (Sweet), Spiritual books</td></tr>
+      <tr><td>Favourable Plant</td><td>Strychnine tree (Kuchla)</td><td>Favourable Temple</td><td>Somnath Temple</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Planets in Rashi Chart</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Planet</th><th>Lordship</th><th>Sign</th><th>Nakshatra</th>
+        <th>Nak. Lord</th><th>Nak. Count</th><th>Nav Tara</th><th>Char Karak</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Sun</td><td>6L</td><td>Sagittarius (9)</td><td>Mula</td><td>Ketu</td><td>17 N</td><td>1</td><td>Gnatikarak (6H)</td></tr>
+      <tr><td>Moon</td><td>5L</td><td>Aries (1)</td><td>Krittika</td><td>Sun</td><td>1 N</td><td>2</td><td>Atmakarak (Life)</td></tr>
+      <tr><td>Mars</td><td>2L, 9L</td><td>Capricorn (10)</td><td>Dhanishtha</td><td>Mars</td><td>21 N</td><td>3</td><td>Amatyakarak</td></tr>
+      <tr><td>Mercury</td><td>4L, 7L</td><td>Scorpio (8)</td><td>Jyeshtha</td><td>Mercury</td><td>16 N</td><td>7</td><td>Matrikarak (4H)</td></tr>
+      <tr><td>Jupiter</td><td>10L, 1L</td><td>Aries (1)</td><td>Ashwini</td><td>Ketu</td><td>26 N</td><td>5</td><td>DaraKarak (7H)</td></tr>
+      <tr><td>Venus</td><td>3L, 8L</td><td>Libra (7)</td><td>Vishakha</td><td>Jupiter</td><td>14 N</td><td>9</td><td>Bhratrikaraka (3H)</td></tr>
+      <tr><td>Saturn</td><td>11L, 12L</td><td>Aries (1)</td><td>Bharani</td><td>Venus</td><td>27 N</td><td>6</td><td>Putrakarak (5H)</td></tr>
+      <tr><td>Rahu</td><td>—</td><td>Cancer (4)</td><td>Pushya</td><td>Saturn</td><td>6 N</td><td>4</td><td>—</td></tr>
+      <tr><td>Ketu</td><td>—</td><td>Capricorn (10)</td><td>Shravana</td><td>Moon</td><td>20 N</td><td>8</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <table class="kv">
+    <tbody>
+      <tr><td>Exalted Planet(s)</td><td>Mars</td><td>Debilitated Planet(s)</td><td>Saturn</td></tr>
+      <tr><td>Combust Planet(s)</td><td>—</td><td>Retrograde Planet(s)</td><td>Jupiter, Saturn</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Sarvastakvarga &amp; Houses</h2>
+  <table class="kv">
+    <tbody>
+      <tr><td>Very Strong (35+)</td><td colspan="3">12H</td></tr>
+      <tr><td>Strong (31-35)</td><td colspan="3">6H, 7H, 11H, 12H</td></tr>
+      <tr><td>Above Average (28-30)</td><td colspan="3">4H</td></tr>
+      <tr><td>Below Average (24-27)</td><td colspan="3">1H, 2H, 5H, 8H, 9H</td></tr>
+      <tr><td>Weak (21-23)</td><td colspan="3">3H, 10H</td></tr>
+      <tr><td>Very Weak (&lt;21)</td><td colspan="3">—</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">2 / 12</p>
+</section>
+
+<!-- PAGE 4 -->
+<section class="page" id="page-4">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+
+  <h2>Houses in Rashi Chart</h2>
+  <table>
+    <thead><tr><th>House</th><th>Sign</th><th>Planets</th><th>SAV</th><th>Lords</th><th>Aspect</th></tr></thead>
+    <tbody>
+      <tr><td>1H</td><td>Pisces (12)</td><td>—</td><td>26</td><td>—</td><td>Rahu</td></tr>
+      <tr><td>2H</td><td>Aries (1)</td><td>Moon, Jupiter, Saturn</td><td>25</td><td>5L; 10L, 1L; 11L, 12L</td><td>Mars</td></tr>
+      <tr><td>3H</td><td>Taurus (2)</td><td>—</td><td>21</td><td>—</td><td>Ketu</td></tr>
+      <tr><td>4H</td><td>Gemini (3)</td><td>—</td><td>28</td><td>—</td><td>Saturn</td></tr>
+      <tr><td>5H</td><td>Cancer (4)</td><td>Rahu</td><td>27</td><td>—</td><td>—</td></tr>
+      <tr><td>6H</td><td>Leo (5)</td><td>—</td><td>33</td><td>—</td><td>Mars, Jupiter</td></tr>
+      <tr><td>7H</td><td>Virgo (6)</td><td>—</td><td>32</td><td>—</td><td>Ketu</td></tr>
+      <tr><td>8H</td><td>Libra (7)</td><td>Venus</td><td>27</td><td>3L, 8L</td><td>—</td></tr>
+      <tr><td>9H</td><td>Scorpio (8)</td><td>Mercury</td><td>27</td><td>4L, 7L</td><td>Rahu</td></tr>
+      <tr><td>10H</td><td>Sagittarius (9)</td><td>Sun</td><td>23</td><td>6L</td><td>Jupiter</td></tr>
+      <tr><td>11H</td><td>Capricorn (10)</td><td>Mars, Ketu</td><td>33</td><td>2L, 9L</td><td>Saturn</td></tr>
+      <tr><td>12H</td><td>Aquarius (11)</td><td>—</td><td>35</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Bhinnashtak Varga (BAV)</h2>
+  <table>
+    <thead><tr><th>Sign</th><th>Sa</th><th>Ju</th><th>Ma</th><th>Su</th><th>Ve</th><th>Me</th><th>Mo</th><th>Ra</th></tr></thead>
+    <tbody>
+      <tr><td>12</td><td>5</td><td>5</td><td>4</td><td>3</td><td>4</td><td>3</td><td>2</td><td>3</td></tr>
+      <tr><td>1</td><td>1</td><td>4</td><td>4</td><td>4</td><td>4</td><td>5</td><td>3</td><td>4</td></tr>
+      <tr><td>2</td><td>2</td><td>2</td><td>3</td><td>2</td><td>3</td><td>4</td><td>5</td><td>3</td></tr>
+      <tr><td>3</td><td>6</td><td>5</td><td>1</td><td>3</td><td>5</td><td>2</td><td>6</td><td>6</td></tr>
+      <tr><td>4</td><td>2</td><td>6</td><td>2</td><td>4</td><td>6</td><td>4</td><td>3</td><td>3</td></tr>
+      <tr><td>5</td><td>5</td><td>7</td><td>3</td><td>5</td><td>4</td><td>5</td><td>4</td><td>3</td></tr>
+      <tr><td>6</td><td>6</td><td>4</td><td>5</td><td>6</td><td>2</td><td>4</td><td>5</td><td>3</td></tr>
+      <tr><td>7</td><td>3</td><td>4</td><td>3</td><td>4</td><td>3</td><td>6</td><td>4</td><td>3</td></tr>
+      <tr><td>8</td><td>1</td><td>5</td><td>2</td><td>2</td><td>7</td><td>7</td><td>3</td><td>3</td></tr>
+      <tr><td>9</td><td>3</td><td>4</td><td>2</td><td>4</td><td>5</td><td>3</td><td>2</td><td>4</td></tr>
+      <tr><td>10</td><td>2</td><td>4</td><td>5</td><td>6</td><td>5</td><td>6</td><td>5</td><td>3</td></tr>
+      <tr><td>11</td><td>3</td><td>6</td><td>5</td><td>5</td><td>4</td><td>5</td><td>7</td><td>5</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">3 / 12</p>
+</section>
+
+<!-- PAGE 5 -->
+<section class="page" id="page-5">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+  <h2>Vimshottari Dasha</h2>
+
+  <h3>Maha Dasha</h3>
+  <table>
+    <thead><tr><th>Dasha Lord</th><th>From</th><th>To</th></tr></thead>
+    <tbody>
+      <tr><td>Sun</td><td>28-Sep-1998</td><td>28-Sep-2004</td></tr>
+      <tr><td>Moon</td><td>28-Sep-2004</td><td>28-Sep-2014</td></tr>
+      <tr><td>Mars</td><td>28-Sep-2014</td><td>28-Sep-2021</td></tr>
+      <tr><td>Rahu</td><td>28-Sep-2021</td><td>28-Sep-2039</td></tr>
+      <tr><td>Jupiter</td><td>28-Sep-2039</td><td>28-Sep-2055</td></tr>
+      <tr><td>Saturn</td><td>28-Sep-2055</td><td>27-Sep-2074</td></tr>
+      <tr><td>Mercury</td><td>27-Sep-2074</td><td>28-Sep-2091</td></tr>
+      <tr><td>Ketu</td><td>28-Sep-2091</td><td>27-Sep-2098</td></tr>
+      <tr><td>Venus</td><td>27-Sep-2098</td><td>28-Sep-2118</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Antar Dasha (Rahu Maha Dasha)</h3>
+  <table>
+    <thead><tr><th>AD Lord</th><th>From</th><th>To</th></tr></thead>
+    <tbody>
+      <tr><td>Rahu</td><td>28-Sep-2021</td><td>10-Jun-2024</td></tr>
+      <tr><td>Jupiter</td><td>10-Jun-2024</td><td>03-Nov-2026</td></tr>
+      <tr><td>Saturn</td><td>03-Nov-2026</td><td>09-Sep-2029</td></tr>
+      <tr><td>Mercury</td><td>09-Sep-2029</td><td>29-Mar-2032</td></tr>
+      <tr><td>Ketu</td><td>29-Mar-2032</td><td>16-Apr-2033</td></tr>
+      <tr><td>Venus</td><td>16-Apr-2033</td><td>16-Apr-2036</td></tr>
+      <tr><td>Sun</td><td>16-Apr-2036</td><td>11-Mar-2037</td></tr>
+      <tr><td>Moon</td><td>11-Mar-2037</td><td>09-Sep-2038</td></tr>
+      <tr><td>Mars</td><td>09-Sep-2038</td><td>28-Sep-2039</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Pratyantar Dasha (Jupiter Antar Dasha)</h3>
+  <table>
+    <thead><tr><th>P. Dasha</th><th>From</th><th>To</th></tr></thead>
+    <tbody>
+      <tr><td>Sun</td><td>08-Jan-2026</td><td>21-Feb-2026</td></tr>
+      <tr><td>Moon</td><td>21-Feb-2026</td><td>05-May-2026</td></tr>
+      <tr><td>Mars</td><td>05-May-2026</td><td>25-Jun-2026</td></tr>
+      <tr><td>Rahu</td><td>25-Jun-2026</td><td>03-Nov-2026</td></tr>
+      <tr><td>Saturn</td><td>03-Nov-2026</td><td>17-Apr-2027</td></tr>
+      <tr><td>Mercury</td><td>17-Apr-2027</td><td>12-Sep-2027</td></tr>
+      <tr><td>Ketu</td><td>12-Sep-2027</td><td>11-Nov-2027</td></tr>
+      <tr><td>Venus</td><td>11-Nov-2027</td><td>03-May-2028</td></tr>
+      <tr><td>Sun</td><td>03-May-2028</td><td>24-Jun-2028</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">4 / 12</p>
+</section>
+
+<!-- PAGE 6 -->
+<section class="page" id="page-6">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+
+  <h2>Nav Tara Sequence</h2>
+  <table>
+    <thead>
+      <tr><th>Planet</th><th>Chara Karak</th><th>House</th><th>Lordship</th><th>Strength</th><th>Nakshatra</th><th>Lord</th><th>Placement</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Sun</td><td>Gnatikarak (6H)</td><td>10H</td><td>6L</td><td>Weak (21-23)</td><td>Mula</td><td>Ketu</td><td>11H</td></tr>
+      <tr><td>Moon</td><td>Atmakarak (Life)</td><td>2H</td><td>5L</td><td>Below Avg (24-27)</td><td>Krittika</td><td>Sun</td><td>10H</td></tr>
+      <tr><td>Mars</td><td>Amatyakarak</td><td>11H</td><td>2L, 9L</td><td>Strong (31-35)</td><td>Dhanishtha</td><td>Mars</td><td>11H</td></tr>
+      <tr><td>Rahu</td><td>—</td><td>5H</td><td>—</td><td>Below Avg (24-27)</td><td>Pushya</td><td>Saturn</td><td>2H</td></tr>
+      <tr><td>Jupiter</td><td>DaraKarak (7H)</td><td>2H</td><td>10L, 1L</td><td>Below Avg (24-27)</td><td>Ashwini</td><td>Ketu</td><td>11H</td></tr>
+      <tr><td>Saturn</td><td>Putrakarak (5H)</td><td>2H</td><td>11L, 12L</td><td>Below Avg (24-27)</td><td>Bharani</td><td>Venus</td><td>8H</td></tr>
+      <tr><td>Mercury</td><td>Matrikarak (4H)</td><td>9H</td><td>4L, 7L</td><td>Below Avg (24-27)</td><td>Jyeshtha</td><td>Mercury</td><td>9H</td></tr>
+      <tr><td>Ketu</td><td>—</td><td>11H</td><td>—</td><td>Strong (31-35)</td><td>Shravana</td><td>Moon</td><td>2H</td></tr>
+      <tr><td>Venus</td><td>Bhratrikaraka (3H)</td><td>8H</td><td>3L, 8L</td><td>Below Avg (24-27)</td><td>Vishakha</td><td>Jupiter</td><td>2H</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Birth Chart Nav Tara Chakra</h2>
+  <table class="nav-tara-chakra">
+    <tbody>
+      <tr>
+        <td class="tara-label">Sun (Janam)</td>
+        <td class="tara-num">1</td>
+        <td class="tara-planets">Moon</td>
+        <td class="tara-num">10</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">19</td>
+        <td class="tara-planets"></td>
+      </tr>
+      <tr>
+        <td class="tara-label">Moon (Sampat)</td>
+        <td class="tara-num">2</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">11</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">20</td>
+        <td class="tara-planets">Ketu</td>
+      </tr>
+      <tr>
+        <td class="tara-label">Mars (Vipat)</td>
+        <td class="tara-num">3</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">12</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">21</td>
+        <td class="tara-planets">Mars</td>
+      </tr>
+      <tr>
+        <td class="tara-label">Rahu (Kshem)</td>
+        <td class="tara-num">4</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">13</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">22</td>
+        <td class="tara-planets"></td>
+      </tr>
+      <tr>
+        <td class="tara-label">Jupiter (Pratyari)</td>
+        <td class="tara-num">5</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">14</td>
+        <td class="tara-planets">Venus</td>
+        <td class="tara-num">23</td>
+        <td class="tara-planets"></td>
+      </tr>
+      <tr>
+        <td class="tara-label">Saturn (Sadhak)</td>
+        <td class="tara-num">6</td>
+        <td class="tara-planets">Rahu</td>
+        <td class="tara-num">15</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">24</td>
+        <td class="tara-planets"></td>
+      </tr>
+      <tr>
+        <td class="tara-label">Mercury (Nidhan)</td>
+        <td class="tara-num">7</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">16</td>
+        <td class="tara-planets">Mercury</td>
+        <td class="tara-num">25</td>
+        <td class="tara-planets"></td>
+      </tr>
+      <tr>
+        <td class="tara-label">Ketu (Mitra)</td>
+        <td class="tara-num">8</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">17</td>
+        <td class="tara-planets">Sun</td>
+        <td class="tara-num">26</td>
+        <td class="tara-planets">Jupiter</td>
+      </tr>
+      <tr>
+        <td class="tara-label">Venus (Ati Mitra)</td>
+        <td class="tara-num">9</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">18</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">27</td>
+        <td class="tara-planets">Saturn</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Important Saturn Transits</h2>
+  <table class="kv">
+    <tbody>
+      <tr><td>1st Sade Sati</td><td colspan="3">20 Dec 1999 – 07 Apr 2003</td></tr>
+      <tr><td>2nd Sade Sati</td><td colspan="3">29 Mar 2025 – 31 May 2032</td></tr>
+      <tr><td>3rd Sade Sati</td><td colspan="3">14 May 2054 – 07 Mar 2062</td></tr>
+      <tr><td>Kantak Shani</td><td colspan="3">13 Jul 2034 – 27 Aug 2036</td></tr>
+      <tr><td>Ashtam Shani</td><td colspan="3">12 Dec 2043 – 23 Jun 2044; 30 Aug 2044 – 08 Dec 2046</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">5 / 12</p>
+</section>
+
+<!-- PAGE 7 -->
+<section class="page" id="page-7">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+
+  <h2>Other Important Transits</h2>
+  <table>
+    <thead><tr><th>Type</th><th>Planet</th><th>House</th><th>SAV</th><th>From</th><th>To</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="7">Good</td><td>Saturn</td><td>7H</td><td>32</td><td>10 Sep 2009</td><td>15 Nov 2011</td></tr>
+      <tr><td>Saturn</td><td>4H</td><td>28</td><td>31 May 2032</td><td>13 Jul 2034</td></tr>
+      <tr><td>Rahu</td><td>12H</td><td>35</td><td>18 May 2025</td><td>05 Dec 2026</td></tr>
+      <tr><td>Rahu</td><td>11H</td><td>33</td><td>05 Dec 2026</td><td>23 Jun 2028</td></tr>
+      <tr><td>Jupiter</td><td>6H</td><td>33</td><td>31 Oct 2026</td><td>25 Jan 2027</td></tr>
+      <tr><td>Jupiter</td><td>6H</td><td>33</td><td>26 Jun 2027</td><td>26 Nov 2027</td></tr>
+      <tr><td>Jupiter</td><td>6H</td><td>33</td><td>28 Feb 2028</td><td>24 Jul 2028</td></tr>
+      <tr><td rowspan="7">Challenging</td><td>Saturn</td><td>9H</td><td>27</td><td>02 Nov 2014</td><td>26 Jun 2017</td></tr>
+      <tr><td>Saturn</td><td>9H</td><td>27</td><td>21 Jun 2017</td><td>26 Oct 2017</td></tr>
+      <tr><td>Saturn</td><td>2H</td><td>25</td><td>03 Jun 2027</td><td>20 Oct 2027</td></tr>
+      <tr><td>Saturn</td><td>2H</td><td>25</td><td>23 Feb 2028</td><td>08 Aug 2029</td></tr>
+      <tr><td>Saturn</td><td>2H</td><td>25</td><td>05 Oct 2029</td><td>17 Apr 2030</td></tr>
+      <tr><td>Rahu</td><td>2H</td><td>25</td><td>12 Apr 2022</td><td>30 Oct 2023</td></tr>
+      <tr><td>Rahu</td><td>10H</td><td>23</td><td>23 Jun 2028</td><td>10 Jan 2030</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Lal Kitab Birth Chart</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>HN</th><th>Rashi</th><th>Planets</th>
+        <th>Varshphal Yr 27<br><span class="th-sub">20 Dec 2025 – 19 Dec 2026</span></th>
+        <th>Varshphal Yr 28<br><span class="th-sub">20 Dec 2026 – 19 Dec 2027</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Pisces (12)</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>2</td><td>Aries (1)</td><td>Moon, Jupiter, Saturn</td><td>Mars, Ketu</td><td>Sun</td></tr>
+      <tr><td>3</td><td>Taurus (2)</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>4</td><td>Gemini (3)</td><td>—</td><td>Moon, Jupiter, Saturn</td><td>—</td></tr>
+      <tr><td>5</td><td>Cancer (4)</td><td>Rahu</td><td>—</td><td>—</td></tr>
+      <tr><td>6</td><td>Leo (5)</td><td>—</td><td>Mercury</td><td>—</td></tr>
+      <tr><td>7</td><td>Virgo (6)</td><td>—</td><td>Venus</td><td>Mercury</td></tr>
+      <tr><td>8</td><td>Libra (7)</td><td>Venus</td><td>Sun</td><td>Venus</td></tr>
+      <tr><td>9</td><td>Scorpio (8)</td><td>Mercury</td><td>—</td><td>Moon, Jupiter, Saturn</td></tr>
+      <tr><td>10</td><td>Sagittarius (9)</td><td>Sun</td><td>Rahu</td><td>Mars, Ketu</td></tr>
+      <tr><td>11</td><td>Capricorn (10)</td><td>Mars, Ketu</td><td>—</td><td>Rahu</td></tr>
+      <tr><td>12</td><td>Aquarius (11)</td><td>—</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">6 / 12</p>
+</section>
+
+<!-- PAGE 8 -->
+<section class="page" id="page-8">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+  <h2>Part B — Panchang Insights</h2>
+  <table class="kv narrative">
+    <tbody>
+      <tr>
+        <td>Tithi — Shukla Trayodashi</td>
+        <td>Makes the personality poetic, charming, attractive and sensual. Favours careers as actor, poet, fashion icon or influencer. Gives creative and charming expression and a keen interest in beauty. Avoid overindulgence. Being presentable, well-groomed and maintaining charm; observing <em>Pradosh Vrat</em> — lifestyle remedies.</td>
+      </tr>
+      <tr>
+        <td>Moon</td>
+        <td>The natal Moon is powerful — around 80% luminous — but carries malefic influences. Advisable for the native and his mother to perform <em>Ganga Snan</em> periodically; this also dilutes the malefic influence of Saturn conjunct Moon. Performing <em>Rudrabhishek</em> every birthday is recommended. Planetary impact adds seriousness and deep-thinking ability.</td>
+      </tr>
+      <tr>
+        <td>Vaar — Monday</td>
+        <td>Comfort and luxury in life. Intuitive, empathetic and adaptable, but may be prone to mood swings, anxiety and emotional drain while supporting or healing others. Public roles often enter the career or profession.</td>
+      </tr>
+      <tr>
+        <td>Nakshatra — Krittika</td>
+        <td>Intelligent, organiser, truthful, attractive, aggressive, foodie (less spicy), short-tempered, cultural. Loves travelling; straightforward; target achiever; good advisor; hardworking; risk taker; good communication; egoistic; creative; competitive; surgery / cutting / analytical skills. Distant place (foreign) supports profession or business. Good relations with relatives but strain with spouse. Expenses on litigation or spouse's health in relevant Dasha / bad transit. Self-interest and self-care get priority. Associated with hidden / secret knowledge, research and deep understanding of the subject matter.</td>
+      </tr>
+      <tr>
+        <td>Yoga — Siddha</td>
+        <td>Meant for success and talent. Makes the native aggressive, visionary for self, travel-loving and confident; should avoid multitasking. Mantra: <em>Om Skandaya Namaha</em>.</td>
+      </tr>
+      <tr>
+        <td>Karan — Kaulava</td>
+        <td>Friendly, cooperative and social. Good at negotiation, teamwork and group projects. Indicates success in collaborative efforts. Ability to thrive in cooperative environments, emphasising practicality and connection.</td>
+      </tr>
+      <tr>
+        <td>Dagdha Rashi — 2, 5</td>
+        <td>Feeding cows will reduce the impact of Dagdha Rashi in the 3rd house of the chart.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="footer-num">7 / 12</p>
+</section>
+
+<!-- PAGE 9 -->
+<section class="page" id="page-9">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+  <h2>Rashi Chart Overview</h2>
+  <table class="kv narrative">
+    <tbody>
+      <tr><td>Planet Distribution</td><td>As per planetary distribution in the Rashi chart, family, wealth, friend / social circle, social status, work, long travel, unearned wealth (commission, insurance etc.) and in-laws become focus areas of life in the relevant Dasha / Transit.</td></tr>
+      <tr><td>Kal Sarp</td><td>There is no <em>Kal Sarpa Dosh</em> in the chart.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-gap">Nature, Personality &amp; Appearance — Ascendant Pisces</h2>
+  <table class="kv narrative">
+    <tbody>
+      <tr><td>Core Nature</td><td>Emotional, dreamy, imaginative, intuitive, spiritual, creative and artistic.</td></tr>
+      <tr><td>Physical Features</td><td>Fair complexion, attractive face, big eyes.</td></tr>
+      <tr><td>Lifestyle</td><td>Loves oceans, music, meditation, solitude, spiritual places, foreign travel and art. Dislikes harsh reality and conflicts. Drawn to healing, charity and spirituality.</td></tr>
+      <tr><td>More About Ascendant</td><td>Upright, honest and humane. Changeable temperament and influenced by others' opinions. Extremely sympathetic, forgiving, generous, honest and reliable. Often follows two occupations and succeeds in new fields. Successful in businesses dealing with liquids, spirits and export-import. Likelihood of strong influence of spouse. Cannot tolerate suffering, even in animals, and readily helps others.</td></tr>
+      <tr><td>Weakness</td><td>Escapist, overly trusting, emotionally overwhelmed.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-gap">Moon Sign — Aries</h2>
+  <table class="kv narrative">
+    <tbody>
+      <tr><td>Emotional Nature</td><td>Active, bold, adventurous, energetic, impulsive, dynamic and a natural leader. Decisive, brave, confident, passionate, competitive, action-driven, ambitious, pushful and frank. Practical ideas; fond of travel; quick actions; strong executive ability. As <em>Atmakarak</em>, the Moon shapes the soul's drive toward courage, initiative and self-led achievement.</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">8 / 12</p>
+</section>
+
+<!-- PAGE 10 -->
+<section class="page" id="page-10">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+  <h2>Impact of Planetary Placements</h2>
+  <ul class="bullets">
+    <li>Lots of success in career (extremely good); reaching high rank and status at very powerful places. Good for government-related work, politics and govt job yoga. Name and fame. Growth in the life of the native's father before the age of 10. Disagreement / dispute with father or fatherly figures; ego issues / aggression.</li>
+    <li>Money-minded; wealth yoga. Good for health, wealth, education and support from mother and siblings. Good trainer. Usually stays above ground floor. Good for parental property.</li>
+    <li>Good analytical skills; good planner; wealth yoga. Sudden fluctuation in income. Support from friends and family; luxuries in life. Good yoga for business. Event venue / community hall near birthplace or residence.</li>
+    <li>Supports winning in competition. May give decision-making issues / wrong decisions. May like to explore different dharma / philosophy. Fighting litigations; foreign connections.</li>
+    <li>Good manager; very good for wealth; intelligent; smart; long life; sweet talker and good at communication.</li>
+    <li>Gives hidden relationship; health issues to partner. Don't take guarantee of someone else; prone to false allegations. Partner brings big change / transformation in life. Ability to rise like a phoenix after trouble.</li>
+    <li>Delays in savings; lucky; makes one shrewd and street-smart. Money gets stuck when lent; avoid working on credit. Good for coal, machinery, property etc. related work. Prone to unhealthy eating habits.</li>
+    <li>May give problem / disturbance in education; education from a distant place / foreign. Beware of overnight large-money schemes. Unique and out-of-the-box ideas; unique problem-solving skill. Frequent problems in electronic / electrical devices.</li>
+  </ul>
+  <p class="footer-num">9 / 12</p>
+</section>
+
+<!-- PAGE 11 -->
+<section class="page" id="page-11">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+  <h2>Impact of Planetary Placements (contd.)</h2>
+  <ul class="bullets">
+    <li>Multiple sources of income; spends like a king. Complains about own luck — but is lucky. Problematic for mother / grandmother. Very selective in making friends.</li>
+    <li>Good career (outshines); hard-working; gets powerful position; dominant at workplace; lucky for father; courageous; name and fame; success in competition. Investment in gold and property is very good. Gets bored of work quickly. Never put gold as collateral.</li>
+  </ul>
+
+  <h3>Planetary Combinations</h3>
+  <ul class="bullets">
+    <li>Fond of living in isolation.</li>
+    <li>Gets happiness of luxurious vehicles. Yoga for outshine in career as well as good wealth — but Mars gets afflicted.</li>
+    <li>Adds seriousness in nature; prone to negative / chaotic thoughts frequently. Good for detailed research / analysis. Change of place / separation in family after birth of native. Some prolonged health issues to mother / family member. Eyesight issues likely; diabetes prone.</li>
+    <li>Someone in family / relatives has cancer, long disease or major surgery. Pain in waist, lower back, legs etc. Surgery yoga to self / elder sibling. Blood-related ailment prone.</li>
+    <li>Good yoga for studying, knowledge, name and fame. Mother — well educated or well learned, intelligent, very wise; mother dominates the household. Partner — irritating, nagging, giving knowledge on every second stuff; dominates in house.</li>
+  </ul>
+  <p class="footer-num">10 / 12</p>
+</section>
+
+<!-- PAGE 12 -->
+<section class="page page-dense" id="page-12">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+  <h2>12 Houses of Rashi Chart</h2>
+  <ul class="bullets" style="margin-bottom:8px">
+    <li>Kind, sensitive, compassionate, dreamer; spendthrift on self-care, luxury, clothes and pleasures. Prone to frequent health problems; much investment on self. Shares / donates a lot. Confusing thought process sometimes; duality (entirely different personality in different roles). High chances of foreign / distant-place settlement. Maintaining good looks and self-care enhances luck.</li>
+    <li>Aggressive in money matters; some harshness / boldness in speech. Takes big decisions / responsibility in family and finance matters.</li>
+    <li>Support from siblings; sibling living at distant place / foreign country. Stable thought process; will take time to implement ideas (think and then execute). Makes money through communication or writing.</li>
+    <li>Multiple properties and houses; multi-storey residence; very expressive at home; restless in house.</li>
+    <li>Willingness in learning something new; emotional for children; very creative / imaginative.</li>
+    <li>Yoga for holding powerful position at workplace; authoritative at workplace. Dispute triggered by ego; enemies are also powerful.</li>
+    <li>May feel competitiveness with partner; frequent arguments / disputes. Gives challenges in relationship / partnership.</li>
+    <li>Sudden event related to partner; some relationship challenges. Long-term health issues or living away from partner for some time (in relevant Dasha). Wealth comes through partner / inheritance.</li>
+    <li>Transformation in life through higher learning, father or any guru. Much transformation in the life of father. Issues in higher education. Avoid sharing travel plans.</li>
+    <li>Luck favours in career. Aligned for consultant, teacher, advisor, spiritual guide, banker etc. Lucky for the organisation worked with.</li>
+  </ul>
+
+  <h2>Sarvashtakvarga — Yearly Outlook</h2>
+  <table class="kv">
+    <tbody>
+      <tr><td>Challenging Years</td><td colspan="3">6, 39</td></tr>
+      <tr><td>Good Months of the Year</td><td colspan="3">January – March, June – July, September – October</td></tr>
+      <tr><td>Auspicious Months (ceremony, puja etc.)</td><td colspan="3">February – March, June – August</td></tr>
+      <tr><td>Challenging Months of the Year</td><td colspan="3">March – June, November – December</td></tr>
+      <tr><td>Lucky People for Native</td><td colspan="3">Aquarius (11), Gemini (3), Virgo (6)</td></tr>
+      <tr><td>Unfavourable People for Native</td><td colspan="3">Sagittarius (9), Pisces (12), Aries (1), Cancer (4), Scorpio (8)</td></tr>
+      <tr><td>Aptitude</td><td colspan="3">Good analytical skills; ability to win competitions; yoga for good wealth, partnership, relationship and investment; support of luck; powerful / influential circle</td></tr>
+      <tr><td>Favourable Direction for Opening a Bank Account</td><td colspan="3">North of birth place / residence</td></tr>
+      <tr><td>Wealth-Giving Planets</td><td colspan="3">Sun, Saturn, Moon, Mercury</td></tr>
+      <tr><td>Key Growth Window</td><td colspan="3">Rahu–Jupiter (May 2024 – Nov 2026) — favourable for wealth gain; Rahu–Saturn (Nov 2026 – Oct 2029) — winning disputes, gains through service sector; watch health of self / family</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">11 / 12</p>
+</section>
+
+<!-- PAGE 13 -->
+<section class="page page-dense" id="page-13">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+  <h2>12 Houses of Rashi Chart (contd.)</h2>
+  <ul class="bullets" style="margin-bottom:8px">
+    <li>Puts or has to put lots of effort in maintaining friendship / social circle. Lots of effort in profession to achieve gains. Differences / problems with elder sibling.</li>
+    <li>Gains through spirituality, foreign land / connection. Cheating in investment; may face losses due to secret enemies.</li>
+    <li>Wealth yoga; comfort lover; takes responsibility of family and finance. Mother has much influence on native. Ability of persistence / hard work. Food, family, finance and support of family — most important for the native.</li>
+    <li>Blessing in earning wealth and accumulation. Support from family and mother.</li>
+    <li>Luck favours in wish fulfilment and gaining money. Long travels favour earning. Father may help in earning / profession; father has big and influential connections. Has to live away from father or differences during relevant Dasha / Transit. Devoted towards father (lifestyle remedy).</li>
+    <li>Raj Yoga; gets beautiful house; works for social welfare / religion; happiness through religious work; makes the native influential.</li>
+    <li>Idealistic partner; gets relationship opportunity while on long travel / pilgrimage. Yoga for marriage in different culture / caste. Long-distance relationship.</li>
+    <li>Favour of luck in career. Karma related to dharma, masses, family, feeding others.</li>
+    <li>Powerful wealth yoga. Income through social circle and network; supports collaboration. Earning through dealing in niche products, rare artefacts etc. Gains through family.</li>
+    <li>Gains through plots of land, medicines, wines, masses, entertainment, travel, banking, commission etc.</li>
+  </ul>
+</section>
+
+<!-- PAGE 14 -->
+<section class="page page-dense" id="page-14">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Shubham Bathwal</p></header>
+  <div class="rule"></div>
+  <h2>12 Houses of Rashi Chart (contd.)</h2>
+  <ul class="bullets" style="margin-bottom:8px">
+    <li>Learnings and upskilling through transformation. May be member of secret group(s) or secretive about group / circle.</li>
+    <li>Gives struggle, dispute and fight in / related to profession. Good for service sector. Pending karma with father's family. Maternal family supports in profession and social status.</li>
+    <li>Resilient; power to deal with critical situations; crisis-management skill.</li>
+    <li>Gain through investment(s). Potential for earning through foreign client / MNC / overseas, import-export work, medical / legal field.</li>
+  </ul>
+  <div class="page-body">
+    <h2>Karmic Remedies — Lal Kitab</h2>
+    <ul class="bullets">
+      <li>Maintain boundaries in helping / doing welfare for others.</li>
+      <li>Avoid blue / black clothes. Do not colour hair black — if necessary, use brown. Avoid dispute / fight with father (father figure, authority).</li>
+      <li>Throw away unused or badly conditioned mixer / juicer / grinder or press, if any. Don't live on the ground floor.</li>
+      <li>When the road outside the house is damaged, loss / waste of money follows. If liver / stomach issues arise, expenses will shoot up.</li>
+      <li>Feed a black cow.</li>
+      <li>Keep a silver elephant or silver bar dipped in Gangajal at home.</li>
+      <li>Throw a coin in a river.</li>
+      <li>Keep a brass deer at home.</li>
+      <li>Avoid Tulsi, money plant etc. at home. Prefer photo of an aggressive lion; PUMA products; visit male deity preferably.</li>
+      <li>Take a holy dip in Pushkar or Haridwar on Kartik Poornima.</li>
+      <li>Do not donate copper utensils or coins to beggars.</li>
+    </ul>
+
+    <h2 class="section-gap">Abbreviations</h2>
+    <div class="abbr-grid">
+      <div class="code">Su</div><div>Sun</div>
+      <div class="code">Mo</div><div>Moon</div>
+      <div class="code">Ma</div><div>Mars</div>
+      <div class="code">Me</div><div>Mercury</div>
+      <div class="code">Ju</div><div>Jupiter</div>
+      <div class="code">Ve</div><div>Venus</div>
+      <div class="code">Sa</div><div>Saturn</div>
+      <div class="code">Ra</div><div>Rahu</div>
+      <div class="code">Ke</div><div>Ketu</div>
+      <div class="code">BAV</div><div>Bhinnastakvarga</div>
+      <div class="code">SAV</div><div>Sarvashtakvarga</div>
+      <div class="code">L</div><div>Lord (House Lord)</div>
+      <div class="code">H</div><div>House</div>
+      <div class="code">R</div><div>Rashi</div>
+      <div class="code">P</div><div>Planet</div>
+      <div class="code">N</div><div>Nakshatra</div>
+      <div class="code">D1</div><div>Rashi Chart</div>
+      <div class="code">D9</div><div>Navamsa Chart</div>
+    </div>
+    <div class="note" style="margin-top:auto;font-size:0.88rem">
+      This concludes the detailed Vedic analysis of the Janma Kundli.
+    </div>
+  </div>
+  <p class="footer-num">12 / 12</p>
+</section>
+
+<!-- PAGE 15: Geeta Shlok -->
+<section class="page" id="page-15">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">A Sacred Dedication</p></header>
+  <div class="rule"></div>
+  <div class="closing">
+    <h2>With Love &amp; Blessings</h2>
+    <p class="muted">for Shubham Bathwal's journey ahead</p>
+    <p class="quote quote-sanskrit">नेहाभिक्रमनाशोऽस्ति प्रत्यवायो न विद्यते।<br>स्वल्पमप्यस्य धर्मस्य त्रायते महतो भयात्॥ ४०॥</p>
+    <p class="quote quote-hindi">इस पथ पर आरम्भ किया हुआ कर्म कभी नष्ट नहीं होता और न ही इसका कोई उलटा फल होता है। इस धर्म का थोड़ा-सा भी अनुष्ठान मनुष्य को बड़े-से-बड़े भय से रक्षा करता है।</p>
+    <p class="quote quote-gita">"In this path, no effort is ever lost, and there is no adverse result. Even a little progress on this path of dharma protects one from the greatest fear."</p>
+    <p class="attr">— Bhagavad Gita, Chapter 2, Verse 40</p>
+    <p class="blessing">May Shubham Bathwal walk the Siddha path his chart promises — where Pisces compassion meets Aries courage, and every sincere step in career, duty and dharma compounds into lasting strength. May his phoenix spirit rise through every trial, and may even the smallest right effort shield him from fear and guide him toward fulfilment.</p>
+    <p class="quote quote-final">“Your future is not merely predicted… it is understood.”</p>
+  </div>
+</section>
+
+</div>
+</body>
+</html>
