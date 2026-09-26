@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   openWhatsApp,
+  CONTACT_EMAIL,
+  mailtoUrl,
   WHATSAPP_CONSULTATION_MESSAGE,
   WHATSAPP_DISPLAY
 } from '../../core/contact/contact.config';
@@ -42,6 +44,8 @@ interface CarouselMedia {
 })
 export class RemediesSevaComponent implements OnInit, AfterViewInit, OnDestroy {
     readonly whatsappDisplay = WHATSAPP_DISPLAY;
+    readonly contactEmail = CONTACT_EMAIL;
+    readonly mailtoHref = mailtoUrl();
 
     connectViaWhatsApp(event: Event): void {
         event.preventDefault();

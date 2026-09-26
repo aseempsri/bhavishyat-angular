@@ -211,7 +211,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     if (isOnHomePage) {
       event?.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this.scrollToTop();
+    } else {
+      this.router.events
+        .pipe(
+          filter(e => e instanceof NavigationEnd),
+          take(1)
+        )
+        .subscribe(() => {
+          setTimeout(() => this.scrollToTop(), 0);
+        });
     }
 
     this.closeMenu();
@@ -241,6 +250,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.intendedRedirect = null;
     this.closeMenu();
     this.closeDropdown();
+
+    const currentPath = this.router.url.split('?')[0].split('#')[0];
+    const targetPath = href.split('?')[0].split('#')[0];
+
+    // Already on this page — router won't navigate, so scroll to top now
+    if (currentPath === targetPath) {
+      event.preventDefault();
+      this.scrollToTop();
+      return;
+    }
+
+    // After navigation completes, smoothly scroll to the top of the new page
+    this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationEnd),
+        take(1)
+      )
+      .subscribe(() => {
+        setTimeout(() => this.scrollToTop(), 0);
+      });
+  }
+
+  private scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   private scrollToElement(elementId: string): void {
@@ -409,14 +442,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Scroll to top after navigation to kundali page
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter(e => e instanceof NavigationEnd),
         take(1)
       )
       .subscribe(() => {
-        // Scroll to top after navigation completes
-        setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 100);
+        setTimeout(() => this.scrollToTop(), 100);
       });
   }
 }

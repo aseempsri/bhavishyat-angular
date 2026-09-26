@@ -1,7 +1,6 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
-import { ViewportScroller } from '@angular/common';
 import { filter } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AdBannerComponent } from '../../components/ad-banner/ad-banner.component';
@@ -16,7 +15,6 @@ import { PanchangService, PanchangData } from '../../services/panchang.service';
 export class DailyPanchangComponent implements OnInit, AfterViewInit, OnDestroy {
   private panchangService = inject(PanchangService);
   private router = inject(Router);
-  private viewportScroller = inject(ViewportScroller);
   private navigationSubscription: any;
 
   panchangData: PanchangData | null = null;
@@ -61,19 +59,7 @@ export class DailyPanchangComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   private scrollToTop(): void {
-    // Immediate scroll first (no smooth behavior)
-    window.scrollTo(0, 0);
-    this.viewportScroller.scrollToPosition([0, 0]);
-
-    // Then smooth scroll after a delay
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 100);
-
-    // Additional attempt after longer delay to ensure it sticks
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 200);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   loadPanchangData(): void {

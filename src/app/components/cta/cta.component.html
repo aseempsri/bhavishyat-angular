@@ -63,7 +63,7 @@
         </button>
 
         <!-- Email -->
-        <a href="mailto:contact&#64;bhavishyat.in" class="group flex flex-col items-center text-center animate-fade-in-up" style="animation-delay: 0.2s">
+        <a [href]="mailtoHref" class="group flex flex-col items-center text-center animate-fade-in-up" style="animation-delay: 0.2s">
           <div class="relative mb-6">
             <div class="absolute inset-0 bg-primary/30 rounded-full blur-xl group-hover:opacity-100 opacity-0 transition-opacity"></div>
             <div class="relative w-20 h-20 rounded-full border-2 border-primary/40 flex items-center justify-center
@@ -76,7 +76,7 @@
             </div>
           </div>
           <span class="text-primary font-playfair font-semibold text-lg mb-2 block">Email Us</span>
-          <span class="text-foreground/90 break-all px-2">contact&#64;bhavishyat.in</span>
+          <span class="text-foreground/90 break-all px-2">{{ contactEmail }}</span>
         </a>
 
         <!-- Visit -->

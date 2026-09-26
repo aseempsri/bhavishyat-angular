@@ -3,6 +3,7 @@ import { logWhatsAppCtaClick } from './contact-leads.logger';
 
 export const WHATSAPP_NUMBER = '919981754120';
 export const WHATSAPP_DISPLAY = '+91 99817 54120';
+export const CONTACT_EMAIL = 'connect@bhavishyat.in';
 
 export const WHATSAPP_CONSULTATION_MESSAGE =
   'Hello Shubhram, I would like to enquire about a Vedic consultation.';
@@ -10,6 +11,9 @@ export const WHATSAPP_CONSULTATION_MESSAGE =
 export const WHATSAPP_SLOT_MESSAGE =
   'Hello Shubhram, I would like to request a consultation slot.';
 
+export function mailtoUrl(): string {
+  return `mailto:${CONTACT_EMAIL}`;
+}
 export function whatsappUrl(message?: string): string {
   const base = `https://wa.me/${WHATSAPP_NUMBER}`;
   if (!message) {

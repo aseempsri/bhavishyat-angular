@@ -4,6 +4,8 @@ import { AdBannerComponent } from '../ad-banner/ad-banner.component';
 import { FaqComponent } from '../faq/faq.component';
 import {
   openWhatsApp,
+  CONTACT_EMAIL,
+  mailtoUrl,
   WHATSAPP_CONSULTATION_MESSAGE,
   WHATSAPP_DISPLAY
 } from '../../core/contact/contact.config';
@@ -16,6 +18,8 @@ import {
 })
 export class CtaComponent {
   readonly whatsappDisplay = WHATSAPP_DISPLAY;
+  readonly contactEmail = CONTACT_EMAIL;
+  readonly mailtoHref = mailtoUrl();
 
   connectViaWhatsApp(event: Event): void {
     event.preventDefault();

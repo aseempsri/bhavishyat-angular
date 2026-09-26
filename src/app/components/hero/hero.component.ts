@@ -25,6 +25,23 @@ export class HeroComponent {
     //   this.authService.requestLogin('/class-recordings');
     // }
   }
+
+  scrollToConsultations(event?: Event): void {
+    event?.preventDefault();
+    const element = this.document.getElementById('services');
+    if (!element) {
+      return;
+    }
+
+    const headerHeight = 80;
+    const offsetPosition =
+      element.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
   
   // Get base href from document to work with both local dev and production
   private getBaseHref(): string {
