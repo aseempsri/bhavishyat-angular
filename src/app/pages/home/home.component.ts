@@ -6,10 +6,20 @@ import { FounderComponent } from '../../components/founder/founder.component';
 import { TestimonialsComponent } from '../../components/testimonials/testimonials.component';
 import { ServicesComponent } from '../../components/services/services.component';
 import { CtaComponent } from '../../components/cta/cta.component';
+import { ConsultationOfferModalComponent } from '../../components/consultation-offer-modal/consultation-offer-modal.component';
 
 @Component({
   selector: 'app-home',
-  imports: [HeaderComponent, HeroComponent, AboutComponent, FounderComponent, TestimonialsComponent, ServicesComponent, CtaComponent],
+  imports: [
+    HeaderComponent,
+    HeroComponent,
+    AboutComponent,
+    FounderComponent,
+    TestimonialsComponent,
+    ServicesComponent,
+    CtaComponent,
+    ConsultationOfferModalComponent
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

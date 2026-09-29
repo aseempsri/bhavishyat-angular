@@ -15,4 +15,4 @@
 export const GOOGLE_SHEETS_LEADS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxxoiKzIoJ__RkFJoRT0ok2nvW8wfn8IPCMeLb79rLIuQ4bImzBbuGcCnTj_2XyIQCo4A/exec';
 export const GOOGLE_SHEETS_LEADS_SECRET = 'bhav7xK9mQ2pL4nR8wZ1';
 
-export type WhatsAppCta = 'connect-with-us' | 'request-slot';
+export type WhatsAppCta = 'connect-with-us' | 'request-slot' | 'intro-offer';

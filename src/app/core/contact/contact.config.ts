@@ -11,6 +11,9 @@ export const WHATSAPP_CONSULTATION_MESSAGE =
 export const WHATSAPP_SLOT_MESSAGE =
   'Hello Shubhram, I would like to request a consultation slot.';
 
+export const WHATSAPP_INTRO_OFFER_MESSAGE =
+  'Hello Shubhram, I am interested in the limited-period consultation offer at ₹1,100. Please share the next available slot.';
+
 export function mailtoUrl(): string {
   return `mailto:${CONTACT_EMAIL}`;
 }

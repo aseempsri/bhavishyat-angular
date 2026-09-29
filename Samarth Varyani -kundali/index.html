@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BHAVISHYAT — Janma Kundli • Samarth Varyani</title>
+<style>
+  :root {
+    --maroon: #7a1f1f;
+    --gold: #9a7b3c;
+    --gold-soft: #c4a574;
+    --text: #1f1a14;
+    --muted: #5c5348;
+    --bg: #f9efdc;
+    --paper: #f3e6cb;
+    --row: #f1e4c8;
+    --border: #c9b48a;
+    --thead: #7a1f1f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #ebe0c8;
+    color: var(--text);
+    font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    line-height: 1.55;
+  }
+  .doc {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 24px 12px 64px;
+  }
+  .page {
+    width: 820px;
+    background: var(--bg);
+    margin: 0 auto 28px;
+    padding: 28px 34px 22px;
+    border: 1px solid #ddd4c4;
+    box-shadow: 0 8px 28px rgba(40, 25, 10, 0.08);
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .page:not(.cover-page) {
+    height: 1230px;
+    min-height: 1230px;
+    max-height: 1230px;
+    display: flex;
+    flex-direction: column;
+  }
+  .page:not(.cover-page)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("backgroundimage-Photoroom.png") center center / min(92%, 640px) no-repeat;
+    opacity: 0.07;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .page > * {
+    position: relative;
+    z-index: 1;
+  }
+  .page.cover-page {
+    padding: 0;
+    overflow: hidden;
+    background: var(--bg);
+    width: 820px;
+    height: 1230px;
+    min-height: 1230px;
+    max-height: 1230px;
+  }
+  .page.cover-page::before {
+    display: none;
+  }
+  .page.cover-page img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .page-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .page-body.center-content {
+    justify-content: center;
+  }
+  .page.page-dense {
+    line-height: 1.42;
+    font-size: 0.94rem;
+  }
+  .page.page-dense h2 { margin: 10px 0 6px; }
+  .page.page-dense h3 { margin: 8px 0 4px; }
+  .page.page-dense .bullets li { margin-bottom: 3px; }
+  .page.page-dense .kv td { padding: 5px 8px; font-size: 0.88rem; }
+  .footer-num {
+    text-align: center;
+    color: #888;
+    font-size: 0.8rem;
+    margin-top: auto;
+    padding-top: 12px;
+  }
+  .brand {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .brand-logo {
+    display: block;
+    width: 220px;
+    height: 43px;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+  .brand .sub {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+    margin: 8px 0 12px;
+    position: relative;
+  }
+  .rule::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    background: var(--gold);
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  h2 {
+    color: var(--maroon);
+    font-size: 1.12rem;
+    margin: 0 0 6px;
+  }
+  h2.section-gap {
+    margin-top: 16px;
+  }
+  h3 {
+    color: var(--maroon);
+    font-size: 0.98rem;
+    margin: 10px 0 5px;
+  }
+  .gold-head {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    margin: 10px 0 4px;
+  }
+  p { margin: 0 0 7px; color: var(--text); }
+  .muted { color: var(--muted); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 8px;
+    font-size: 0.82rem;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 3px 6px;
+    vertical-align: top;
+  }
+  th {
+    background: var(--thead);
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+  }
+  tbody tr:nth-child(odd) { background: var(--bg); }
+  tbody tr:nth-child(even) { background: var(--row); }
+  .kv td:nth-child(odd) {
+    width: 22%;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .kv td:nth-child(even) {
+    width: 28%;
+    color: var(--text);
+  }
+  .chart-wrap {
+    text-align: center;
+    margin: 4px 0 10px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 8px;
+  }
+  .chart-wrap img {
+    max-width: 100%;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    display: inline-block;
+    object-fit: contain;
+  }
+  .nav-tara-chakra {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 12px;
+    font-size: 0.84rem;
+  }
+  .nav-tara-chakra td {
+    border: 1px solid var(--border);
+    padding: 6px 8px;
+    vertical-align: middle;
+    text-align: center;
+    color: var(--text);
+    background: var(--bg);
+  }
+  .nav-tara-chakra tr:nth-child(even) td {
+    background: var(--row);
+  }
+  .nav-tara-chakra td.tara-label {
+    text-align: left;
+    font-weight: 700;
+    color: var(--maroon);
+    background: #f0d9c4;
+    width: 28%;
+    white-space: nowrap;
+  }
+  .nav-tara-chakra tr:nth-child(even) td.tara-label {
+    background: #ebcfb6;
+  }
+  .nav-tara-chakra td.tara-num {
+    width: 7%;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .nav-tara-chakra td.tara-planets {
+    width: 17%;
+    text-align: left;
+  }
+  .bullets {
+    margin: 0 0 8px;
+    padding-left: 1.1rem;
+  }
+  .bullets li { margin: 0 0 4px; }
+  .note {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+    margin: 12px 0;
+    font-size: 0.92rem;
+  }
+  .closing {
+    text-align: center;
+    padding: 8% 10% 10%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    min-height: 0;
+  }
+  .closing h2 {
+    font-size: 1.85rem;
+    margin: 0;
+  }
+  .closing .muted {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+  .closing .quote {
+    font-style: italic;
+    max-width: 28em;
+    margin: 0 auto;
+    color: var(--text);
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+  .closing .quote-gita {
+    font-weight: 700;
+  }
+  .closing .quote-sanskrit {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    max-width: 22em;
+  }
+  .closing .quote-hindi {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    max-width: 26em;
+  }
+  .closing .attr {
+    color: var(--gold);
+    font-size: 1rem;
+    margin: 0;
+  }
+  .closing .blessing {
+    margin: 0 auto;
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 28em;
+  }
+  .closing .quote-final {
+    font-size: 1.25rem;
+    margin: 0 auto;
+  }
+  .abbr-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr 80px 1fr;
+    gap: 14px 16px;
+    font-size: 1rem;
+    margin-top: 8px;
+  }
+  .abbr-grid .code { color: var(--maroon); font-weight: 700; }
+  @media print {
+    @page {
+      size: 820px 1230px;
+      margin: 0;
+    }
+    html, body {
+      background: #fff !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .doc {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+    }
+    .page {
+      box-shadow: none !important;
+      border: none !important;
+      margin: 0 !important;
+      width: 820px;
+      min-height: 1230px;
+      page-break-after: always;
+      break-after: page;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+    .page.cover-page {
+      min-height: 1230px;
+      height: 1230px;
+      display: flex;
+      align-items: stretch;
+    }
+    .page.cover-page img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+
+<!-- PAGE 1: Cover -->
+<section class="page cover-page" id="page-1">
+  <img src="cover.png" alt="BHAVISHYAT Janma Kundli cover for Samarth Varyani">
+</section>
+
+<!-- PAGE 2 -->
+<section class="page" id="page-2">
+  <header class="brand">
+    <img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT">
+    <p class="sub">Janma Kundli • Samarth Varyani</p>
+  </header>
+  <div class="rule"></div>
+
+  <h2>Birth Details &amp; Panchang</h2>
+  <table class="kv">
+    <tbody>
+      <tr><td>Name</td><td>Samarth Varyani</td><td>Paksha</td><td>Shukla</td></tr>
+      <tr><td>Date of Birth</td><td>17 November 2018</td><td>Tithi</td><td>Navami (9)</td></tr>
+      <tr><td>Time of Birth</td><td>08:23 AM</td><td>Nakshatra</td><td>Shatabhisha</td></tr>
+      <tr><td>Birth Place</td><td>Kanpur</td><td>Vaar</td><td>Saturday</td></tr>
+      <tr><td>Longitude</td><td>80°21' E</td><td>Yoga</td><td>Vyaaghata</td></tr>
+      <tr><td>Latitude</td><td>26°28' N</td><td>Karan</td><td>Kaulava</td></tr>
+    </tbody>
+  </table>
+
+  <table class="kv">
+    <tbody>
+      <tr><td>Ascendant</td><td>Scorpio</td><td>Asc Lord</td><td>Mars</td></tr>
+      <tr><td>Tithi Lord</td><td>Sun</td><td>Tithi Deity</td><td>Ambika</td></tr>
+      <tr><td>Nakshatra Lord</td><td>Rahu</td><td>Nakshatra Deity</td><td>Varuna (God of Cosmic Waters)</td></tr>
+      <tr><td>Yoga Deity</td><td>Vayu</td><td>Karan Deity</td><td>Yama</td></tr>
+      <tr><td>Yogi</td><td>Venus</td><td>Duplicate Yogi</td><td>Jupiter</td></tr>
+      <tr><td>Abhiyogi</td><td>Jupiter</td><td>Dagdha Rashi</td><td>Leo (5), Scorpio (8)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Natal Chart (Rashi)</h2>
+  <div class="chart-wrap">
+    <img src="natal-chart.jpeg" alt="North Indian natal chart (Rashi) for Samarth Varyani">
+  </div>
+
+  <table class="kv">
+    <tbody>
+      <tr><td>Planet Distribution</td><td colspan="3">Self &amp; Personality, Health, Status, Mother, Home, Land, Property, Emotional Security, Vehicles, Comforts, Family, Wealth &amp; Savings, Food, Spending, Investment, Foreign Lands, Sleep &amp; Bed Pleasure, Spirituality, Solitude, Father &amp; Guru, Religion and Faith, Higher Learning, Long Travel, Siblings, Communication, Short Travel, Skills — relatively less struggle; initial phase of life more eventful</td></tr>
+      <tr><td>Ascendant</td><td>Scorpio (Vrishchika)</td><td>Moon / Sun Sign</td><td>Aquarius (Kumbha) / Scorpio (Vrishchika)</td></tr>
+      <tr><td>Malefic</td><td>Saturn (Shani), Mercury (Budha)</td><td>Shunya Nakshatra</td><td>Chitra, Vishakha, Anuradha, U. Bhadrapada</td></tr>
+      <tr><td>Maraka</td><td>Venus, Jupiter</td><td>Dasha Balance</td><td>04Y 01M 09D</td></tr>
+      <tr><td>Badhaka</td><td>Moon</td><td>Mangalik</td><td>Cancelled</td></tr>
+      <tr><td>Birth Dasha</td><td colspan="3">Ra-Ve-Sa (1-6-3)</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">1 / 12</p>
+</section>
+
+<!-- PAGE 3 -->
+<section class="page" id="page-3">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+
+  <h2>Favourable Influences</h2>
+  <table class="kv">
+    <tbody>
+      <tr><td>Benefic Years</td><td colspan="3">17, 19, 22, 26, 28, 31, 35, 37</td></tr>
+      <tr><td>Favourable Days</td><td colspan="3">Sunday, Monday, Tuesday</td></tr>
+      <tr><td>Favourable Planets</td><td colspan="3">Sun, Moon, Mars</td></tr>
+      <tr><td>Favourable Signs</td><td colspan="3">Leo (5), Aries (1), Virgo (6)</td></tr>
+      <tr><td>Favourable Ratna</td><td>Coral, Yellow Sapphire</td><td>Favourable UpRatna</td><td>Carnelian, Red Jasper, Yellow Topaz, Citrine</td></tr>
+      <tr><td>Lucky Ratna</td><td>Pearl</td><td>Favourable Deity</td><td>Shankar</td></tr>
+      <tr><td>Favourable Metal</td><td>Copper, Silver</td><td>Favourable Colour</td><td>Brick Red</td></tr>
+      <tr><td>Direction</td><td>South</td><td>Favourable Cereals</td><td>Rice</td></tr>
+      <tr><td>Favourable Items</td><td colspan="3">Molasses, Saffron, Musk, Red Sandal</td></tr>
+      <tr><td>Favourable Plant</td><td>Arka (Giant Milkweed), Banyan</td><td>Favourable Temple</td><td>Somnath Temple</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Planets in Rashi Chart</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Planet</th><th>Lordship</th><th>Sign</th><th>Nakshatra</th>
+        <th>Nak. Lord</th><th>Nak. Count</th><th>Nav Tara</th><th>Char Karak</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Sun</td><td>10L</td><td>Scorpio (8)</td><td>Vishakha</td><td>Jupiter</td><td>7 N</td><td>7</td><td>DaraKarak (7H)</td></tr>
+      <tr><td>Moon</td><td>9L</td><td>Aquarius (11)</td><td>Shatabhisha</td><td>Rahu</td><td>1 N</td><td>8</td><td>Amatyakarak</td></tr>
+      <tr><td>Mars</td><td>1L, 6L</td><td>Aquarius (11)</td><td>Dhanishtha</td><td>Mars</td><td>9 N</td><td>9</td><td>Putrakarak (5H)</td></tr>
+      <tr><td>Mercury</td><td>8L, 11L</td><td>Scorpio (8)</td><td>Jyeshtha</td><td>Mercury</td><td>4 N</td><td>4</td><td>Atmakarak (Life)</td></tr>
+      <tr><td>Jupiter</td><td>2L, 5L</td><td>Scorpio (8)</td><td>Anuradha</td><td>Saturn</td><td>2 N</td><td>2</td><td>Matrikarak (4H)</td></tr>
+      <tr><td>Venus</td><td>7L, 12L</td><td>Libra (7)</td><td>Chitra</td><td>Mars</td><td>6 N</td><td>6</td><td>Gnatikarak (6H)</td></tr>
+      <tr><td>Saturn</td><td>3L, 4L</td><td>Sagittarius (9)</td><td>Mula</td><td>Ketu</td><td>3 N</td><td>3</td><td>Bhratrikaraka (3H)</td></tr>
+      <tr><td>Rahu</td><td>—</td><td>Cancer (4)</td><td>Pushya</td><td>Saturn</td><td>5 N</td><td>5</td><td>—</td></tr>
+      <tr><td>Ketu</td><td>—</td><td>Capricorn (10)</td><td>Uttara Ashadha</td><td>Sun</td><td>5 N</td><td>5</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <table class="kv">
+    <tbody>
+      <tr><td>Exalted Planet(s)</td><td>—</td><td>Debilitated Planet(s)</td><td>—</td></tr>
+      <tr><td>Combust Planet(s)</td><td>Jupiter</td><td>Retrograde Planet(s)</td><td>Mercury</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Sarvastakvarga &amp; Houses</h2>
+  <table class="kv">
+    <tbody>
+      <tr><td>Very Strong (35+)</td><td colspan="3">10H, 11H</td></tr>
+      <tr><td>Strong (31-35)</td><td colspan="3">6H</td></tr>
+      <tr><td>Above Average (28-30)</td><td colspan="3">2H, 5H</td></tr>
+      <tr><td>Below Average (24-27)</td><td colspan="3">1H, 4H, 8H, 9H</td></tr>
+      <tr><td>Weak (21-23)</td><td colspan="3">3H, 7H, 12H</td></tr>
+      <tr><td>Very Weak (&lt;21)</td><td colspan="3">—</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">2 / 12</p>
+</section>
+
+<!-- PAGE 4 -->
+<section class="page" id="page-4">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+
+  <h2>Houses in Rashi Chart</h2>
+  <table>
+    <thead><tr><th>House</th><th>Sign</th><th>Planets</th><th>SAV</th><th>Lords</th><th>Aspect</th></tr></thead>
+    <tbody>
+      <tr><td>1H</td><td>Scorpio (8)</td><td>Sun, Mercury, Jupiter</td><td>26</td><td>10L; 8L, 11L; 2L, 5L</td><td>Rahu</td></tr>
+      <tr><td>2H</td><td>Sagittarius (9)</td><td>Saturn</td><td>29</td><td>3L, 4L</td><td>—</td></tr>
+      <tr><td>3H</td><td>Capricorn (10)</td><td>Ketu</td><td>22</td><td>—</td><td>—</td></tr>
+      <tr><td>4H</td><td>Aquarius (11)</td><td>Moon, Mars</td><td>26</td><td>9L; 6L, 1L</td><td>Saturn</td></tr>
+      <tr><td>5H</td><td>Pisces (12)</td><td>—</td><td>29</td><td>—</td><td>Jupiter, Rahu</td></tr>
+      <tr><td>6H</td><td>Aries (1)</td><td>—</td><td>33</td><td>—</td><td>—</td></tr>
+      <tr><td>7H</td><td>Taurus (2)</td><td>—</td><td>21</td><td>—</td><td>Mars, Ketu</td></tr>
+      <tr><td>8H</td><td>Gemini (3)</td><td>—</td><td>24</td><td>—</td><td>—</td></tr>
+      <tr><td>9H</td><td>Cancer (4)</td><td>Rahu</td><td>27</td><td>—</td><td>Jupiter</td></tr>
+      <tr><td>10H</td><td>Leo (5)</td><td>—</td><td>36</td><td>—</td><td>—</td></tr>
+      <tr><td>11H</td><td>Virgo (6)</td><td>—</td><td>41</td><td>—</td><td>Mars, Saturn, Ketu</td></tr>
+      <tr><td>12H</td><td>Libra (7)</td><td>Venus</td><td>23</td><td>7L, 12L</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Bhinnashtak Varga (BAV)</h2>
+  <table>
+    <thead><tr><th>Sign</th><th>Sa</th><th>Ju</th><th>Ma</th><th>Su</th><th>Ve</th><th>Me</th><th>Mo</th><th>Ra</th></tr></thead>
+    <tbody>
+      <tr><td>8</td><td>3</td><td>7</td><td>2</td><td>3</td><td>2</td><td>5</td><td>4</td><td>4</td></tr>
+      <tr><td>9</td><td>3</td><td>6</td><td>3</td><td>4</td><td>4</td><td>5</td><td>4</td><td>2</td></tr>
+      <tr><td>10</td><td>2</td><td>2</td><td>3</td><td>3</td><td>5</td><td>3</td><td>4</td><td>4</td></tr>
+      <tr><td>11</td><td>3</td><td>7</td><td>1</td><td>3</td><td>4</td><td>3</td><td>5</td><td>5</td></tr>
+      <tr><td>12</td><td>2</td><td>5</td><td>5</td><td>5</td><td>5</td><td>5</td><td>2</td><td>4</td></tr>
+      <tr><td>1</td><td>6</td><td>3</td><td>5</td><td>5</td><td>4</td><td>4</td><td>6</td><td>5</td></tr>
+      <tr><td>2</td><td>2</td><td>5</td><td>2</td><td>2</td><td>3</td><td>3</td><td>4</td><td>2</td></tr>
+      <tr><td>3</td><td>3</td><td>4</td><td>1</td><td>2</td><td>5</td><td>4</td><td>5</td><td>6</td></tr>
+      <tr><td>4</td><td>3</td><td>4</td><td>2</td><td>5</td><td>6</td><td>4</td><td>3</td><td>1</td></tr>
+      <tr><td>5</td><td>4</td><td>7</td><td>6</td><td>5</td><td>3</td><td>5</td><td>6</td><td>3</td></tr>
+      <tr><td>6</td><td>5</td><td>5</td><td>7</td><td>7</td><td>6</td><td>7</td><td>4</td><td>3</td></tr>
+      <tr><td>7</td><td>3</td><td>1</td><td>2</td><td>4</td><td>5</td><td>6</td><td>2</td><td>4</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">3 / 12</p>
+</section>
+
+<!-- PAGE 5 -->
+<section class="page" id="page-5">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+  <h2>Vimshottari Dasha</h2>
+
+  <h3>Maha Dasha</h3>
+  <table>
+    <thead><tr><th>Dasha Lord</th><th>From</th><th>To</th></tr></thead>
+    <tbody>
+      <tr><td>Rahu</td><td>28-Dec-2004</td><td>28-Dec-2022</td></tr>
+      <tr><td>Jupiter</td><td>28-Dec-2022</td><td>27-Dec-2038</td></tr>
+      <tr><td>Saturn</td><td>27-Dec-2038</td><td>27-Dec-2057</td></tr>
+      <tr><td>Mercury</td><td>27-Dec-2057</td><td>27-Dec-2074</td></tr>
+      <tr><td>Ketu</td><td>27-Dec-2074</td><td>27-Dec-2081</td></tr>
+      <tr><td>Venus</td><td>27-Dec-2081</td><td>28-Dec-2101</td></tr>
+      <tr><td>Sun</td><td>28-Dec-2101</td><td>28-Dec-2107</td></tr>
+      <tr><td>Moon</td><td>28-Dec-2107</td><td>28-Dec-2117</td></tr>
+      <tr><td>Mars</td><td>28-Dec-2117</td><td>27-Dec-2124</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Antar Dasha (Jupiter Maha Dasha)</h3>
+  <table>
+    <thead><tr><th>AD Lord</th><th>From</th><th>To</th></tr></thead>
+    <tbody>
+      <tr><td>Jupiter</td><td>28-Dec-2022</td><td>14-Feb-2025</td></tr>
+      <tr><td>Saturn</td><td>14-Feb-2025</td><td>28-Aug-2027</td></tr>
+      <tr><td>Mercury</td><td>28-Aug-2027</td><td>03-Dec-2029</td></tr>
+      <tr><td>Ketu</td><td>03-Dec-2029</td><td>09-Nov-2030</td></tr>
+      <tr><td>Venus</td><td>09-Nov-2030</td><td>10-Jul-2033</td></tr>
+      <tr><td>Sun</td><td>10-Jul-2033</td><td>28-Apr-2034</td></tr>
+      <tr><td>Moon</td><td>28-Apr-2034</td><td>28-Aug-2035</td></tr>
+      <tr><td>Mars</td><td>28-Aug-2035</td><td>03-Aug-2036</td></tr>
+      <tr><td>Rahu</td><td>03-Aug-2036</td><td>27-Dec-2038</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Pratyantar Dasha (Saturn Antar Dasha)</h3>
+  <table>
+    <thead><tr><th>P. Dasha</th><th>From</th><th>To</th></tr></thead>
+    <tbody>
+      <tr><td>Ketu</td><td>18-Nov-2025</td><td>11-Jan-2026</td></tr>
+      <tr><td>Venus</td><td>11-Jan-2026</td><td>14-Jun-2026</td></tr>
+      <tr><td>Sun</td><td>14-Jun-2026</td><td>31-Jul-2026</td></tr>
+      <tr><td>Moon</td><td>31-Jul-2026</td><td>16-Oct-2026</td></tr>
+      <tr><td>Mars</td><td>16-Oct-2026</td><td>09-Dec-2026</td></tr>
+      <tr><td>Rahu</td><td>09-Dec-2026</td><td>27-Apr-2027</td></tr>
+      <tr><td>Jupiter</td><td>27-Apr-2027</td><td>28-Aug-2027</td></tr>
+      <tr><td>Mercury</td><td>28-Aug-2027</td><td>23-Dec-2027</td></tr>
+      <tr><td>Ketu</td><td>23-Dec-2027</td><td>10-Feb-2028</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">4 / 12</p>
+</section>
+
+<!-- PAGE 6 -->
+<section class="page" id="page-6">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+
+  <h2>Nav Tara Sequence</h2>
+  <table>
+    <thead>
+      <tr><th>Planet</th><th>Chara Karak</th><th>House</th><th>Lordship</th><th>Strength</th><th>Nakshatra</th><th>Lord</th><th>Placement</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Rahu</td><td>—</td><td>9H</td><td>—</td><td>Below Avg (24-27)</td><td>Pushya</td><td>Saturn</td><td>2H</td></tr>
+      <tr><td>Jupiter</td><td>Matrikarak (4H)</td><td>1H</td><td>2L, 5L</td><td>Below Avg (24-27)</td><td>Anuradha</td><td>Saturn</td><td>2H</td></tr>
+      <tr><td>Saturn</td><td>Bhratrikaraka (3H)</td><td>2H</td><td>3L, 4L</td><td>Above Avg (28-30)</td><td>Mula</td><td>Ketu</td><td>3H</td></tr>
+      <tr><td>Mercury</td><td>Atmakarak (Life)</td><td>1H</td><td>8L, 11L</td><td>Below Avg (24-27)</td><td>Jyeshtha</td><td>Mercury</td><td>1H</td></tr>
+      <tr><td>Ketu</td><td>—</td><td>3H</td><td>—</td><td>Weak (21-23)</td><td>Uttara Ashadha</td><td>Sun</td><td>1H</td></tr>
+      <tr><td>Venus</td><td>Gnatikarak (6H)</td><td>12H</td><td>7L, 12L</td><td>Weak (21-23)</td><td>Chitra</td><td>Mars</td><td>4H</td></tr>
+      <tr><td>Sun</td><td>DaraKarak (7H)</td><td>1H</td><td>10L</td><td>Below Avg (24-27)</td><td>Vishakha</td><td>Jupiter</td><td>1H</td></tr>
+      <tr><td>Moon</td><td>Amatyakarak</td><td>4H</td><td>9L</td><td>Below Avg (24-27)</td><td>Shatabhisha</td><td>Rahu</td><td>9H</td></tr>
+      <tr><td>Mars</td><td>Putrakarak (5H)</td><td>4H</td><td>6L, 1L</td><td>Below Avg (24-27)</td><td>Dhanishtha</td><td>Mars</td><td>4H</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Birth Chart Nav Tara Chakra</h2>
+  <table class="nav-tara-chakra">
+    <tbody>
+      <tr>
+        <td class="tara-label">Rahu (Janam)</td>
+        <td class="tara-num">1</td>
+        <td class="tara-planets">Moon</td>
+        <td class="tara-num">10</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">19</td>
+        <td class="tara-planets"></td>
+      </tr>
+      <tr>
+        <td class="tara-label">Jupiter (Sampat)</td>
+        <td class="tara-num">2</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">11</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">20</td>
+        <td class="tara-planets">Sun</td>
+      </tr>
+      <tr>
+        <td class="tara-label">Saturn (Vipat)</td>
+        <td class="tara-num">3</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">12</td>
+        <td class="tara-planets">Rahu</td>
+        <td class="tara-num">21</td>
+        <td class="tara-planets">Jupiter</td>
+      </tr>
+      <tr>
+        <td class="tara-label">Mercury (Kshem)</td>
+        <td class="tara-num">4</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">13</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">22</td>
+        <td class="tara-planets">Mercury</td>
+      </tr>
+      <tr>
+        <td class="tara-label">Ketu (Pratyari)</td>
+        <td class="tara-num">5</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">14</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">23</td>
+        <td class="tara-planets">Saturn</td>
+      </tr>
+      <tr>
+        <td class="tara-label">Venus (Sadhak)</td>
+        <td class="tara-num">6</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">15</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">24</td>
+        <td class="tara-planets"></td>
+      </tr>
+      <tr>
+        <td class="tara-label">Sun (Nidhan)</td>
+        <td class="tara-num">7</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">16</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">25</td>
+        <td class="tara-planets">Ketu</td>
+      </tr>
+      <tr>
+        <td class="tara-label">Moon (Mitra)</td>
+        <td class="tara-num">8</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">17</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">26</td>
+        <td class="tara-planets"></td>
+      </tr>
+      <tr>
+        <td class="tara-label">Mars (Ati Mitra)</td>
+        <td class="tara-num">9</td>
+        <td class="tara-planets"></td>
+        <td class="tara-num">18</td>
+        <td class="tara-planets">Venus</td>
+        <td class="tara-num">27</td>
+        <td class="tara-planets">Mars</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Important Saturn Transits</h2>
+  <table class="kv">
+    <tbody>
+      <tr><td>1st Sade Sati</td><td colspan="3">24 Jan 2020 – 29 Mar 2025; 20 Oct 2027 – 23 Feb 2028</td></tr>
+      <tr><td>2nd Sade Sati</td><td colspan="3">06 Mar 2049 – 10 Jul 2049; 04 Dec 2049 – 07 Apr 2057</td></tr>
+      <tr><td>3rd Sade Sati</td><td colspan="3">15 Jan 2079 – 21 May 2086; 10 Nov 2086 – 08 Feb 2087</td></tr>
+      <tr><td>Kantak Shani</td><td colspan="3">08 Aug 2029 – 05 Oct 2029; 17 Apr 2030 – 31 May 2032</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">5 / 12</p>
+</section>
+
+<!-- PAGE 7 -->
+<section class="page" id="page-7">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+
+  <h2>Other Important Transits</h2>
+  <table>
+    <thead><tr><th>Type</th><th>Planet</th><th>House</th><th>SAV</th><th>From</th><th>To</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="5">Good</td><td>Saturn</td><td>6H</td><td>33</td><td>03 Jun 2027</td><td>20 Oct 2027</td></tr>
+      <tr><td>Saturn</td><td>6H</td><td>33</td><td>23 Feb 2028</td><td>08 Aug 2029</td></tr>
+      <tr><td>Saturn</td><td>6H</td><td>33</td><td>05 Oct 2029</td><td>17 Apr 2030</td></tr>
+      <tr><td>Jupiter</td><td>10H</td><td>36</td><td>31 Oct 2026</td><td>25 Jan 2027</td></tr>
+      <tr><td>Jupiter</td><td>10H</td><td>36</td><td>26 Jun 2027</td><td>26 Nov 2027</td></tr>
+      <tr><td rowspan="1">Good</td><td>Jupiter</td><td>10H</td><td>36</td><td>28 Feb 2028</td><td>24 Jul 2028</td></tr>
+      <tr><td rowspan="1">Good</td><td>Rahu</td><td>3H</td><td>22</td><td>05 Dec 2026</td><td>23 Jun 2028</td></tr>
+      <tr><td rowspan="4">Challenging</td><td>Saturn</td><td>3H, 4H</td><td>22, 26</td><td>24 Jan 2020</td><td>29 Mar 2025</td></tr>
+      <tr><td>Saturn</td><td>7H</td><td>21</td><td>08 Aug 2029</td><td>05 Oct 2029</td></tr>
+      <tr><td>Saturn</td><td>7H</td><td>21</td><td>17 Apr 2030</td><td>31 May 2032</td></tr>
+      <tr><td>Rahu</td><td>4H</td><td>26</td><td>18 May 2025</td><td>05 Dec 2026</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Lal Kitab Birth Chart</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>HN</th><th>Rashi</th><th>Planets</th>
+        <th>Varshphal Yr 8<br><span class="th-sub">17 Nov 2025 – 16 Nov 2026</span></th>
+        <th>Varshphal Yr 9<br><span class="th-sub">17 Nov 2026 – 16 Nov 2027</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>Scorpio (8)</td><td>Sun, Mercury, Jupiter</td><td>—</td><td>—</td></tr>
+      <tr><td>2</td><td>Sagittarius (9)</td><td>Saturn</td><td>Sun, Mercury, Jupiter</td><td>Saturn</td></tr>
+      <tr><td>3</td><td>Capricorn (10)</td><td>Ketu</td><td>—</td><td>—</td></tr>
+      <tr><td>4</td><td>Aquarius (11)</td><td>Moon, Mars</td><td>Venus</td><td>—</td></tr>
+      <tr><td>5</td><td>Pisces (12)</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>6</td><td>Aries (1)</td><td>—</td><td>Ketu</td><td>Moon, Mars</td></tr>
+      <tr><td>7</td><td>Taurus (2)</td><td>—</td><td>Saturn</td><td>Ketu</td></tr>
+      <tr><td>8</td><td>Gemini (3)</td><td>—</td><td>Rahu</td><td>—</td></tr>
+      <tr><td>9</td><td>Cancer (4)</td><td>Rahu</td><td>—</td><td>Venus</td></tr>
+      <tr><td>10</td><td>Leo (5)</td><td>—</td><td>—</td><td>Rahu</td></tr>
+      <tr><td>11</td><td>Virgo (6)</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>12</td><td>Libra (7)</td><td>Venus</td><td>Moon, Mars</td><td>Sun, Mercury, Jupiter</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">6 / 12</p>
+</section>
+
+<!-- PAGE 8 -->
+<section class="page" id="page-8">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+  <h2>Part B — Panchang Insights</h2>
+  <table class="kv narrative">
+    <tbody>
+      <tr>
+        <td>Tithi — Shukla Navami</td>
+        <td>Favours name and fame. Makes him strong-hearted, religious, generous and wise. Suits roles of professor, philosopher, preacher or religious leader. He should avoid dogma and rigidity. Worshipping <em>Goddess Durga</em> strengthens this Tithi.</td>
+      </tr>
+      <tr>
+        <td>Moon</td>
+        <td>The natal Moon is <em>Paksha Bali</em> — around 59% luminous — yet receives malefic influences. Advisable for the native and his mother to perform <em>Ganga Snan</em> periodically; this dilutes Saturn’s malefic influence on the Moon. <em>Rudrabhishek</em> every birthday is recommended. Cultivates seriousness and caution.</td>
+      </tr>
+      <tr>
+        <td>Vaar — Saturday</td>
+        <td>Makes him disciplined, resilient, serious and responsible. Favours real estate, properties, agriculture and service. Gains may come with delay. Forms <em>Siddhadi Yoga</em> with the Tithi.</td>
+      </tr>
+      <tr>
+        <td>Nakshatra — Shatabhisha</td>
+        <td>Good memory; thrives in groups and team-building; a planner who is competitive and ambitious. Can influence people; may be stubborn, aggressive and controlling, with natural leadership. Understands complex systems and sees through lies. Inclination toward healing and medical professions.</td>
+      </tr>
+      <tr>
+        <td>Yoga — Vyaghata</td>
+        <td>Prone to cheating, injury and unpredictable events. Worshipping <em>Vayu Devta</em> is advised.</td>
+      </tr>
+      <tr>
+        <td>Karan — Kaulava</td>
+        <td>Friendly, cooperative and social. Favours negotiation and teamwork; success comes through collaborative work.</td>
+      </tr>
+      <tr>
+        <td>Dagdha Rashi — 5, 8</td>
+        <td>Light a ghee diya in the south-east corner of the home. Visit a Hanuman temple regularly.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="footer-num">7 / 12</p>
+</section>
+
+<!-- PAGE 9 -->
+<section class="page" id="page-9">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+  <h2>Rashi Chart Overview</h2>
+  <table class="kv narrative">
+    <tbody>
+      <tr><td>Planet Distribution</td><td>Focus on self &amp; personality, health, status, mother, home, land, property, emotional security, vehicles, comforts, family, wealth &amp; savings, food, spending, investment, foreign lands, sleep &amp; bed pleasure, spirituality, solitude, father &amp; guru, religion and faith, higher learning, long travel, siblings, communication, short travel and skills. Relatively less struggle; the initial phase of life is more eventful.</td></tr>
+      <tr><td>Kal Sarp</td><td>There is no <em>Kal Sarpa Dosh</em> in the chart.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-gap">Nature, Personality &amp; Appearance — Ascendant Scorpio</h2>
+  <table class="kv narrative">
+    <tbody>
+      <tr><td>Core Nature</td><td>Speaks sweetly; smart at talking. Secretive and competitive, with a strong ability to win. Mysterious, transformative, emotional, determined and intuitive.</td></tr>
+      <tr><td>Physical Features</td><td>Middle stature, well-proportioned body, broad face, curly hair, dark complexion and prominent chin.</td></tr>
+      <tr><td>Lifestyle</td><td>Loves mysteries, research, occult sciences, caves and deep-water places; dislikes betrayal and superficiality.</td></tr>
+      <tr><td>More About Ascendant</td><td>Strong willpower and authoritative qualities. Inexhaustible energy. Prefers thorough understanding. Good executive ability and confidence. Reputation for secretive actions. Excellent researcher; works best independently. Frank, fearless and intelligent; self-made wealth through courage. Drawn to outdoor sports, music, art and dance; occult inclination.</td></tr>
+      <tr><td>Weakness</td><td>Jealous, controlling, obsessive and revengeful.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-gap">Moon Sign — Aquarius</h2>
+  <table class="kv narrative">
+    <tbody>
+      <tr><td>Emotional Nature</td><td>Humanitarian, thoughtful, unconventional, social, modern, idealistic, futuristic, innovative, independent, intellectual, friendly, detached, rebellious, stubborn and aloof. Drawn to technology, social reform and science. A reserved, cautious observer — patient and studious. Loves nature, friendship and solitude; intuition and meditation matter. Earns through machinery, investments, inventions and technical education.</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">8 / 12</p>
+</section>
+
+<!-- PAGE 10 -->
+<section class="page" id="page-10">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+  <h2>Impact of Planetary Placements</h2>
+  <ul class="bullets">
+    <li>Broad forehead; tendency toward hair loss; can be hotheaded and egoistic — yoga for government job and fame.</li>
+    <li>Good health, wealth and education. Loves vehicles; yoga for multiple vehicles and houses. Emotionally attached to home and mother; waterbody nearby the residence.</li>
+    <li>Aggression; indication of two marriages in the family. Own business yoga. Fire / electric issues possible. Dominating nature; property yoga.</li>
+    <li>Youthful, energetic, intelligent, business-minded and a fun-lover.</li>
+    <li>Father may face challenges around the native’s ages 17 and 34.</li>
+    <li>Good education; government / semi-government connection in the family; good teacher or mentor yoga.</li>
+    <li>Expenditure on comfort and luxury; foreign travel yoga.</li>
+    <li>Delays in savings; shrewd in money matters; money may get stuck when lent. Unhealthy eating habits; issues related to the north-west direction.</li>
+    <li>Spirituality; foreign travel; police service yoga. Uneven flooring remedy advised.</li>
+    <li>Adventurous; neighbour trouble possible; lots of foreign travel; may live away from sibling.</li>
+    <li>Support from friends and family; natural leader, analytical mind and planner.</li>
+    <li>Spiritual travel; wealthy; property yoga; winning in competition; interest in astrology and jewellery.</li>
+    <li>Teaching / training aptitude; sharp mind; strong willpower.</li>
+    <li>Difficulty following elders; wealth through education yoga; may use flattery to get work done; discipline can be a challenge — stay connected with learning (teacher, trainer, consultant, IT, law, medical).</li>
+    <li>Wealth yoga till age 52; charity attracts prosperity.</li>
+  </ul>
+  <p class="footer-num">9 / 12</p>
+</section>
+
+<!-- PAGE 11 -->
+<section class="page" id="page-11">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+  <h2>Impact of Planetary Placements (contd.)</h2>
+  <h3>Planetary Combinations</h3>
+  <ul class="bullets">
+    <li>Raj yoga for property and assets; popularity and perseverance support rise in life.</li>
+    <li>Self-branding and workaholic nature; administrator qualities with knowledge-based work.</li>
+    <li>Strong willpower; gains through father and government connections; good crisis-handling ability.</li>
+    <li>Venus Dasha may bring alone time or distant residence; spirituality and charity are favourable outlets.</li>
+    <li>Combust Jupiter — temper wisdom with humility; honour teachers and elders.</li>
+    <li>Retrograde Mercury as Atmakarak — deep analytical mind; revisit unfinished learning; careful speech and contracts.</li>
+  </ul>
+  <p class="footer-num">10 / 12</p>
+</section>
+
+<!-- PAGE 12 -->
+<section class="page page-dense" id="page-12">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+  <h2>12 Houses of Rashi Chart</h2>
+  <ul class="bullets" style="margin-bottom:8px">
+    <li><strong>1H:</strong> Secretive, stubborn, competitive and egoistic; prefers working in the backdrop. Overthinking and suspicious; strong intuition. Big sudden changes; research-oriented. Chemicals, medicine, fabrication. Risk of being cheated; health transforms; keeps secrets. Death in the family around birth.</li>
+    <li><strong>2H:</strong> Lucky for family; optimistic; wise with money. Wealth through foreign connections; sweet speech. Food habits matter; talks of religion and philosophy.</li>
+    <li><strong>3H:</strong> Sibling responsibility and adjustment; struggle expressing himself; delays in action; long planning before doing.</li>
+    <li><strong>4H:</strong> Gains through property, vehicle and land; high desire for luxury; cheating risk in property matters.</li>
+    <li><strong>5H:</strong> Education may be distant and costly; foreign languages; spends on hobbies. Speculation loss risk; learns alone; spirituality and meditation.</li>
+    <li><strong>6H:</strong> Workplace competition and dispute; health focus; new profession vs family expectations; maternal disputes; dominating at work.</li>
+    <li><strong>7H:</strong> Wealth through partner and business; gains after marriage; decorative food preferences.</li>
+    <li><strong>8H:</strong> Careful speech and paperwork; mysterious novels; dark humour; deep research; avoid speaking ill of others.</li>
+    <li><strong>9H:</strong> Attachment to father, guru and dharma; luck through property and vehicle; long travels.</li>
+    <li><strong>10H:</strong> Fame at workplace; recognition; creative and innovative; hobby can become work.</li>
+  </ul>
+
+  <h2>Sarvashtakvarga — Yearly Outlook</h2>
+  <table class="kv">
+    <tbody>
+      <tr><td>Challenging Years</td><td colspan="3">6, 39</td></tr>
+      <tr><td>Good Months of the Year</td><td colspan="3">April – May, July – October</td></tr>
+      <tr><td>Auspicious Months (ceremony, puja etc.)</td><td colspan="3">August – October, December – January</td></tr>
+      <tr><td>Challenging Months of the Year</td><td colspan="3">January – March, May – July</td></tr>
+      <tr><td>Favourable for Starting New Education</td><td colspan="3">September – October</td></tr>
+      <tr><td>Lucky People for Native</td><td colspan="3">Leo (5), Aries (1), Virgo (6)</td></tr>
+      <tr><td>Unfavourable People for Native</td><td colspan="3">Cancer (4), Libra (7), Pisces (12)</td></tr>
+      <tr><td>Aptitude</td><td colspan="3">Resistance to disease; competitive spirit; problem-solving; strong social status and career; authoritative; high income potential; powerful social circle; innovative — extreme rise ages 25–27</td></tr>
+      <tr><td>Favourable Direction for Opening a Bank Account</td><td colspan="3">East of birth place / residence</td></tr>
+      <tr><td>Wealth-Giving Dasha / Antardasha</td><td colspan="3">Sun, Saturn, Jupiter, Venus, Mercury, Moon</td></tr>
+      <tr><td>Key Growth Window</td><td colspan="3">Jupiter Maha Dasha (Dec 2022 – Dec 2038) — good for education and learning; wealth &amp; property gains in the family</td></tr>
+    </tbody>
+  </table>
+  <p class="footer-num">11 / 12</p>
+</section>
+
+<!-- PAGE 13 -->
+<section class="page page-dense" id="page-13">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+  <h2>12 Houses of Rashi Chart (contd.)</h2>
+  <ul class="bullets" style="margin-bottom:8px">
+    <li><strong>11H:</strong> Wealth via debt or loan; Mercury Dasha may bring income disputes. Selective about friends; critical; enemy may arise from friends.</li>
+    <li><strong>12H:</strong> Heavy luxury spend; keeps personal room beautiful. Peace, home and emotions are priorities; home atmosphere impacts health.</li>
+    <li>Raj yoga for property; popularity; perseverance brings rise; self-branding and workaholic drive.</li>
+    <li>Administrator qualities; knowledge work; strong willpower; gains through father and government.</li>
+    <li>Crisis-handling ability; Venus Dasha — alone time or distant residence; spirituality and charity favour the chart.</li>
+  </ul>
+
+  <h2 class="section-gap">Near-Term Dasha Notes</h2>
+  <ul class="bullets">
+    <li><em>Saturn–Moon</em> (Jul–Oct 2026): possible school change or distraction; health of self and mother needs care.</li>
+    <li><em>Saturn–Rahu</em> (Dec 2026–Apr 2027): health of self and mother; studies may be affected, especially after Jan 2027.</li>
+    <li>Jupiter Maha Dasha through Dec 2038 supports education, learning, and family wealth / property gains.</li>
+  </ul>
+</section>
+
+<!-- PAGE 14 -->
+<section class="page page-dense" id="page-14">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">Janma Kundli • Samarth Varyani</p></header>
+  <div class="rule"></div>
+  <div class="page-body">
+    <h2>Karmic Remedies</h2>
+    <ul class="bullets">
+      <li>Take care of health; avoid unhealthy food and habits; add Yoga / Meditation daily; let go and practise controlled speech.</li>
+      <li>Wear a Gold Chain.</li>
+      <li>Throw away torn clothes; never keep them.</li>
+      <li>Keep a Silver Square Piece in the Wallet.</li>
+      <li>Take a Holy Dip in Pushkar on Kartik Poornima.</li>
+      <li>Avoid Mustard Oil — especially do not apply on the head.</li>
+      <li>Do not keep soft toys at home (Teddy bears etc.).</li>
+      <li>Never donate in Early Morning OR in the Evening.</li>
+      <li>Avoid Tulsi, Money Plant etc. at home.</li>
+      <li>Never gift Perfumes, Flowers and Cosmetics. Never donate / gift clothes.</li>
+    </ul>
+
+    <h2 class="section-gap">Abbreviations</h2>
+    <div class="abbr-grid">
+      <div class="code">Su</div><div>Sun</div>
+      <div class="code">Mo</div><div>Moon</div>
+      <div class="code">Ma</div><div>Mars</div>
+      <div class="code">Me</div><div>Mercury</div>
+      <div class="code">Ju</div><div>Jupiter</div>
+      <div class="code">Ve</div><div>Venus</div>
+      <div class="code">Sa</div><div>Saturn</div>
+      <div class="code">Ra</div><div>Rahu</div>
+      <div class="code">Ke</div><div>Ketu</div>
+      <div class="code">BAV</div><div>Bhinnastakvarga</div>
+      <div class="code">SAV</div><div>Sarvashtakvarga</div>
+      <div class="code">L</div><div>Lord (House Lord)</div>
+      <div class="code">H</div><div>House</div>
+      <div class="code">R</div><div>Rashi</div>
+      <div class="code">P</div><div>Planet</div>
+      <div class="code">N</div><div>Nakshatra</div>
+      <div class="code">D1</div><div>Rashi Chart</div>
+      <div class="code">D9</div><div>Navamsa Chart</div>
+    </div>
+    <div class="note" style="margin-top:auto;font-size:0.88rem">
+      This concludes the detailed Vedic analysis of the Janma Kundli.
+    </div>
+  </div>
+  <p class="footer-num">12 / 12</p>
+</section>
+
+<!-- PAGE 15 -->
+<section class="page" id="page-15">
+  <header class="brand"><img class="brand-logo" src="bhavishyat-logo-Photoroom.png" alt="BHAVISHYAT"><p class="sub">A Sacred Dedication</p></header>
+  <div class="rule"></div>
+  <div class="closing">
+    <h2>With Love &amp; Blessings</h2>
+    <p class="muted">for Samarth Varyani's journey ahead</p>
+    <p class="quote quote-sanskrit">यत्तदग्रे विषमिव परिणामेऽमृतोपमम्।<br>तत्सुखं सात्त्विकं प्रोक्तमात्मबुद्धिप्रसादजम्॥ ३७॥</p>
+    <p class="quote quote-hindi">जो सुख आरम्भ में विष के समान लगता है, परन्तु परिणाम में अमृत के समान होता है — वह सात्त्विक सुख कहलाता है, जो आत्म-बुद्धि की प्रसन्नता से उत्पन्न होता है।</p>
+    <p class="quote quote-gita">"That which in the beginning is like poison but in the end is like nectar — that happiness is said to be in the mode of goodness, born of the self's purified intelligence."</p>
+    <p class="attr">— Bhagavad Gita, Chapter 18, Verse 37</p>
+    <p class="blessing">May Samarth walk his Scorpio path of transformation with courage — turning every hard beginning into lasting strength. May his Aquarius mind stay clear and kind, his competitive fire serve noble aims, and his perseverance ripen effort into the nectar of true success.</p>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

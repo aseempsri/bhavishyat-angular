@@ -1,0 +1,94 @@
+@if (isOpen) {
+  <div
+    class="offer-backdrop"
+    role="presentation"
+    (click)="close()"
+  ></div>
+
+  <div
+    class="offer-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="intro-offer-title"
+  >
+    <div class="offer-modal__glow offer-modal__glow--a" aria-hidden="true"></div>
+    <div class="offer-modal__glow offer-modal__glow--b" aria-hidden="true"></div>
+    <div class="offer-modal__stars" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <button
+      type="button"
+      class="offer-modal__close"
+      aria-label="Close offer"
+      (click)="close()"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+
+    <div class="offer-ribbon" aria-hidden="true">
+      <span>Limited Period</span>
+    </div>
+
+    <div class="offer-ticker" aria-hidden="true">
+      <div class="offer-ticker__track">
+        <div class="offer-ticker__group">
+          @for (segment of tickerSegments; track segment) {
+            <span class="offer-ticker__item">{{ segment }}</span>
+          }
+        </div>
+        <div class="offer-ticker__group" aria-hidden="true">
+          @for (segment of tickerSegments; track segment) {
+            <span class="offer-ticker__item">{{ segment }}</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="offer-modal__body">
+      <p class="offer-eyebrow">
+        <span class="offer-eyebrow__orb" aria-hidden="true"></span>
+        Short-term consultation window
+      </p>
+
+      <h2 id="intro-offer-title" class="offer-title">
+        Begin with clarity<br />
+        <span>at ₹1,100</span>
+      </h2>
+
+      <p class="offer-subtitle">
+        A focused Vedic consultation for this limited period — private guidance without the full signature investment.
+      </p>
+
+      <div class="offer-price-card">
+        <div class="offer-price-card__burst" aria-hidden="true"></div>
+        <p class="offer-price-card__was">Usually from ₹5,100</p>
+        <p class="offer-price-card__now">
+          <span class="offer-price-card__currency">₹</span>1,100
+        </p>
+        <p class="offer-price-card__note">Limited-period introductory session</p>
+      </div>
+
+      <ul class="offer-perks">
+        @for (perk of perks; track perk) {
+          <li>
+            <span class="offer-perks__star" aria-hidden="true">✦</span>
+            {{ perk }}
+          </li>
+        }
+      </ul>
+
+      <app-button
+        size="lg"
+        (buttonClick)="claimOffer()"
+        className="offer-cta w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground font-semibold px-6 py-3.5 text-base shadow-[0_0_28px_rgba(234,147,85,0.35)]"
+      >
+        Claim this slot on WhatsApp
+      </app-button>
+
+      <p class="offer-fineprint">Slots are limited · You can close this anytime</p>
+    </div>
+  </div>
+}
