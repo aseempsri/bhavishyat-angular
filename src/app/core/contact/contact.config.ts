@@ -1,8 +1,8 @@
 import { WhatsAppCta } from './contact-leads.config';
 import { logWhatsAppCtaClick } from './contact-leads.logger';
 
-export const WHATSAPP_NUMBER = '919981754120';
-export const WHATSAPP_DISPLAY = '+91 99817 54120';
+export const WHATSAPP_NUMBER = '919180281884';
+export const WHATSAPP_DISPLAY = '+91 91802 81884';
 export const CONTACT_EMAIL = 'connect@bhavishyat.in';
 
 export const WHATSAPP_CONSULTATION_MESSAGE =
