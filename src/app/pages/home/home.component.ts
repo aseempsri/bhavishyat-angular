@@ -6,7 +6,8 @@ import { FounderComponent } from '../../components/founder/founder.component';
 import { TestimonialsComponent } from '../../components/testimonials/testimonials.component';
 import { ServicesComponent } from '../../components/services/services.component';
 import { CtaComponent } from '../../components/cta/cta.component';
-import { ConsultationOfferModalComponent } from '../../components/consultation-offer-modal/consultation-offer-modal.component';
+// DISABLED: consultation offer modal (temporary)
+// import { ConsultationOfferModalComponent } from '../../components/consultation-offer-modal/consultation-offer-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -17,8 +18,9 @@ import { ConsultationOfferModalComponent } from '../../components/consultation-o
     FounderComponent,
     TestimonialsComponent,
     ServicesComponent,
-    CtaComponent,
-    ConsultationOfferModalComponent
+    CtaComponent
+    // DISABLED: consultation offer modal (temporary)
+    // ConsultationOfferModalComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

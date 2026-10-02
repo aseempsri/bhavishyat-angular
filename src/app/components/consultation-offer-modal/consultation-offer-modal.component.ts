@@ -24,6 +24,9 @@ const STORAGE_KEY = 'bhavishyat_intro_offer_dismissed';
 export class ConsultationOfferModalComponent implements OnInit, OnDestroy {
   private readonly document = inject(DOCUMENT);
 
+  // DISABLED: consultation offer modal (temporary) - set to true to re-enable
+  private readonly FEATURE_ENABLED = false;
+
   isOpen = false;
   private hasTriggered = false;
   private observer?: IntersectionObserver;
@@ -44,6 +47,11 @@ export class ConsultationOfferModalComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
+    // DISABLED: consultation offer modal (temporary)
+    if (!this.FEATURE_ENABLED) {
+      return;
+    }
+
     if (typeof window === 'undefined') {
       return;
     }
