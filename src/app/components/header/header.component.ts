@@ -144,6 +144,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   handleMobileExploreClick(event: Event, item: MobileExploreItem): void {
     if (item.isRoute) {
       this.handleRouteClick(event, item.href);
+      if (this.router.url.split('?')[0].split('#')[0] !== item.href) {
+        this.router.navigateByUrl(item.href);
+      }
     } else {
       this.handleHashClick(event, item.href);
     }
