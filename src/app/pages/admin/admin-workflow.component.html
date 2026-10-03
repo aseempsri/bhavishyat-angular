@@ -1,0 +1,331 @@
+<main class="min-h-screen bg-background text-foreground px-3 sm:px-5 py-8">
+  <div class="max-w-[1680px] mx-auto">
+    <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+      <div>
+        <p class="text-primary text-xs uppercase tracking-[0.2em]">BHAVISHYAT · Admin</p>
+        <h1 class="text-3xl md:text-4xl font-playfair font-bold">WhatsApp assistant workflow</h1>
+        <p class="text-sm text-foreground/60 mt-1">Every message moves through this flow in real time. Click any node to see exactly what it received and produced.</p>
+      </div>
+      <nav class="flex flex-wrap gap-4 text-sm">
+        <a routerLink="/admin" class="text-primary hover:text-accent">Write an article</a>
+        <a routerLink="/admin/articles" class="text-primary hover:text-accent">Manage articles</a>
+        @if (authed()) {
+          <button type="button" (click)="signOut()" class="text-foreground/70 hover:text-primary">Sign out</button>
+        }
+      </nav>
+    </div>
+
+    @if (checking()) {
+      <p class="text-foreground/70">Checking access…</p>
+    } @else if (!authed()) {
+      <form (ngSubmit)="signIn()" class="max-w-md rounded-2xl border border-border bg-card p-6 space-y-4">
+        <label class="block">
+          <span class="block mb-2 text-sm font-medium">Admin password</span>
+          <input type="password" name="admin-password" autocomplete="current-password" [(ngModel)]="password"
+            class="w-full h-12 rounded-lg border border-border bg-background px-3 text-foreground" />
+        </label>
+        <button type="submit" class="w-full rounded-lg bg-gradient-to-r from-primary to-accent py-3 font-bold text-primary-foreground">Sign in</button>
+        @if (loginError()) {
+          <p class="text-sm text-red-300">{{ loginError() }}</p>
+        }
+      </form>
+    } @else {
+      <!-- Integrations -->
+      <section class="flex flex-wrap gap-2 mb-4">
+        <span class="wf-chip" [class.wf-chip--live]="connected()">
+          <span class="wf-dot" [class.wf-dot--live]="connected()"></span>{{ connected() ? 'Live stream connected' : 'Connecting…' }}
+        </span>
+        @for (item of status()?.integrations || []; track item.id) {
+          <span class="wf-chip" [class.wf-chip--live]="item.live" [title]="item.detail">
+            <span class="wf-dot" [class.wf-dot--live]="item.live"></span>{{ item.label }}: <b>{{ item.live ? 'Live' : 'Demo' }}</b>
+          </span>
+        }
+      </section>
+
+      @if (status(); as s) {
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div class="wf-stat"><span>{{ s.stats.customers }}</span>Clients</div>
+          <div class="wf-stat"><span>{{ s.stats.runs }}</span>Workflow runs</div>
+          <div class="wf-stat"><span>{{ s.stats.confirmedBookings }}</span>Paid bookings</div>
+          <div class="wf-stat" [class.wf-stat--alert]="s.stats.openHandoffs > 0"><span>{{ s.stats.openHandoffs }}</span>Open handoffs</div>
+        </section>
+      }
+
+      @if (notice()) {
+        <p class="mb-3 text-sm text-primary flex items-center gap-3">{{ notice() }}
+          <button type="button" class="text-foreground/50 hover:text-foreground" (click)="notice.set('')">Dismiss</button>
+        </p>
+      }
+
+      <!-- Workflow diagram -->
+      <section class="rounded-2xl border border-border bg-card/60 overflow-hidden">
+        <div class="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-border">
+          @if (selectedRun(); as run) {
+            <span class="wf-run-status" [attr.data-status]="replay() ? 'running' : run.summary.status">{{ replay() ? (followLive() ? 'live' : 'replay') : run.summary.status }}</span>
+            <span class="text-sm font-semibold">{{ run.summary.name || run.summary.phoneMasked }}</span>
+            <span class="text-sm text-foreground/60 truncate max-w-[22rem]">“{{ run.summary.text }}”</span>
+            <span class="text-xs rounded-full border border-border px-2 py-0.5">{{ runLabel(run.summary) }}</span>
+          } @else {
+            <span class="text-sm text-foreground/60">No runs yet. Send a message from the simulator below to watch it flow.</span>
+          }
+          <div class="ml-auto flex flex-wrap items-center gap-2 text-sm">
+            <button type="button" class="wf-btn" [class.wf-btn--on]="followLive()" (click)="toggleLive()">
+              <span class="wf-dot" [class.wf-dot--live]="followLive()"></span>Follow live
+            </button>
+            @if (replay()) {
+              <button type="button" class="wf-btn" (click)="stopReplay()">Stop replay</button>
+            } @else {
+              <button type="button" class="wf-btn" [disabled]="!selectedRun()" (click)="startReplay()">Replay run</button>
+            }
+            <button type="button" class="wf-btn" (click)="zoomBy(0.85)" aria-label="Zoom out">−</button>
+            <button type="button" class="wf-btn" (click)="zoom.set(1)">Fit</button>
+            <button type="button" class="wf-btn" (click)="zoomBy(1.18)" aria-label="Zoom in">+</button>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div #viewport class="wf-viewport">
+            <div class="wf-stage" [style.width.px]="canvasW * scale()" [style.height.px]="canvasH * scale()">
+              <div class="wf-canvas" [class.wf-dim]="dimIdle()" [style.width.px]="canvasW" [style.height.px]="canvasH" [style.transform]="'scale(' + scale() + ')'">
+                <svg class="wf-edges" [attr.width]="canvasW" [attr.height]="canvasH" [attr.viewBox]="'0 0 ' + canvasW + ' ' + canvasH">
+                  @for (e of edges; track e.id) {
+                    <path [attr.d]="e.d" class="wf-edge" [class.wf-edge--dashed]="e.dashed"
+                      [class.wf-edge--done]="edgeStates()[e.id] === 'done'" [class.wf-edge--flow]="edgeStates()[e.id] === 'flow'" />
+                  }
+                  @for (e of edges; track e.id) {
+                    @if (edgeStates()[e.id] === 'flow') {
+                      <circle r="6" class="wf-packet">
+                        <animateMotion dur="0.9s" repeatCount="indefinite" [attr.path]="e.d" />
+                      </circle>
+                    }
+                  }
+                </svg>
+                @for (node of nodes; track node.id) {
+                  <button type="button"
+                    [class]="'wf-node s-' + nodeViews()[node.id].status + (node.trigger ? ' wf-node--trigger' : '') + (selectedNodeId() === node.id ? ' wf-node--selected' : '')"
+                    [attr.data-group]="node.group" [style.left.px]="node.x" [style.top.px]="node.y" (click)="selectNode(node.id)">
+                    <span class="wf-tag">{{ node.tag }}</span>
+                    <span class="wf-title">{{ node.title }}</span>
+                    <span class="wf-sub">{{ nodeSub(node) }}</span>
+                    <span class="wf-state">
+                      @switch (nodeViews()[node.id].status) {
+                        @case ('done') { ✓ }
+                        @case ('warn') { ! }
+                        @case ('error') { × }
+                        @case ('skipped') { – }
+                      }
+                    </span>
+                    @if (nodeViews()[node.id].ms !== null) {
+                      <span class="wf-ms">{{ nodeViews()[node.id].ms }} ms</span>
+                    }
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+
+          @if (selectedNode(); as sel) {
+            <aside class="wf-inspector">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <p class="wf-tag">{{ sel.node.tag }}</p>
+                  <h3 class="text-lg font-semibold">{{ sel.node.title }}</h3>
+                </div>
+                <button type="button" class="text-foreground/60 hover:text-foreground text-xl leading-none" (click)="selectedNodeId.set(null)" aria-label="Close">×</button>
+              </div>
+              <p class="text-sm text-foreground/70 mt-2">{{ sel.node.about }}</p>
+              @if (sel.view.step; as step) {
+                <p class="mt-3 text-sm"><span class="wf-run-status" [attr.data-status]="step.status">{{ step.status }}</span>
+                  @if (sel.view.ms !== null) { <span class="text-foreground/50 ml-2">{{ sel.view.ms }} ms</span> }
+                </p>
+                @if (step.summary) { <p class="mt-2 text-sm font-medium">{{ step.summary }}</p> }
+                <p class="wf-label">Input</p>
+                <pre class="wf-json">{{ json(step.input) }}</pre>
+                <p class="wf-label">Output</p>
+                <pre class="wf-json">{{ json(step.output) }}</pre>
+              } @else {
+                <p class="mt-3 text-sm text-foreground/50">Not used in the selected run.</p>
+              }
+            </aside>
+          }
+        </div>
+
+        <div class="flex flex-wrap gap-4 px-4 py-2 border-t border-border text-xs text-foreground/60">
+          <span><i class="wf-key s-active"></i>Running</span>
+          <span><i class="wf-key s-done"></i>Done</span>
+          <span><i class="wf-key s-warn"></i>Needs attention</span>
+          <span><i class="wf-key s-error"></i>Error</span>
+          <span><i class="wf-key s-skipped"></i>Skipped</span>
+          <span class="ml-auto">Tip: pick any past run on the right and press “Replay run” to walk your team through it.</span>
+        </div>
+      </section>
+
+      <!-- Live logs -->
+      <section class="mt-4 rounded-2xl border border-border overflow-hidden">
+        <div class="flex flex-wrap items-center gap-2 px-4 py-2 bg-card/70 border-b border-border text-sm">
+          <span class="font-semibold">Live logs</span>
+          <span class="text-foreground/50 text-xs">{{ visibleLogs().length }} lines</span>
+          <div class="ml-auto flex flex-wrap items-center gap-2">
+            <select class="wf-select" [ngModel]="logLevel()" (ngModelChange)="setLogLevel($event)" aria-label="Log level">
+              <option value="all">All levels</option>
+              <option value="warn">Warnings + errors</option>
+              <option value="error">Errors only</option>
+            </select>
+            <button type="button" class="wf-btn" [class.wf-btn--on]="logRunOnly()" (click)="logRunOnly.set(!logRunOnly())">Selected run only</button>
+            <button type="button" class="wf-btn" [class.wf-btn--on]="logPaused()" (click)="toggleLogPause()">
+              {{ logPaused() ? 'Resume' + (pausedCount() ? ' (' + pausedCount() + ')' : '') : 'Pause' }}
+            </button>
+            <button type="button" class="wf-btn" (click)="clearLogs()">Clear</button>
+          </div>
+        </div>
+        <div #logBox class="wf-logs" (scroll)="onLogScroll()">
+          @for (log of visibleLogs(); track $index) {
+            <div class="wf-log" [attr.data-level]="log.level" [class.wf-log--sel]="log.runId && log.runId === selectedRunId()">
+              <span class="wf-log-ts">{{ log.ts | date:'HH:mm:ss.SSS' }}</span>
+              <span class="wf-log-lvl">{{ log.level }}</span>
+              @if (log.runId) {
+                <button type="button" class="wf-log-run" (click)="selectRun(log.runId)">{{ log.runId.slice(0, 8) }}</button>
+              } @else {
+                <span class="wf-log-run wf-log-run--sys">system</span>
+              }
+              <span class="wf-log-step">{{ log.step || '' }}</span>
+              <span class="wf-log-msg">{{ log.msg }}</span>
+            </div>
+          } @empty {
+            <p class="text-foreground/40">Waiting for activity…</p>
+          }
+        </div>
+      </section>
+
+      <div class="mt-4 grid gap-4 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
+        <!-- Simulator / conversation -->
+        <section class="rounded-2xl border border-border overflow-hidden flex flex-col">
+          <div class="px-4 py-3 bg-card/70 border-b border-border">
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <p class="font-semibold">{{ chatChannel() === 'whatsapp' ? 'WhatsApp conversation' : 'Live simulator' }}</p>
+                <p class="text-xs text-foreground/60">+{{ chatPhone() }} · {{ chatName() }}{{ chatHandoff() ? ' · with team' : '' }}</p>
+              </div>
+              <button type="button" class="wf-btn" (click)="newDemoChat()">New demo client</button>
+            </div>
+            @if (chatChannel() === 'simulator') {
+              <div class="mt-2 flex gap-2">
+                <input class="wf-input flex-1" [ngModel]="chatName()" (ngModelChange)="chatName.set($event)" name="sim-name" placeholder="Client name" />
+              </div>
+            }
+          </div>
+          <div #chatBox class="wa-chat">
+            @for (m of chatMessages(); track m.id) {
+              <div class="wa-msg" [attr.data-author]="m.author">
+                @if (m.author === 'team') { <span class="wa-who">Team</span> }
+                @if (m.attachment; as file) {
+                  <button type="button" class="wa-file" (click)="downloadReport(file.reportId, file.filename)">PDF · {{ file.filename }} ({{ (file.bytes / 1024) | number:'1.0-1' }} KB)</button>
+                } @else {
+                  <div [innerHTML]="waHtml(m.text)"></div>
+                }
+                @if (demoBookingFor(m); as booking) {
+                  <button type="button" class="wa-pay" (click)="markPaid(booking)">Simulate payment of ₹{{ booking.amountInr | number }}</button>
+                }
+                <span class="wa-time">{{ m.createdAt | date:'HH:mm' }}</span>
+              </div>
+            } @empty {
+              <p class="text-center text-xs text-white/50 mt-6">Send a message as the client to start the workflow.</p>
+            }
+          </div>
+          @if (chatChannel() === 'simulator' && sendAs() === 'customer') {
+            <div class="flex flex-wrap gap-1.5 px-3 pt-3">
+              @for (p of samplePrompts; track p) {
+                <button type="button" class="wf-prompt" [disabled]="sending()" (click)="usePrompt(p)">{{ p }}</button>
+              }
+            </div>
+          }
+          <form class="p-3 flex flex-col gap-2" (ngSubmit)="send()">
+            <div class="flex gap-2 text-xs">
+              @if (chatChannel() === 'simulator') {
+                <button type="button" class="wf-btn" [class.wf-btn--on]="sendAs() === 'customer'" (click)="sendAs.set('customer')">Send as client</button>
+              }
+              <button type="button" class="wf-btn" [class.wf-btn--on]="sendAs() === 'team'" (click)="sendAs.set('team')">Reply as team</button>
+              @if (chatHandoff()) {
+                <button type="button" class="wf-btn ml-auto" (click)="setHandoff(false)">Resolve handoff</button>
+              } @else {
+                <button type="button" class="wf-btn ml-auto" (click)="setHandoff(true)">Take over</button>
+              }
+            </div>
+            <div class="flex gap-2">
+              <input class="wf-input flex-1" name="draft" [(ngModel)]="draft" autocomplete="off"
+                [placeholder]="sendAs() === 'team' ? 'Reply to the client as the team…' : 'Type a message as the client…'" />
+              <button type="submit" class="rounded-lg bg-gradient-to-r from-primary to-accent px-4 font-semibold text-primary-foreground disabled:opacity-60" [disabled]="sending() || !draft.trim()">Send</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Runs / conversations / bookings -->
+        <section class="rounded-2xl border border-border overflow-hidden">
+          <div class="flex flex-wrap items-center gap-1 px-3 py-2 bg-card/70 border-b border-border text-sm">
+            <button type="button" class="wf-tab" [class.wf-tab--on]="panelTab() === 'runs'" (click)="panelTab.set('runs')">Runs ({{ runList().length }})</button>
+            <button type="button" class="wf-tab" [class.wf-tab--on]="panelTab() === 'conversations'" (click)="panelTab.set('conversations')">Conversations ({{ conversations().length }})</button>
+            <button type="button" class="wf-tab" [class.wf-tab--on]="panelTab() === 'bookings'" (click)="panelTab.set('bookings')">Bookings ({{ bookings().length }})</button>
+            <button type="button" class="ml-auto text-xs text-red-300 hover:text-red-200" (click)="resetDemo()">Reset demo data</button>
+          </div>
+          <div class="wf-panel">
+            @switch (panelTab()) {
+              @case ('runs') {
+                @for (r of runList(); track r.id) {
+                  <button type="button" class="wf-row" [class.wf-row--sel]="r.id === selectedRunId()" (click)="selectRun(r.id)">
+                    <span class="wf-run-status" [attr.data-status]="r.status">{{ r.status }}</span>
+                    <span class="min-w-0 flex-1">
+                      <span class="block text-sm font-medium truncate">{{ runLabel(r) }} · {{ r.name || r.phoneMasked }}</span>
+                      <span class="block text-xs text-foreground/60 truncate">{{ r.source }} · {{ r.text }}</span>
+                    </span>
+                    <span class="text-xs text-foreground/50 whitespace-nowrap">{{ r.startedAt | date:'d MMM, HH:mm:ss' }}</span>
+                  </button>
+                } @empty { <p class="p-4 text-sm text-foreground/50">No runs yet.</p> }
+              }
+              @case ('conversations') {
+                @for (c of conversations(); track c.phone) {
+                  <button type="button" class="wf-row" [class.wf-row--sel]="c.phone === chatPhone()" (click)="openChat(c.phone, c.name, c.channel)">
+                    <span class="wf-run-status" [attr.data-status]="c.handoff ? 'warn' : c.channel === 'whatsapp' ? 'done' : 'skipped'">{{ c.handoff ? 'handoff' : c.channel }}</span>
+                    <span class="min-w-0 flex-1">
+                      <span class="block text-sm font-medium truncate">{{ c.name || 'Unknown' }} · {{ c.phoneMasked }}</span>
+                      <span class="block text-xs text-foreground/60 truncate">{{ c.messageCount }} messages · {{ intentLabel(c.lastIntent) }}{{ c.hasBirth ? ' · birth details saved' : '' }}{{ c.handoffReason ? ' · ' + c.handoffReason : '' }}</span>
+                    </span>
+                    <span class="text-xs text-foreground/50 whitespace-nowrap">{{ c.lastSeenAt | date:'d MMM, HH:mm' }}</span>
+                  </button>
+                } @empty { <p class="p-4 text-sm text-foreground/50">No conversations yet.</p> }
+              }
+              @case ('bookings') {
+                @for (b of bookings(); track b.reference) {
+                  <div class="wf-row">
+                    <span class="wf-run-status" [attr.data-status]="b.status === 'confirmed' ? 'done' : b.status === 'pending' ? 'running' : 'error'">{{ b.status }}</span>
+                    <span class="min-w-0 flex-1">
+                      <span class="block text-sm font-medium truncate">{{ b.reference }} · {{ b.packageName }} · ₹{{ b.amountInr | number }}</span>
+                      <span class="block text-xs text-foreground/60 truncate">{{ b.name || b.phoneMasked }}{{ b.demo ? ' · demo' : '' }} · {{ b.createdAt | date:'d MMM, HH:mm' }}</span>
+                    </span>
+                    <span class="flex gap-2">
+                      @if (b.demo && b.status === 'pending') {
+                        <button type="button" class="wf-btn" (click)="markPaid(b)">Mark paid (demo)</button>
+                      }
+                      @if (b.reportId) {
+                        <button type="button" class="wf-btn" (click)="downloadReport(b.reportId)">Kundli PDF</button>
+                      }
+                    </span>
+                  </div>
+                } @empty { <p class="p-4 text-sm text-foreground/50">No bookings yet. Send “BOOK SIGNATURE” from the simulator.</p> }
+              }
+            }
+          </div>
+        </section>
+      </div>
+
+      @if (status(); as s) {
+        <section class="mt-4 rounded-2xl border border-border bg-card/50 p-4 text-sm">
+          <p class="font-semibold mb-2">Webhook URLs to paste in Meta and Razorpay</p>
+          <div class="grid gap-2 md:grid-cols-2">
+            <button type="button" class="wf-url" (click)="copy(s.webhooks.whatsapp)"><span>WhatsApp (Meta)</span>{{ s.webhooks.whatsapp }}</button>
+            <button type="button" class="wf-url" (click)="copy(s.webhooks.razorpay)"><span>Razorpay · event payment_link.paid</span>{{ s.webhooks.razorpay }}</button>
+          </div>
+        </section>
+      }
+    }
+  </div>
+</main>

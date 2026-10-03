@@ -212,6 +212,18 @@
       "bodySummary": "Private page for showing, hiding, and deleting BHAVISHYAT articles.",
       "bodyPoints": []
     },
+    "admin/workflow": {
+      "path": "/admin/workflow",
+      "title": "WhatsApp Assistant Workflow | BHAVISHYAT",
+      "description": "Private live view of the BHAVISHYAT WhatsApp assistant workflow.",
+      "ogImage": "https://bhavishyat.in/assets/og-share.jpg",
+      "ogType": "website",
+      "robots": "noindex, nofollow",
+      "schemaType": "WebPage",
+      "bodyHeadline": "WhatsApp Assistant Workflow",
+      "bodySummary": "Private live view of the BHAVISHYAT WhatsApp assistant workflow.",
+      "bodyPoints": []
+    },
     "admin": {
       "path": "/admin",
       "title": "Blog Admin | BHAVISHYAT",

@@ -67,6 +67,11 @@ export const routes: Routes = [
     title: ROUTE_SEO['admin/articles'].title,
     loadComponent: () => import('./pages/admin/admin-articles.component').then(m => m.AdminArticlesComponent)
   },
+  {
+    path: 'admin/workflow',
+    title: ROUTE_SEO['admin/workflow'].title,
+    loadComponent: () => import('./pages/admin/admin-workflow.component').then(m => m.AdminWorkflowComponent)
+  },
 
   {
     path: '**',

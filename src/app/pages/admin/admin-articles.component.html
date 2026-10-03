@@ -5,7 +5,10 @@
         <p class="text-primary text-xs uppercase tracking-[0.2em]">BHAVISHYAT</p>
         <h1 class="text-3xl md:text-4xl font-playfair font-bold">Manage articles</h1>
       </div>
-      <a routerLink="/admin" class="text-sm text-primary hover:text-accent">Write an article</a>
+      <div class="flex flex-wrap gap-4">
+        <a routerLink="/admin/workflow" class="text-sm text-primary hover:text-accent">WhatsApp workflow</a>
+        <a routerLink="/admin" class="text-sm text-primary hover:text-accent">Write an article</a>
+      </div>
     </div>
 
     @if (checking) {

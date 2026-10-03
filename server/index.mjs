@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import express from 'express';
 import multer from 'multer';
 import { MongoClient, ObjectId } from 'mongodb';
+import { mountAssistant } from './assistant/routes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -304,11 +305,12 @@ async function main() {
   const app = express();
   app.disable('x-powered-by');
   app.set('trust proxy', 1);
-  app.use(express.json({ limit: '32kb' }));
   app.use('/api', (_req, res, next) => {
     res.setHeader('Cache-Control', 'no-store');
     next();
   });
+  await mountAssistant(app, { db, requireAdmin, requestOrigin });
+  app.use(express.json({ limit: '32kb' }));
 
   app.get('/api/health', (_req, res) => {
     res.json({ ok: true });
