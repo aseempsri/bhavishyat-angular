@@ -59,7 +59,34 @@
 
         <h1 class="post-title">{{ post.headline }}</h1>
 
-        <div class="post-body">{{ post.body }}</div>
+        <div class="post-body">
+          @for (part of bodyParts; track $index) {
+            @if (part.type === 'text') {
+              <span class="post-body-text">{{ part.value }}</span>
+            } @else if (part.type === 'phone') {
+              <button
+                type="button"
+                class="post-cta post-cta--phone"
+                (click)="openPhoneCta($event)"
+                [attr.aria-label]="'Chat on WhatsApp at ' + part.value"
+              >{{ part.value }}</button>
+            } @else {
+              <a class="post-cta post-cta--email" [href]="'mailto:' + part.value">{{ part.value }}</a>
+            }
+          }
+        </div>
+
+        <p class="post-contact">
+          To book a consultation, contact
+          <button
+            type="button"
+            class="post-cta post-cta--phone"
+            (click)="openPhoneCta($event)"
+            [attr.aria-label]="'Chat on WhatsApp at ' + whatsappDisplay"
+          >{{ whatsappDisplay }}</button>
+          or connect with us on
+          <a class="post-cta post-cta--email" [href]="mailtoHref">{{ contactEmail }}</a>.
+        </p>
 
         <app-author-signature size="article"></app-author-signature>
       }

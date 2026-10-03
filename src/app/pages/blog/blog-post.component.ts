@@ -7,7 +7,17 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { AuthorSignatureComponent } from '../../components/author-signature/author-signature.component';
 import { SeoService } from '../../core/seo/seo.service';
 import { DEFAULT_OG_IMAGE, DEFAULT_ROBOTS } from '../../core/seo/seo.config';
+import {
+  CONTACT_EMAIL,
+  mailtoUrl,
+  openWhatsApp,
+  WHATSAPP_CONSULTATION_MESSAGE,
+  WHATSAPP_DISPLAY,
+  WHATSAPP_NUMBER
+} from '../../core/contact/contact.config';
 import { BlogPost, BlogService } from '../../services/blog.service';
+
+type BodyPart = { type: 'text' | 'phone' | 'email'; value: string };
 
 @Component({
   selector: 'app-blog-post',
@@ -22,12 +32,17 @@ export class BlogPostComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   post: BlogPost | null = null;
+  bodyParts: BodyPart[] = [];
   loading = true;
   error = '';
   copied = false;
   shareOpen = false;
   shareUrl = '';
   showToTop = false;
+
+  readonly whatsappDisplay = WHATSAPP_DISPLAY;
+  readonly contactEmail = CONTACT_EMAIL;
+  readonly mailtoHref = mailtoUrl();
 
   ngOnInit(): void {
     this.updateToTopVisibility();
@@ -37,6 +52,7 @@ export class BlogPostComponent implements OnInit {
     ).subscribe({
       next: (post) => {
         this.post = post;
+        this.bodyParts = this.buildBodyParts(post.body || '');
         this.loading = false;
         this.error = '';
         this.copied = false;
@@ -56,11 +72,18 @@ export class BlogPostComponent implements OnInit {
       error: (err) => {
         this.loading = false;
         this.post = null;
+        this.bodyParts = [];
         this.error = err?.status === 404
           ? 'This article is not available.'
           : 'The blog is unavailable right now. Start the local API with npm run start:api and make sure MongoDB is running.';
       }
     });
+  }
+
+  openPhoneCta(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    openWhatsApp(WHATSAPP_CONSULTATION_MESSAGE, 'connect-with-us');
   }
 
   @HostListener('window:scroll')
@@ -116,5 +139,52 @@ export class BlogPostComponent implements OnInit {
   private openShare(url: string): void {
     const popup = window.open(url, '_blank', 'noopener,noreferrer,width=640,height=560');
     if (popup) popup.opener = null;
+  }
+
+  private buildBodyParts(rawBody: string): BodyPart[] {
+    const body = this.stripTrailingContactBoilerplate(rawBody);
+    if (!body) {
+      return [];
+    }
+
+    const pattern =
+      /(\+91[\s-]?(?:\d[\s-]?){10})|([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+    const parts: BodyPart[] = [];
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = pattern.exec(body)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push({ type: 'text', value: body.slice(lastIndex, match.index) });
+      }
+
+      if (match[1]) {
+        const digits = match[1].replace(/\D/g, '');
+        const normalized =
+          digits === WHATSAPP_NUMBER || digits === WHATSAPP_NUMBER.slice(2)
+            ? WHATSAPP_DISPLAY
+            : match[1].replace(/\s+/g, ' ').trim();
+        parts.push({ type: 'phone', value: normalized });
+      } else if (match[2]) {
+        parts.push({ type: 'email', value: match[2] });
+      }
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    if (lastIndex < body.length) {
+      parts.push({ type: 'text', value: body.slice(lastIndex) });
+    }
+
+    return parts;
+  }
+
+  private stripTrailingContactBoilerplate(body: string): string {
+    return body
+      .replace(
+        /(?:\n+\s*)?(?:To book a consultation[\s\S]*?(?:connect@bhavishyat\.in|\+91[\s\S]*?\d)[\s\S]*)$/i,
+        ''
+      )
+      .trimEnd();
   }
 }
