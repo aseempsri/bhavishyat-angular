@@ -1,0 +1,122 @@
+<main class="min-h-screen bg-background text-foreground px-4 py-10">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex items-center justify-between gap-4 mb-8">
+      <div>
+        <p class="text-primary text-xs uppercase tracking-[0.2em]">BHAVISHYAT</p>
+        <h1 class="text-3xl md:text-4xl font-playfair font-bold">Manage articles</h1>
+      </div>
+      <a routerLink="/admin" class="text-sm text-primary hover:text-accent">Write an article</a>
+    </div>
+
+    @if (checking) {
+      <p class="text-foreground/70">Checking access…</p>
+    } @else if (!authed) {
+      <form (ngSubmit)="signIn()" class="max-w-md rounded-2xl border border-border bg-card p-6 space-y-4">
+        <label class="block">
+          <span class="block mb-2 text-sm font-medium">Admin password</span>
+          <input
+            type="password"
+            name="admin-password"
+            autocomplete="current-password"
+            [(ngModel)]="password"
+            class="w-full h-12 rounded-lg border border-border bg-background px-3 text-foreground"
+          />
+        </label>
+        <button type="submit" class="w-full rounded-lg bg-gradient-to-r from-primary to-accent py-3 font-bold text-primary-foreground">
+          Sign in
+        </button>
+        @if (loginError) {
+          <p class="text-sm text-red-300">{{ loginError }}</p>
+        }
+      </form>
+    } @else {
+      <div class="flex justify-end mb-6">
+        <button type="button" (click)="signOut()" class="text-sm text-foreground/70 hover:text-primary">Sign out</button>
+      </div>
+
+      @if (notice) {
+        <p class="mb-4 text-sm text-primary">{{ notice }}</p>
+      }
+      @if (listError) {
+        <p class="mb-4 text-sm text-red-300">{{ listError }}</p>
+      }
+
+      <section class="mb-10">
+        <h2 class="text-2xl font-playfair font-bold mb-4">Visible on the blog</h2>
+        @if (visiblePosts.length === 0) {
+          <p class="text-foreground/70">No published articles.</p>
+        } @else {
+          <div class="space-y-3">
+            @for (post of visiblePosts; track post.id) {
+              <ng-container *ngTemplateOutlet="articleRow; context: { $implicit: post }"></ng-container>
+            }
+          </div>
+        }
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-playfair font-bold mb-4">Hidden</h2>
+        @if (hiddenPosts.length === 0) {
+          <p class="text-foreground/70">No hidden articles.</p>
+        } @else {
+          <div class="space-y-3">
+            @for (post of hiddenPosts; track post.id) {
+              <ng-container *ngTemplateOutlet="articleRow; context: { $implicit: post }"></ng-container>
+            }
+          </div>
+        }
+      </section>
+
+      <ng-template #articleRow let-post>
+        <div class="rounded-xl border border-border bg-card p-4">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+              <p class="font-semibold">{{ post.headline }}</p>
+              <p class="text-sm text-foreground/60">{{ post.publishedAt | date:'d MMM y':'':'en-IN' }}</p>
+            </div>
+            <div class="flex flex-wrap gap-2 text-sm">
+              @if (post.published) {
+                <a [routerLink]="['/blog', post.slug]" class="rounded-lg border border-border px-3 py-2 hover:text-primary">View</a>
+              }
+              <a [routerLink]="['/admin']" [queryParams]="{ edit: post.id, from: 'articles' }" class="rounded-lg border border-border px-3 py-2 hover:text-primary">
+                Edit
+              </a>
+              @if (post.published) {
+                <button type="button" (click)="setVisibility(post, false)" [disabled]="busyId === post.id" class="rounded-lg border border-border px-3 py-2 hover:text-primary disabled:opacity-60">
+                  Hide
+                </button>
+              } @else {
+                <button type="button" (click)="setVisibility(post, true)" [disabled]="busyId === post.id" class="rounded-lg border border-border px-3 py-2 hover:text-primary disabled:opacity-60">
+                  Show
+                </button>
+              }
+              <button type="button" (click)="askDelete(post)" class="rounded-lg border border-red-400/40 px-3 py-2 text-red-300 hover:text-red-200">
+                Delete
+              </button>
+            </div>
+          </div>
+
+          @if (deletingId === post.id) {
+            <form (ngSubmit)="confirmDelete(post)" class="mt-4 flex flex-col sm:flex-row gap-2">
+              <input
+                type="password"
+                name="delete-password-{{ post.id }}"
+                autocomplete="off"
+                [(ngModel)]="deletePassword"
+                placeholder="Delete password"
+                class="h-11 flex-1 rounded-lg border border-border bg-background px-3"
+              />
+              <button type="submit" [disabled]="busyId === post.id" class="rounded-lg bg-red-500/90 px-4 py-2 font-semibold text-white disabled:opacity-60">
+                Confirm delete
+              </button>
+              <button type="button" (click)="cancelDelete()" class="rounded-lg border border-border px-4 py-2">Cancel</button>
+            </form>
+            @if (deleteError) {
+              <p class="mt-2 text-sm text-red-300">{{ deleteError }}</p>
+            }
+          }
+        </div>
+      </ng-template>
+    }
+  </div>
+</main>

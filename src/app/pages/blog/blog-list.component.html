@@ -1,0 +1,49 @@
+<app-header></app-header>
+
+<main class="blog-page min-h-screen pt-24 pb-28 lg:pb-16">
+  <div class="blog-sky" aria-hidden="true">
+    <div class="blog-nebula"></div>
+    <div class="blog-stars"></div>
+    <div class="blog-stars blog-stars--far"></div>
+    <div class="blog-glow blog-glow--left"></div>
+    <div class="blog-glow blog-glow--right"></div>
+  </div>
+
+  <section class="container relative z-10 mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center mb-12">
+      <p class="text-primary text-sm uppercase tracking-[0.22em] mb-3">BHAVISHYAT</p>
+      <h1 class="text-4xl md:text-6xl font-playfair font-bold text-foreground mb-4">Blog</h1>
+      <p class="text-lg text-foreground/75 leading-relaxed">
+        Notes on Vedic astrology, kundali, and the practices we share with the Gurukul.
+      </p>
+    </div>
+
+    @if (loading) {
+      <p class="text-center text-foreground/70">Loading articles…</p>
+    } @else if (error) {
+      <p class="max-w-xl mx-auto text-center text-red-300">{{ error }}</p>
+    } @else if (posts.length === 0) {
+      <p class="text-center text-foreground/70">No articles yet. New writing will appear here.</p>
+    } @else {
+      <div class="max-w-3xl mx-auto space-y-5">
+        @for (post of posts; track post.id) {
+          <a
+            [routerLink]="['/blog', post.slug]"
+            class="blog-card block rounded-2xl border border-primary/20 bg-card/75 p-6 md:p-8 shadow-card backdrop-blur-sm transition-colors hover:border-primary/45"
+          >
+            <article class="blog-card-body">
+              <p class="text-sm text-primary/90 mb-2">{{ post.publishedAt | date:'d MMMM y':'':'en-IN' }}</p>
+              <h2 class="text-2xl md:text-3xl font-playfair font-bold text-foreground mb-3 transition-colors">
+                {{ post.headline }}
+              </h2>
+              @if (post.excerpt) {
+                <p class="text-foreground/75 leading-relaxed">{{ post.excerpt }}</p>
+              }
+              <app-author-signature size="card"></app-author-signature>
+            </article>
+          </a>
+        }
+      </div>
+    }
+  </section>
+</main>

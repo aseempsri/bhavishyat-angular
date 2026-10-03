@@ -44,3 +44,6 @@ Thumbs.db
 # Local kundli work (not for deploy)
 /vaidehi-kundli/
 /vaidehi-kundli copy/
+
+# Blog API secrets and uploaded thumbnails stored on disk during local runs
+/server/.env

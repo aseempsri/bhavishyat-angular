@@ -72,6 +72,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'Remedies & Seva', href: '/remedies-seva', isRoute: true },
     { label: 'Aarohanam', href: '/aarohanam', isRoute: true, hidden: true },
     { label: 'Gurukul', href: '/class-recordings', isRoute: true }, // requiresLogin: true,
+    { label: 'Blog', href: '/blog', isRoute: true },
   ];
 
   mobileDockItems: MobileDockItem[] = [
@@ -86,6 +87,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { label: 'About Us', description: 'Our story and cosmic mission', href: '#about', isRoute: false, emoji: '✨' },
     { label: 'Services', description: 'Astrology offerings and guidance', href: '#services', isRoute: false, emoji: '🔮' },
     { label: 'Contact Us', description: 'Reach the BHAVISHYAT team', href: '#contact', isRoute: false, emoji: '📿' },
+    { label: 'Blog', description: 'Articles and notes from BHAVISHYAT', href: '/blog', isRoute: true, emoji: '📝' },
   ];
 
   showMobileExplore = false;

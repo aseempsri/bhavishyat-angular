@@ -48,6 +48,27 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/aarohanam/aarohanam.component').then(m => m.AarohanamComponent)
   },
   {
+    path: 'blog',
+    title: ROUTE_SEO['blog'].title,
+    loadComponent: () => import('./pages/blog/blog-list.component').then(m => m.BlogListComponent)
+  },
+  {
+    path: 'blog/:slug',
+    title: ROUTE_SEO['blog'].title,
+    loadComponent: () => import('./pages/blog/blog-post.component').then(m => m.BlogPostComponent)
+  },
+  {
+    path: 'admin',
+    title: ROUTE_SEO['admin'].title,
+    loadComponent: () => import('./pages/admin/admin-blog.component').then(m => m.AdminBlogComponent)
+  },
+  {
+    path: 'admin/articles',
+    title: ROUTE_SEO['admin/articles'].title,
+    loadComponent: () => import('./pages/admin/admin-articles.component').then(m => m.AdminArticlesComponent)
+  },
+
+  {
     path: '**',
     title: ROUTE_SEO['**'].title,
     loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent)

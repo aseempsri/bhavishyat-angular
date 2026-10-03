@@ -68,6 +68,12 @@ export const ROUTE_SEO: Record<string, PageSeo> = Object.fromEntries(
 
 export function seoForUrl(url: string): PageSeo {
   const pathOnly = url.split('?')[0].split('#')[0].replace(/^\//, '').replace(/\/$/, '');
+  if (pathOnly === 'blog' || pathOnly.startsWith('blog/')) {
+    return { ...ROUTE_SEO['blog'], path: `/${pathOnly}` };
+  }
+  if (pathOnly === 'admin' || pathOnly.startsWith('admin/')) {
+    return { ...(ROUTE_SEO[pathOnly] ?? ROUTE_SEO['admin']), path: `/${pathOnly}` };
+  }
   const key = pathOnly === '' ? '' : pathOnly;
   return ROUTE_SEO[key] ?? { ...ROUTE_SEO['**'], path: `/${pathOnly}` };
 }

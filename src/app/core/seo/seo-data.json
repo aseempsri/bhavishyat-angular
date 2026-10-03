@@ -183,6 +183,47 @@
         "Practices rooted in Vedic wisdom"
       ]
     },
+    "blog": {
+      "path": "/blog",
+      "title": "Blog | Vedic Astrology Notes | BHAVISHYAT",
+      "description": "Read BHAVISHYAT articles on Vedic astrology, kundali, panchang, and spiritual practice.",
+      "keywords": "BHAVISHYAT blog, Vedic astrology articles, kundali insights, spiritual notes",
+      "ogImage": "https://bhavishyat.in/assets/og-share.jpg",
+      "ogType": "website",
+      "schemaType": "WebPage",
+      "changefreq": "weekly",
+      "priority": "0.8",
+      "bodyHeadline": "BHAVISHYAT Blog",
+      "bodySummary": "Articles and notes on Vedic astrology, kundali, and spiritual practice.",
+      "bodyPoints": [
+        "Astrology notes from BHAVISHYAT",
+        "Each article can be shared with its own preview image"
+      ]
+    },
+    "admin/articles": {
+      "path": "/admin/articles",
+      "title": "Manage Articles | BHAVISHYAT",
+      "description": "Private page for showing, hiding, and deleting BHAVISHYAT articles.",
+      "ogImage": "https://bhavishyat.in/assets/og-share.jpg",
+      "ogType": "website",
+      "robots": "noindex, nofollow",
+      "schemaType": "WebPage",
+      "bodyHeadline": "Manage Articles",
+      "bodySummary": "Private page for showing, hiding, and deleting BHAVISHYAT articles.",
+      "bodyPoints": []
+    },
+    "admin": {
+      "path": "/admin",
+      "title": "Blog Admin | BHAVISHYAT",
+      "description": "Private blog administration for BHAVISHYAT.",
+      "ogImage": "https://bhavishyat.in/assets/og-share.jpg",
+      "ogType": "website",
+      "robots": "noindex, nofollow",
+      "schemaType": "WebPage",
+      "bodyHeadline": "Blog Admin",
+      "bodySummary": "Private page for publishing BHAVISHYAT articles.",
+      "bodyPoints": []
+    },
     "**": {
       "path": "/",
       "title": "Page Not Found | BHAVISHYAT",
