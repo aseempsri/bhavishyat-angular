@@ -1,0 +1,13 @@
+{
+  "name": "http-cache-semantics",
+  "version": "4.2.1",
+  "description": "Patched http-cache-semantics 4.2.0 for max-stale shared-cache fix (CVE-2026-93748 / GHSA-ch52-4w7c-c8xp).",
+  "license": "BSD-2-Clause",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=8"
+  }
+}
